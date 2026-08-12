@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paper 2 — Economía NM — Práctica Digital</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<style>
+  :root{
+    --ib-blue:#002147;
+    --ib-blue-2:#003a6b;
+    --ib-gold:#C69214;
+    --ib-gold-soft:#f3e5bf;
+    --bg:#F4F7F6;
+    --card:#ffffff;
+    --ink:#1c2b3a;
+    --ink-soft:#5b6b7b;
+    --line:#d9e2e0;
+    --ok:#1e7d4f;
+    --warn:#b3541e;
+    --danger:#b3261e;
+    --radius:12px;
+    --shadow:0 2px 10px rgba(0,33,71,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.55;font-size:16px;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 18px}
+
+  /* ============ BANDAS ============ */
+  .brand-bar{
+    background:linear-gradient(135deg,var(--ib-blue),var(--ib-blue-2));
+    color:#fff;padding:14px 0;
+  }
+  .brand-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .logo{
+    width:42px;height:42px;border-radius:10px;background:var(--ib-gold);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:var(--ib-blue);
+  }
+  .brand h1{font-size:1.05rem;line-height:1.2;font-weight:700;letter-spacing:.3px}
+  .brand small{display:block;font-weight:400;opacity:.85;font-size:.78rem}
+  #timerBox{
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    padding:6px 14px;border-radius:10px;text-align:center;min-width:132px;
+  }
+  #timerBox .lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:1px;opacity:.85}
+  #timer{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;color:#fff}
+  #timer.warn{color:#ffd166;animation:pulse 1s infinite}
+  #timer.danger{color:#ff8a80;animation:pulse .6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+  .tabs-bar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+  .tabs-bar .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:6px}
+  .tab{
+    border:none;background:transparent;padding:10px 16px;font-size:.9rem;font-weight:600;
+    color:var(--ink-soft);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;
+    font-family:inherit;
+  }
+  .tab:hover{color:var(--ib-blue)}
+  .tab.active{color:var(--ib-blue);border-bottom-color:var(--ib-gold)}
+  .tab .pi{display:inline-block;min-width:20px;text-align:center;background:#e8eef2;border-radius:20px;margin-right:6px;font-size:.78rem;color:var(--ink-soft);padding:1px 5px}
+  .tab.active .pi{background:var(--ib-blue);color:#fff}
+  #progressChip{margin-left:auto;align-self:center;font-size:.78rem;color:var(--ink-soft);padding:4px 10px;background:#eef3f1;border-radius:20px;white-space:nowrap}
+  #questionChip{margin-left:auto;align-self:center;font-size:.78rem;font-weight:700;color:var(--ib-blue);padding:4px 12px;background:var(--ib-gold-soft);border-radius:20px;white-space:nowrap}
+
+  /* ============ PANTALLAS ============ */
+  .screen{display:none}
+  .screen.active{display:block}
+  section{padding:22px 0 60px}
+
+  /* ============ PORTADA ============ */
+  .hero{
+    background:linear-gradient(135deg,var(--ib-blue),var(--ib-blue-2));color:#fff;
+    border-radius:var(--radius);padding:34px 28px;margin:22px 0;text-align:center;
+  }
+  .hero .kicker{color:var(--ib-gold);text-transform:uppercase;letter-spacing:2.5px;font-size:.75rem;font-weight:700}
+  .hero h2{font-size:1.7rem;margin:8px 0 4px}
+  .hero p{opacity:.9;font-size:.95rem}
+  .hero .meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .meta-chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 14px;font-size:.82rem}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin:18px 0}
+  .card h3{color:var(--ib-blue);margin-bottom:10px;font-size:1.05rem}
+  .field{margin:12px 0}
+  .field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:5px;color:var(--ink)}
+  .field input{
+    width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:8px;font-size:1rem;
+    font-family:inherit;background:#fbfdfc;
+  }
+  .field input:focus{outline:2px solid var(--ib-gold);border-color:var(--ib-gold)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--ib-blue);color:#fff;border:none;border-radius:9px;padding:12px 22px;
+    font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .05s, box-shadow .15s;
+    box-shadow:0 2px 6px rgba(0,33,71,.25);
+  }
+  .btn:hover{background:var(--ib-blue-2)}
+  .btn:active{transform:translateY(1px)}
+  .btn.gold{background:var(--ib-gold);color:var(--ib-blue)}
+  .btn.gold:hover{background:#d9a520}
+  .btn.ghost{background:#fff;color:var(--ib-blue);border:1.5px solid var(--ib-blue)}
+  .btn.ghost:hover{background:#eef3f8}
+  .btn.small{padding:7px 14px;font-size:.82rem;border-radius:7px}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+  .q-picker{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .q-option{
+    background:#fbfcfe;border:2px solid var(--line);border-radius:var(--radius);padding:16px;
+    cursor:pointer;text-align:left;font-family:inherit;transition:border-color .15s, box-shadow .15s;
+  }
+  .q-option:hover{border-color:var(--ib-gold);box-shadow:var(--shadow)}
+  .q-option.sel{border-color:var(--ib-gold);background:var(--ib-gold-soft)}
+  .q-option .qt{font-weight:800;color:var(--ib-blue);font-size:1rem;display:block}
+  .q-option .qd{font-size:.8rem;color:var(--ink-soft);display:block;margin-top:4px}
+  .q-option .qpts{display:inline-block;margin-top:8px;background:var(--ib-blue);color:#fff;font-size:.7rem;font-weight:700;border-radius:20px;padding:2px 10px}
+
+  .glosario{background:var(--ib-gold-soft);border-left:4px solid var(--ib-gold);border-radius:8px;padding:14px 16px;margin:14px 0}
+  .glosario h4{color:#7a5c08;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .glosario table{width:100%;border-collapse:collapse;font-size:.85rem}
+  .glosario td{padding:4px 6px;vertical-align:top;border-bottom:1px dashed rgba(122,92,8,.25)}
+  .glosario td:first-child{font-weight:700;color:#7a5c08;white-space:nowrap}
+
+  .inst-list{margin-left:20px;font-size:.92rem}
+  .inst-list li{margin:6px 0}
+
+  /* ============ EXAMEN ============ */
+  .exam-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    border-bottom:2px solid var(--ib-blue);padding-bottom:10px;margin:18px 0 14px;
+  }
+  .exam-head h2{color:var(--ib-blue);font-size:1.35rem}
+  .exam-head .topic-tag{background:var(--ib-gold-soft);color:#7a5c08;font-size:.75rem;font-weight:700;border-radius:20px;padding:3px 12px;text-transform:uppercase;letter-spacing:.8px}
+  .exam-head .pts{color:var(--ink-soft);font-size:.85rem;font-weight:600}
+
+  .stimulus{background:#fbfcfe;border:1.5px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
+  .stimulus .st-label{font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--ib-gold);margin-bottom:8px}
+  .leer-fragmentos{font-size:.9rem;color:var(--ink-soft);margin:0 0 6px}
+  .leer-fragmentos strong{color:var(--ib-blue)}
+  .stimulus p{margin:10px 0;font-size:.93rem;text-align:justify}
+  .stimulus .parno{color:var(--ib-gold);font-weight:800}
+  .stimulus strong{color:var(--ib-blue)}
+  .stimulus blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--ib-gold);background:#f7f3e8;border-radius:0 6px 6px 0;font-size:.85rem;color:#5c5340}
+
+  .data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem;background:#fff}
+  .data-table caption{caption-side:top;text-align:left;font-weight:700;color:var(--ib-blue);padding:4px 2px 8px;font-size:.88rem}
+  .data-table th{background:var(--ib-blue);color:#fff;padding:8px 10px;text-align:left;font-size:.82rem}
+  .data-table td{padding:7px 10px;border-bottom:1px solid var(--line)}
+  .data-table tr:nth-child(even) td{background:#f4f7f8}
+  .data-table td.num,.data-table th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .table-wrap{overflow-x:auto}
+
+  .part{
+    background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;margin:16px 0;box-shadow:var(--shadow);
+  }
+  .part-head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+  .part-label{
+    background:var(--ib-blue);color:#fff;font-weight:800;font-size:.85rem;
+    border-radius:8px;padding:4px 10px;white-space:nowrap;flex-shrink:0;
+  }
+  .part-q{flex:1;min-width:260px;font-size:.95rem}
+  .part-q .cmd{font-weight:800;color:var(--ib-blue)}
+  .part-marks{
+    background:#eef3f1;border:1px solid var(--line);color:var(--ink-soft);
+    font-weight:700;font-size:.78rem;border-radius:20px;padding:3px 12px;white-space:nowrap;
+  }
+  .part textarea{
+    width:100%;min-height:88px;margin-top:12px;padding:12px 14px;border:1.5px solid var(--line);
+    border-radius:8px;font-size:.95rem;font-family:inherit;background:#fbfdfc;resize:vertical;line-height:1.5;
+  }
+  .part textarea:focus{outline:2px solid var(--ib-gold);border-color:var(--ib-gold)}
+  .part textarea.answered{border-color:#9cc5ae;background:#f4fbf6}
+  .sub-parts{display:grid;grid-template-columns:1fr;gap:14px}
+  .sub-row{border-top:1px dashed var(--line);padding-top:12px;margin-top:4px}
+
+  /* Pizarra */
+  .board-shell{margin-top:12px}
+  .board-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#eef3f1;border:1.5px solid var(--line);border-bottom:none;border-radius:9px 9px 0 0;padding:6px 8px}
+  .board-tools .tlabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-soft);margin-right:4px}
+  .swatch{width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+  .swatch.active{box-shadow:0 0 0 2.5px var(--ib-gold)}
+  .board-tools button.bt{
+    border:1px solid var(--line);background:#fff;border-radius:6px;font-size:.75rem;font-weight:600;
+    padding:5px 9px;cursor:pointer;color:var(--ink);font-family:inherit;
+  }
+  .board-tools button.bt:hover{background:var(--ib-gold-soft)}
+  .board-tools .sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+  .board-wrap{position:relative;border:1.5px solid var(--line);border-radius:0 0 9px 9px;background:#fff;overflow:hidden}
+  canvas.board{display:block;width:100%;height:300px;touch-action:none;cursor:crosshair}
+
+  /* ============ REVISIÓN ============ */
+  .rev-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin:14px 0}
+  .rev-question-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:2px solid var(--ib-gold);padding-bottom:8px;margin-bottom:12px}
+  .rev-question-title h3{color:var(--ib-blue)}
+  .rev-question-title .topic-tag{background:var(--ib-gold-soft);color:#7a5c08;font-size:.72rem;font-weight:700;border-radius:20px;padding:2px 10px;text-transform:uppercase}
+  .rev-part{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .rev-part:last-child{border-bottom:none}
+  .rev-part .plabel{background:var(--ib-blue);color:#fff;font-weight:800;font-size:.78rem;border-radius:7px;padding:3px 9px;white-space:nowrap;margin-top:2px}
+  .rev-part .ptext{flex:1;min-width:220px;font-size:.88rem}
+  .rev-part .ptext .cmd{font-weight:700;color:var(--ib-blue)}
+  .rev-part .score-box{display:flex;align-items:center;gap:6px;font-size:.85rem;white-space:nowrap}
+  .rev-part .score-box input{
+    width:56px;padding:6px 8px;border:1.5px solid var(--line);border-radius:7px;font-size:.95rem;
+    text-align:center;font-family:inherit;background:#fbfdfc;
+  }
+  .rev-part .score-box input:focus{outline:2px solid var(--ib-gold)}
+  .status-badge{font-size:.7rem;font-weight:800;border-radius:20px;padding:2px 9px;letter-spacing:.4px}
+  .status-badge.done{background:#e0f2e8;color:var(--ok)}
+  .status-badge.empty{background:#fdecea;color:var(--danger)}
+  .locked-note{background:#fdf6e3;border:1.5px dashed var(--ib-gold);border-radius:10px;padding:14px 18px;font-size:.9rem;color:#7a5c08;margin:14px 0}
+
+  /* Respuesta del alumno en la revisión (para comparar con el markscheme) */
+  .ans-box{width:100%;background:#f0f5f9;border:1.5px solid #c9d8e4;border-left:4px solid var(--ib-blue);border-radius:8px;padding:10px 14px;margin:8px 0}
+  .ans-head{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ib-blue);margin-bottom:5px}
+  .ans-body{font-size:.88rem;line-height:1.55;background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px 12px;white-space:normal}
+  .ans-body.empty{color:var(--ink-soft);font-style:italic;background:#fbfdfc}
+  .ans-diag{margin-top:8px}
+  .ans-diag img{max-width:100%;border:1.5px solid var(--line);border-radius:6px;background:#fff}
+
+  /* Markscheme */
+  .ms-panel{display:none;margin-top:12px;background:#fbfcfe;border:1.5px solid var(--ib-gold);border-radius:10px;overflow:hidden}
+  .ms-panel.open{display:block}
+  .ms-head{background:var(--ib-gold);color:var(--ib-blue);padding:8px 14px;font-size:.78rem;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+  .ms-body{padding:14px 18px;font-size:.9rem}
+  .ms-body p{margin:8px 0}
+  .ms-body ul{margin:6px 0 8px 20px}
+  .ms-body li{margin:5px 0}
+  .ms-body strong{color:var(--ib-blue)}
+  .ms-body .ms-note{background:#fdf6e3;border-left:3px solid var(--ib-gold);border-radius:0 6px 6px 0;padding:8px 12px;font-size:.82rem;color:#5c5340;margin:10px 0}
+  .ms-level{border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin:8px 0;background:#fff}
+  .ms-level .lv{font-weight:800;color:var(--ib-blue)}
+  .ms-level .range{float:right;font-weight:800;color:var(--ib-gold)}
+
+  .total-box{
+    background:linear-gradient(135deg,var(--ib-blue),var(--ib-blue-2));color:#fff;
+    border-radius:var(--radius);padding:20px;margin:18px 0;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  .total-box .big{font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums}
+  .total-box .sub{font-size:.82rem;opacity:.85}
+  .total-box .grade{font-size:.95rem;font-weight:700;color:var(--ib-gold)}
+
+  footer{background:var(--ib-blue);color:#c7d4e0;font-size:.75rem;padding:18px 0;text-align:center;line-height:1.6}
+
+  /* Overlay confirmación */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,20,40,.55);z-index:500;align-items:center;justify-content:center;padding:18px}
+  .overlay.open{display:flex}
+  .overlay .box{background:#fff;border-radius:var(--radius);padding:24px;max-width:460px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  .overlay .box h3{color:var(--ib-blue);margin-bottom:8px}
+  .overlay .box p{font-size:.9rem;color:var(--ink-soft);margin-bottom:16px}
+
+  .toast{display:none;position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ib-blue);color:#fff;
+    padding:11px 20px;border-radius:30px;font-size:.85rem;font-weight:600;z-index:600;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+  .toast.show{display:block}
+
+  /* ============ GUÍA DE RESPUESTA ============ */
+  .guide-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin:14px 0}
+  .guide-card .gc-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:2px solid var(--ib-gold);padding-bottom:8px;margin-bottom:12px}
+  .guide-card .gc-head h3{color:var(--ib-blue);font-size:1.02rem}
+  .gc-tag{background:var(--ib-blue);color:#fff;font-size:.72rem;font-weight:800;border-radius:20px;padding:2px 11px;text-transform:uppercase;letter-spacing:.6px}
+  .gc-tag.gold{background:var(--ib-gold);color:var(--ib-blue)}
+  .gc-tag.green{background:#e0f2e8;color:var(--ok)}
+  .guide-card .gc-sub{font-size:.82rem;color:var(--ink-soft)}
+  .step{display:flex;gap:11px;margin:9px 0;align-items:flex-start}
+  .step .n{background:var(--ib-blue);color:#fff;border-radius:50%;width:26px;height:26px;min-width:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;margin-top:2px}
+  .step .t{font-size:.92rem}
+  .step .t b{color:var(--ib-blue)}
+  .formula{background:#fff;border:1.5px dashed var(--ib-gold);border-radius:8px;padding:9px 13px;margin:8px 0;font-size:.9rem}
+  .formula code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;font-size:.85rem;color:#7a5c08}
+  .tip{border-radius:8px;padding:10px 14px;margin:10px 0;font-size:.87rem}
+  .tip.good{background:#e0f2e8;border-left:4px solid var(--ok)}
+  .tip.warn{background:#fdf6e3;border-left:4px solid var(--ib-gold)}
+  .tip.bad{background:#fdecea;border-left:4px solid var(--danger)}
+  .tip b{color:var(--ib-blue)}
+  .check-list{list-style:none;margin:8px 0}
+  .check-list li{padding:5px 0 5px 30px;position:relative;font-size:.9rem;border-bottom:1px dashed var(--line)}
+  .check-list li:last-child{border-bottom:none}
+  .check-list li::before{content:"☐";position:absolute;left:4px;color:var(--ib-gold);font-weight:800}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.two-col{grid-template-columns:1fr}}
+
+  /* ============ PANEL DOCENTE ============ */
+  select#studentName{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:8px;font-size:1rem;font-family:inherit;background:#fbfdfc}
+  select#studentName:focus{outline:2px solid var(--ib-gold);border-color:var(--ib-gold)}
+  .submit-status{font-size:.82rem;color:var(--ok);margin-top:8px;min-height:1.2em}
+  .tp-fab{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;background:var(--ib-blue);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 14px rgba(0,33,71,.35);z-index:150}
+  .tp-fab:hover{background:var(--ib-blue-2)}
+  .tp-overlay{display:none;position:fixed;inset:0;background:rgba(0,20,40,.6);z-index:400;align-items:flex-start;justify-content:center;padding:24px 14px;overflow-y:auto}
+  .tp-overlay.open{display:flex}
+  .tp-box{background:#fff;border-radius:var(--radius);max-width:920px;width:100%;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+  .tp-box h3{color:var(--ib-blue);margin-bottom:12px}
+  .tp-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--ink-soft)}
+  .tp-login{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .tp-login input{border:1.5px solid var(--line);border-radius:7px;padding:9px 12px;font-size:.9rem;font-family:inherit;width:220px}
+  .tp-table-wrap{overflow-x:auto;margin-top:12px}
+  table.tp-table{width:100%;border-collapse:collapse;font-size:.82rem}
+  table.tp-table th{background:var(--ib-blue);color:#fff;padding:7px 9px;text-align:left;white-space:nowrap}
+  table.tp-table td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.tp-table tr.student-row{cursor:pointer}
+  table.tp-table tr.student-row:hover td{background:#eef3f8}
+  .tp-detail{display:none;background:#f4f7f8}
+  .tp-detail.open{display:table-row}
+  .tp-detail .tp-ans{margin:4px 0 10px;white-space:pre-wrap;background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+  .tp-detail img{max-width:240px;border:1px solid var(--line);border-radius:6px;margin:4px 6px 4px 0}
+  .tp-empty{color:var(--ink-soft);font-style:italic;padding:14px;text-align:center}
+  .tp-pdf{background:var(--ib-gold);color:var(--ib-blue);border:none;border-radius:6px;padding:3px 9px;font-size:.72rem;font-weight:800;cursor:pointer;white-space:nowrap}
+  .tp-pdf:hover{background:#e0aa2b}
+
+  /* ============ RESPONSIVE / PRINT ============ */
+  @media (max-width:640px){
+    body{font-size:15px}
+    .hero{padding:24px 16px}
+    .hero h2{font-size:1.3rem}
+    .card,.part{padding:14px}
+    .q-picker{grid-template-columns:1fr}
+    .brand h1{font-size:.9rem}
+    #timer{font-size:1.1rem}
+  }
+  @media print{
+    .tabs-bar,.brand-bar .controls,.btn-row,.board-tools,.no-print,.overlay,.toast{display:none !important}
+    body{background:#fff;font-size:12px}
+    .screen{display:block !important}
+    #screen-guide{display:none !important}
+    section{padding:0}
+    .card,.part,.rev-card,.stimulus{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .ms-panel{display:block !important}
+    textarea{border:1px solid #ccc;background:#fff}
+    canvas.board{border:1px solid #ccc}
+    .total-box{background:var(--ib-blue);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ BANDA SUPERIOR ══════════ -->
+<header class="brand-bar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">IB</div>
+      <h1>Paper 2 · Economía NM<small>Práctica digital — Microeconomía y Macroeconomía</small></h1>
+    </div>
+    <div id="timerBox" class="no-print">
+      <div class="lbl">Tiempo restante</div>
+      <div id="timer">1:45:00</div>
+      <button id="btnTimerPause" style="border:none;background:transparent;color:#fff;font-size:.7rem;cursor:pointer;text-decoration:underline;padding:0">pausar</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ PESTAÑAS ══════════ -->
+<nav class="tabs-bar no-print">
+  <div class="wrap">
+    <button class="tab active" data-tab="start"><span class="pi">1</span>Inicio</button>
+    <button class="tab" data-tab="guide"><span class="pi">2</span>Guía</button>
+    <button class="tab" data-tab="exam"><span class="pi">3</span>Examen</button>
+    <button class="tab" data-tab="review"><span class="pi">4</span>Revisión final</button>
+    <span id="progressChip">Respondidas: 0/9</span>
+    <span id="questionChip" style="display:none"></span>
+  </div>
+</nav>
+
+<!-- ══════════ PANTALLA 1: INICIO ══════════ -->
+<section id="screen-start" class="screen active">
+  <div class="wrap">
+    <div class="hero">
+      <div class="kicker">International Baccalaureate · Diploma Programme</div>
+      <h2>Examen de práctica — Paper 2</h2>
+      <p>Economía · Nivel Medio (NM)</p>
+      <div class="meta">
+        <span class="meta-chip">⏱ 1 hora 45 minutos</span>
+        <span class="meta-chip">📝 40 puntos</span>
+        <span class="meta-chip">🧮 Calculadora permitida</span>
+        <span class="meta-chip">🎯 Micro y macro (sin economía global)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Instrucciones para los alumnos</h3>
+      <ul class="inst-list">
+        <li>No inicie el examen hasta que el docente lo autorice.</li>
+        <li>En esta prueba está permitido utilizar la calculadora.</li>
+        <li>Salvo que se indique lo contrario en la pregunta, todas las respuestas numéricas deberán ser exactas o aproximadas con <strong>dos decimales</strong>.</li>
+        <li><strong>Debe mostrar la totalidad del mecanismo</strong> en las preguntas de cálculo.</li>
+        <li><strong>Conteste UNA pregunta</strong>: la Pregunta 1 o la Pregunta 2.</li>
+        <li>Utilice gráficos bien rotulados e incluya referencias al texto o los datos cuando corresponda.</li>
+        <li>La puntuación máxima para esta prueba de examen es <strong>[40 puntos]</strong>.</li>
+      </ul>
+      <div class="glosario">
+        <h4>Términos de instrucción usados en esta prueba</h4>
+        <table>
+          <tr><td>Defina</td><td>Dé el significado exacto de un término.</td></tr>
+          <tr><td>Calcule</td><td>Obtenga un resultado numérico mostrando la totalidad del mecanismo.</td></tr>
+          <tr><td>Explique</td><td>Dé razones detalladas o causas, apoyándose en un diagrama bien rotulado cuando se indique.</td></tr>
+          <tr><td>Discuta</td><td>Ofrezca una consideración equilibrada de las diferentes perspectivas u opciones y llegue a una conclusión.</td></tr>
+          <tr><td>Evalúe</td><td>Haga un juicio ponderado considerando fortalezas y debilidades, con una conclusión razonada.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Datos del estudiante</h3>
+      <div class="field">
+        <label for="studentName">Selecciona tu nombre — 3BGU Economía</label>
+        <select id="studentName">
+          <option value="" disabled selected>— Tu nombre —</option>
+          <option value="AGUILERA, ALEJANDRO">AGUILERA, ALEJANDRO</option>
+          <option value="ANDRADE, EDUARDO">ANDRADE, EDUARDO</option>
+          <option value="BRIONES, OLENKA">BRIONES, OLENKA</option>
+          <option value="CABRERA, KAMILA">CABRERA, KAMILA</option>
+          <option value="FLORES, PAULINA">FLORES, PAULINA</option>
+          <option value="GARCES, FIORELLA">GARCES, FIORELLA</option>
+          <option value="GARCIA, FRANCISCO">GARCIA, FRANCISCO</option>
+          <option value="GARRIDO, MARTYN">GARRIDO, MARTYN</option>
+          <option value="GAUNA, VALERIE">GAUNA, VALERIE</option>
+          <option value="GOMEZ, ESTEFANO">GOMEZ, ESTEFANO</option>
+          <option value="GUEDES, RENATA">GUEDES, RENATA</option>
+          <option value="IÑIGUEZ, ISABELLA">IÑIGUEZ, ISABELLA</option>
+          <option value="ITURRALDE, SANTIAGO">ITURRALDE, SANTIAGO</option>
+          <option value="PERALTA, SAMANTHA">PERALTA, SAMANTHA</option>
+          <option value="PLUA, CESAR">PLUA, CESAR</option>
+          <option value="POZO, DAVID">POZO, DAVID</option>
+          <option value="TEJADA, EMMILY">TEJADA, EMMILY</option>
+          <option value="TORRES, EMILIA">TORRES, EMILIA</option>
+          <option value="VELASCO, ALISSON">VELASCO, ALISSON</option>
+          <option value="VIZCAINO, AMIR">VIZCAINO, AMIR</option>
+          <option value="ZAMBRANO, DIANA">ZAMBRANO, DIANA</option>
+          <option value="ZAMORA, GABRIEL">ZAMORA, GABRIEL</option>
+          <option value="ZAMORA, KYLIE">ZAMORA, KYLIE</option>
+          <option value="ZUÑIGA, DOMENICA">ZUÑIGA, DOMENICA</option>
+        </select>
+      </div>
+      <p style="font-size:.85rem;color:var(--ink-soft)">Curso: <strong>3BGU — Economía NM</strong></p>
+    </div>
+
+    <div class="card">
+      <h3>Conteste UNA pregunta (40 puntos)</h3>
+      <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">Como en el Paper 2 real, <strong>no se elige por unidad</strong>: cada pregunta combina microeconomía y macroeconomía. Elija la Pregunta 1 o la Pregunta 2.</p>
+      <div class="q-picker">
+        <button class="q-option" id="pickQ1" data-q="q1">
+          <span class="qt">Pregunta 1</span>
+          <span class="qd">El arroz y la inflación en Meridia: subsidio, elasticidad, excedentes y demanda y oferta agregadas.</span>
+          <span class="qpts">40 puntos</span>
+        </button>
+        <button class="q-option" id="pickQ2" data-q="q2">
+          <span class="qt">Pregunta 2</span>
+          <span class="qd">La inflación y el transporte en Valmira: política fiscal, precio máximo y demanda y oferta agregadas.</span>
+          <span class="qpts">40 puntos</span>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button id="startBtn" class="btn gold">▶ Comenzar examen</button>
+      </div>
+      <p style="font-size:.78rem;color:var(--ink-soft);margin-top:10px">Tus respuestas se guardan automáticamente en este dispositivo. Puedes cerrar el navegador y continuar después; el temporizador seguirá corriendo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PANTALLA 2: GUÍA DE RESPUESTA ══════════ -->
+<section id="screen-guide" class="screen">
+  <div class="wrap">
+
+    <div class="exam-head">
+      <h2>Guía de respuesta — Paper 2</h2>
+      <span class="pts">Plantillas por término de instrucción IB · Economía NM</span>
+    </div>
+
+    <div class="tip warn">
+      📖 <b>Consulta esta guía cuando practiques.</b> En un examen real del IB no está disponible: el objetivo es que internalices cada plantilla hasta que la estructura salga sola. Las plantillas son <b>modelos orientadores, no respuestas rígidas</b>: lo que se mantiene constante es la estructura.
+    </div>
+
+    <!-- Mapa de la prueba -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Mapa de la prueba</h3>
+        <span class="gc-tag">1h45 · 40 puntos · conteste UNA pregunta</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Parte</th><th>Puntos</th><th>Término de instrucción</th><th>Qué se pide</th></tr></thead>
+          <tbody>
+            <tr><td><b>(a)</b></td><td class="num">4</td><td><b>Defina</b> (2 términos)</td><td>Dos definiciones precisas con terminología IB exacta, de términos marcados en negrita en el texto.</td></tr>
+            <tr><td><b>(b)</b></td><td class="num">5</td><td><b>Usando… calcule</b> (2 cálculos)</td><td>Citar los datos de la tabla, mostrar la totalidad del mecanismo y entregar el resultado con su unidad.</td></tr>
+            <tr><td><b>(c)–(f)</b></td><td class="num">16</td><td><b>Explique</b> (4 explicaciones)</td><td>Cuatro explicaciones, cada una con un <b>diagrama bien rotulado</b> y un encadenamiento lógico (causa → mecanismo → efecto).</td></tr>
+            <tr><td><b>(g)</b></td><td class="num">15</td><td><b>Discuta</b> / <b>Evalúe</b></td><td>Ensayo de cinco párrafos: argumentos a favor y en contra con datos del texto y una <b>conclusión evaluada</b>.</td></tr>
+            <tr><td><b>Total</b></td><td class="num">40</td><td></td><td>Regla de oro: <b>referencia el texto y los datos</b> («como se observa en la Tabla 1…», «según el párrafo 2…»). Los examinadores lo premian en todas las partes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- (a) Defina -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>(a) · Defina</h3>
+        <span class="gc-tag">2 puntos por término</span>
+      </div>
+      <p class="gc-sub"><b>Qué pide:</b> la definición precisa de un concepto, sin requerir contexto ni ejemplo. La clave está en utilizar la <b>terminología IB exacta</b>.</p>
+      <div class="formula"><b>Plantilla:</b> «[Concepto] se refiere a, o es, [definición completa expresada en una o dos oraciones]».</div>
+      <div class="step"><span class="n">1</span><div class="t"><b>Ejemplo aplicado a esta prueba</b> («Defina el término subsidio»): <i>«El subsidio es un pago del gobierno a los productores por cada unidad producida, que reduce su costo de producción y les permite ofrecer el bien a un precio menor»</i>.</div></div>
+      <div class="step"><span class="n">2</span><div class="t"><b>Detecta los 2 elementos</b> que valen [1] + [1]: el <b>concepto</b> («aumento sostenido») y la <b>precisión IB</b> («del nivel general de precios», no «de un bien»).</div></div>
+      <div class="tip bad"><b>Errores frecuentes:</b> dar solamente un sinónimo, omitir palabras clave de la definición (p. ej. «sostenido» en inflación) o definir con un ejemplo en lugar de la definición.</div>
+    </div>
+
+    <!-- (b) Usando... calcule -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>(b) · Usando… calcule</h3>
+        <span class="gc-tag">3 + 2 puntos</span>
+      </div>
+      <p class="gc-sub"><b>Qué pide:</b> usar datos provistos explícitamente. Hay que <b>citar los datos de la tabla al inicio de la respuesta</b> y mostrar todos los pasos del cálculo, no solo el resultado.</p>
+      <div class="formula"><b>Plantilla en tres pasos:</b><br>1. «Usando los datos de la Tabla X: <i>[citar el dato]</i>» → 2. escribe la fórmula aplicable y sustituye los valores → 3. resuelve e indica el <b>resultado con su unidad</b>.</div>
+      <div class="step"><span class="n">1</span><div class="t"><b>Paso 1 — Cita y fórmula.</b> «Usando los datos de la Tabla 1: PED = %ΔCantidad demandada ÷ %ΔPrecio».</div></div>
+      <div class="step"><span class="n">2</span><div class="t"><b>Paso 2 — Sustitución.</b> «%ΔQd = (40 − 50) ÷ 50 × 100 = −20 % y %ΔP = (1,00 − 0,75) ÷ 0,75 × 100 = +33,3 %».</div></div>
+      <div class="step"><span class="n">3</span><div class="t"><b>Paso 3 — Resultado con unidad.</b> «PED = −20 ÷ 33,3 = −0,6 → la demanda es inelástica». (Dos decimales salvo que la pregunta indique otra cosa.)</div></div>
+      <div class="tip warn"><b>Nota IB importante:</b> si la pregunta dice «usando los datos de la Tabla», <b>perderás puntos cuando no referencies explícitamente esos datos</b> en tu desarrollo. Además, si no escribes la unidad junto al resultado, puedes perder el punto correspondiente al resultado final.</div>
+      <div class="tip bad"><b>Error fatal:</b> escribir solo el resultado sin mecanismo → máximo [1]. Los puntos están en la cita de datos, la fórmula y la sustitución.</div>
+    </div>
+
+    <!-- (c)-(f) Explique con diagrama -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>(c)–(f) · Explique (con diagrama)</h3>
+        <span class="gc-tag">4 puntos cada una · 2 + 2</span>
+      </div>
+      <p class="gc-sub"><b>Qué pide:</b> describir un concepto incluyendo causas, mecanismos o razones, con un <b>encadenamiento lógico claro</b>. Para alcanzar los [4] puntos hay que desarrollar dos puntos bien fundamentados: el diagrama y la explicación.</p>
+      <div class="formula"><b>Plantilla (Explica):</b> «[Afirmación principal]. Esto se debe a que [razón 1]. Como resultado, [consecuencia]. Además, [razón 2 o matiz adicional]».</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:.85rem;font-weight:800;color:var(--ib-blue)">✅ El diagrama (2 pts) debe tener:</p>
+          <ul style="margin-left:18px;font-size:.9rem">
+            <li><b>Ejes rotulados</b>: precio y cantidad (micro) o nivel de precios y producción real (macro).</li>
+            <li><b>Curvas correctas</b> y etiquetadas (D, O · DA, OA).</li>
+            <li><b>Flecha de desplazamiento</b> clara (→ derecha o ← izquierda).</li>
+            <li><b>Nuevo equilibrio rotulado</b>: P1→P2 y Q1→Q2.</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:.85rem;font-weight:800;color:var(--ib-blue)">✅ La explicación (2 pts) encadena:</p>
+          <ul style="margin-left:18px;font-size:.9rem">
+            <li><b>Razón 1:</b> «Esto se debe a que el subsidio reduce el costo de producción».</li>
+            <li><b>Consecuencia:</b> «Como resultado, la oferta aumenta y el precio baja de P1 a P2».</li>
+            <li><b>Matiz:</b> «Además, la cantidad transada sube de Q1 a Q2».</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip good"><b>Conectores clave</b> para mostrar el encadenamiento lógico: «Esto se debe a que», «en consecuencia», «sin embargo». Regla de oro del diagrama: si no muestra el desplazamiento, no hay punto de diagrama; si la explicación no dice <b>por qué</b> se desplaza, no hay punto de explicación.</div>
+      <div class="tip warn"><b>Referencia el texto:</b> «como se menciona en el párrafo 2, el gobierno otorga un subsidio de 0,25 USD por kg…» — conecta el diagrama con los datos de la prueba.</div>
+    </div>
+
+    <!-- (g) Discuta/Evalúe -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>(g) · Discuta / Evalúe</h3>
+        <span class="gc-tag">15 puntos · rúbrica por niveles</span>
+      </div>
+      <p class="gc-sub"><b>Discuta</b> pide presentar argumentos a favor y en contra: no basta con describir, hay que <b>evaluar</b>. <b>Evalúe</b> pide un juicio fundamentado: el foco está en el <b>juicio</b>, no únicamente en presentar argumentos. En ambos, la conclusión basada en evidencia es obligatoria.</p>
+
+      <div class="step"><span class="n">1</span><div class="t"><b>Párrafo 1 — Introducción:</b> introduce el debate con su contexto, <b>define los términos clave</b> y presenta una tesis o posición matizada.</div></div>
+      <div class="step"><span class="n">2</span><div class="t"><b>Párrafo 2 — Argumento a favor:</b> afirmación + razón económica que la sustenta + evidencia o ejemplo del texto + vínculo al indicador o política relevante.</div></div>
+      <div class="step"><span class="n">3</span><div class="t"><b>Párrafo 3 — Argumento en contra o limitación:</b> contraargumento + razón económica + evidencia + implicación.</div></div>
+      <div class="step"><span class="n">4</span><div class="t"><b>Párrafo 4 — Matiz o perspectiva adicional:</b> las condiciones que cambian el análisis (corto frente a largo plazo, supuestos del modelo).</div></div>
+      <div class="step"><span class="n">5</span><div class="t"><b>Párrafo 5 — Conclusión evaluada:</b> «En conclusión, [posición final]. Si bien [argumento fuerte], esto depende de [condición]. En consecuencia, [recomendación o juicio final]».</div></div>
+
+      <div class="formula"><b>Si el término es Evalúe</b>, enfoca los párrafos en el juicio: 1) contexto del juicio · 2) argumentos que apoyan la efectividad o validez · 3) argumentos que la cuestionan · 4) variables condicionales («Esto depende de [factor], porque…») · 5) juicio final («Se puede concluir que [X] es [efectivo, limitado o parcialmente válido] porque [razón principal]. No obstante, [condición que podría cambiarlo]»).</div>
+      <div class="tip good"><b>Para alcanzar los [15] puntos:</b> desarrollar al menos <b>tres argumentos sólidos</b> y cerrar con una <b>síntesis evaluada</b>. Vocabulario evaluativo útil: «en la medida en que», «con importantes reservas», «si bien», «el análisis sugiere que», «la evidencia apunta a que».</div>
+      <div class="tip bad"><b>Lo que te deja en los niveles bajos:</b> describir el tema sin evaluar; argumentar solo un lado; no citar datos del texto; concluir sin justificar o no concluir. Una conclusión que contradice el desarrollo NO suma.</div>
+    </div>
+
+    <!-- Tabla de referencia rápida -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Tabla de referencia rápida — términos IB por nivel y puntaje</h3>
+        <span class="gc-tag">material socializado</span>
+      </div>
+      <p class="gc-sub">En esta prueba (Paper 2) se usan: <b>Defina, Usando… calcule, Explique, Discuta y Evalúe</b>. Los demás términos aparecen en la Prueba 1 o en otras preguntas.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Término</th><th>Puntaje típico</th><th>Qué exige el IB</th></tr></thead>
+          <tbody>
+            <tr><td><b>Defina</b></td><td class="num">[2]</td><td>Definición precisa con terminología técnica IB.</td></tr>
+            <tr><td><b>Explique</b></td><td class="num">[2]–[4]</td><td>Causa, mecanismo y efecto encadenados.</td></tr>
+            <tr><td><b>Calcule</b></td><td class="num">[2]–[4]</td><td>Pasos visibles, unidades y resultado correcto.</td></tr>
+            <tr><td><b>Usando… calcule</b></td><td class="num">[2] c/u</td><td>Citar datos, mostrar el proceso y entregar resultado.</td></tr>
+            <tr><td><b>Distinga</b></td><td class="num">[2]–[4]</td><td>Contraste explícito con conectores de diferencia.</td></tr>
+            <tr><td><b>Analice</b></td><td class="num">[4]–[6]</td><td>Descomposición causal con al menos dos efectos.</td></tr>
+            <tr><td><b>Examine</b></td><td class="num">[6]</td><td>Análisis profundo con limitaciones o alternativas.</td></tr>
+            <tr><td><b>Discuta</b></td><td class="num">[15]</td><td>Argumentos a favor, en contra y conclusión evaluada.</td></tr>
+            <tr><td><b>Evalúe</b></td><td class="num">[8]–[15]</td><td>Juicio fundamentado con variables condicionales.</td></tr>
+            <tr><td><b>Compare y contraste</b></td><td class="num">[8]–[10]</td><td>Similitudes y diferencias organizadas por criterio.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Checklist final -->
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Checklist antes de culminar</h3>
+        <span class="gc-tag gold">autoverificación</span>
+      </div>
+      <ul class="check-list">
+        <li>¿Definí los 2 términos con la <b>terminología IB exacta</b> (concepto + precisión)?</li>
+        <li>¿Cité los datos de la tabla al inicio de cada cálculo y mostré la <b>totalidad del mecanismo</b> (fórmula → sustitución → resultado con unidad)?</li>
+        <li>¿Mis 4 diagramas tienen ejes rotulados, curvas etiquetadas, flecha de desplazamiento y nuevo equilibrio marcado (P1→P2, Q1→Q2)?</li>
+        <li>¿Cada explicación encadena «esto se debe a que… como resultado…»?</li>
+        <li>¿Cité datos del texto o de las tablas en la explicación y en la parte (g)?</li>
+        <li>¿La parte (g) tiene argumentos a favor Y en contra (o limitaciones), y una <b>conclusión evaluada</b> coherente?</li>
+        <li>¿Usé dos decimales en los resultados numéricos?</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ PANTALLA 3: EXAMEN ══════════ -->
+<section id="screen-exam" class="screen">
+  <div class="wrap">
+
+    <!-- ███ PREGUNTA 1 — MICRO (40 pts) ███ -->
+    <div id="q1Section" style="display:none">
+    <div class="exam-head">
+      <h2>Pregunta 1</h2>
+      <span class="pts">40 puntos</span>
+    </div>
+    <p class="leer-fragmentos"><strong>Lea los fragmentos y responda las preguntas a continuación.</strong></p>
+
+    <div class="stimulus">
+      <div class="st-label">Texto A — Descripción general de Meridia</div>
+      <p><span class="parno">[1]</span> Meridia es un país donde el arroz es el alimento básico y representa cerca del 65&nbsp;% de la dieta de los hogares. En 2025, una sequía prolongada redujo la cosecha y elevó el precio del arroz, que pasó de 0,75 a 1,25 USD por kilogramo en pocos meses. Como los alimentos representan una proporción elevada del gasto de los hogares, la <strong>inflación</strong> general se aceleró de 4,1&nbsp;% en 2024 a 7,2&nbsp;% en 2025 (Tabla 2). En ese mismo año el PIB real creció 2,1&nbsp;% y la tasa de desempleo fue de 6,8&nbsp;%.</p>
+      <p><span class="parno">[2]</span> El banco central de Meridia señala que la aceleración de la inflación obedeció, en parte, a los mayores costos de los alimentos y, en parte, al alto nivel de gasto público. La Tabla 1 muestra el mercado del arroz en 2024, antes de la sequía y del subsidio.</p>
+      <div class="st-label">Texto B — El subsidio al arroz en Meridia</div>
+      <p><span class="parno">[1]</span> Para enfrentar la situación, en enero de 2026 el gobierno anunció un <strong>subsidio</strong> de 0,25 USD por kilogramo de arroz producido, que se pagará directamente a los productores. El programa tendrá un costo fiscal de aproximadamente 12,5 millones de USD al mes. El ministerio de agricultura sostiene que el subsidio reducirá el precio del arroz y protegerá a los hogares de bajos ingresos. Tras la introducción del subsidio, la cantidad transada aumentó a 50 miles de toneladas al mes. Algunos economistas advierten que, como la elasticidad precio de la demanda de arroz es baja, buena parte del beneficio podría quedar en manos de los productores y no de los consumidores.</p>
+      <p><span class="parno">[2]</span> Como parte de la consolidación fiscal, el gobierno planea eliminar el subsidio al arroz el próximo año, lo que preocupa a los hogares de bajos ingresos.</p>
+      <div class="st-label">Texto C — Política fiscal y reducción del gasto público</div>
+      <p><span class="parno">[1]</span> Para frenar la inflación (7,2&nbsp;%), algunos economistas proponen reducir el gasto público, pero los sindicatos temen el efecto sobre el empleo. Otros señalan el costo de oportunidad del gasto del subsidio y proponen invertir en infraestructura para aumentar la producción de pleno empleo.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <caption>Tabla 1 — Mercado del arroz en Meridia, 2024 (mensual)</caption>
+          <thead><tr><th>Precio (USD por kg)</th><th class="num">Cantidad demandada (miles de toneladas)</th><th class="num">Cantidad ofrecida (miles de toneladas)</th></tr></thead>
+          <tbody>
+            <tr><td>0,50</td><td class="num">60</td><td class="num">20</td></tr>
+            <tr><td>0,75</td><td class="num">50</td><td class="num">30</td></tr>
+            <tr><td>1,00</td><td class="num">40</td><td class="num">40</td></tr>
+            <tr><td>1,25</td><td class="num">30</td><td class="num">50</td></tr>
+            <tr><td>1,50</td><td class="num">20</td><td class="num">60</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <caption>Tabla 2 — Indicadores macroeconómicos de Meridia</caption>
+          <thead><tr><th>Indicador</th><th class="num">2024</th><th class="num">2025</th></tr></thead>
+          <tbody>
+            <tr><td>Inflación (% de variación anual del IPC)</td><td class="num">4,1</td><td class="num">7,2</td></tr>
+            <tr><td>PIB real (% de variación anual)</td><td class="num">2,8</td><td class="num">2,1</td></tr>
+            <tr><td>Desempleo (% de la fuerza laboral)</td><td class="num">6,4</td><td class="num">6,8</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 1(a) -->
+    <div class="part" id="part_q1a">
+      <div class="part-head">
+        <span class="part-label">1 (a)</span>
+        <div class="part-q"><span class="cmd">Defina</span> los siguientes términos.</div>
+        <span class="part-marks">4 puntos (2 + 2)</span>
+      </div>
+      <div class="sub-parts">
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(i)</span>
+            <div class="part-q"><span class="cmd">Defina</span> el término <em>subsidio</em>, que está marcado en negrita en el texto (Texto B, párrafo 1).</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q1a_i" rows="2" placeholder="Escriba su definición aquí…"></textarea>
+        </div>
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(ii)</span>
+            <div class="part-q"><span class="cmd">Defina</span> el término <em>inflación</em>, que está marcado en negrita en el texto (Texto A, párrafo 1).</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q1a_ii" rows="2" placeholder="Escriba su definición aquí…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1(b) -->
+    <div class="part" id="part_q1b">
+      <div class="part-head">
+        <span class="part-label">1 (b)</span>
+        <div class="part-q"><span class="cmd">Calcule</span> las siguientes cantidades. <strong>Muestre la totalidad del mecanismo.</strong></div>
+        <span class="part-marks">5 puntos (3 + 2)</span>
+      </div>
+      <div class="sub-parts">
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(i)</span>
+            <div class="part-q">Utilizando los datos de la Tabla 1, <span class="cmd">calcule</span> la elasticidad precio de la demanda de arroz cuando el precio sube de 0,75 a 1,00 USD por kg.</div>
+            <span class="part-marks">3 puntos</span>
+          </div>
+          <textarea id="ans_q1b_i" rows="4" placeholder="Fórmula, sustitución y resultado…"></textarea>
+        </div>
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(ii)</span>
+            <div class="part-q">Utilizando los datos de la <strong>Tabla 2</strong>, <span class="cmd">calcule</span> en cuántos puntos porcentuales aumentó la inflación de Meridia entre 2024 y 2025.</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q1b_ii" rows="3" placeholder="Mecanismo y resultado…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1(c) -->
+    <div class="part" id="part_q1c">
+      <div class="part-head">
+        <span class="part-label">1 (c)</span>
+        <div class="part-q">Utilizando un diagrama de oferta y demanda, <span class="cmd">explique</span> el efecto del subsidio de 0,25 USD por kilogramo sobre el mercado del arroz de Meridia (Texto B, párrafo 1).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q1c" rows="4" placeholder="Explique el efecto del subsidio…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q1c" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 1(d) -->
+    <div class="part" id="part_q1d">
+      <div class="part-head">
+        <span class="part-label">1 (d)</span>
+        <div class="part-q">Utilizando un diagrama de demanda y oferta agregadas, <span class="cmd">explique</span> el posible efecto de la sequía de 2025 sobre el nivel de precios y el PIB real de Meridia (Texto A, párrafo 1).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q1d" rows="4" placeholder="Explique el efecto sobre el nivel de precios…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q1d" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 1(e) -->
+    <div class="part" id="part_q1e">
+      <div class="part-head">
+        <span class="part-label">1 (e)</span>
+        <div class="part-q">Utilizando un diagrama de oferta y demanda, <span class="cmd">explique</span> el efecto que tendría la eliminación del subsidio sobre el mercado del arroz de Meridia (Texto B, párrafo 2).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q1e" rows="4" placeholder="Explique el efecto de eliminar el subsidio…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q1e" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 1(f) -->
+    <div class="part" id="part_q1f">
+      <div class="part-head">
+        <span class="part-label">1 (f)</span>
+        <div class="part-q">Utilizando un diagrama de demanda y oferta agregadas, <span class="cmd">explique</span> cómo una reducción del gasto público podría afectar al nivel de precios y a la producción real de Meridia (Texto C, párrafo 1).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q1f" rows="4" placeholder="Explique el efecto de la reducción del gasto público…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q1f" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 1(g) -->
+    <div class="part" id="part_q1g">
+      <div class="part-head">
+        <span class="part-label">1 (g)</span>
+        <div class="part-q">Utilizando la información del texto y su conocimiento de la economía, <span class="cmd">discuta</span> los posibles efectos del subsidio al arroz sobre los consumidores, los productores y el gobierno de Meridia (Texto B).</div>
+        <span class="part-marks">15 puntos</span>
+      </div>
+      <textarea id="ans_q1g" rows="7" placeholder="Argumentos a favor y en contra, con datos del texto, y una conclusión…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q1g" class="board"></canvas></div>
+      </div>
+    </div>
+    </div><!-- /q1Section -->
+
+    <!-- ███ PREGUNTA 2 — MACRO (40 pts) ███ -->
+    <div id="q2Section" style="display:none">
+    <div class="exam-head">
+      <h2>Pregunta 2</h2>
+      <span class="pts">40 puntos</span>
+    </div>
+    <p class="leer-fragmentos"><strong>Lea los siguientes fragmentos y conteste las preguntas a continuación.</strong></p>
+
+    <div class="stimulus">
+      <div class="st-label">Texto D — Descripción general de Valmira</div>
+      <p><span class="parno">[1]</span> Valmira es una economía pequeña y abierta que importa la mayor parte de los combustibles que consume. Entre 2021 y 2023, la economía se recuperó con fuerza de la recesión provocada por la pandemia, impulsada por un mayor gasto público y por el consumo de los hogares. En 2024 y 2025 la <strong>inflación</strong> se aceleró: el índice de precios al consumidor (IPC) pasó de 116,8 en 2024 a 124,5 en 2025 (Tabla 2). El banco central señala que la demanda agregada ha crecido por encima de la capacidad productiva y que el encarecimiento de los combustibles importados elevó los costos de producción.</p>
+      <p><span class="parno">[2]</span> En 2025 la tasa de desempleo fue de 4,5&nbsp;% y el PIB real creció 3,8&nbsp;%. El déficit presupuestario actual equivale al 2,5&nbsp;% del PIB.</p>
+      <div class="st-label">Texto E — Política fiscal y el transporte público</div>
+      <p><span class="parno">[1]</span> Para frenar la inflación, el gobierno de Valmira estudia aplicar una política fiscal contractiva: reducir el gasto público y aumentar los impuestos. Los sindicatos y algunas empresas se oponen, argumentando que la política contractiva podría desacelerar la economía y elevar el desempleo.</p>
+      <p><span class="parno">[2]</span> Como alternativa, algunos proponen fijar un <strong>precio máximo</strong> de 1,00 USD por viaje en el transporte público para proteger a los hogares de bajos ingresos, aunque el gobierno teme que genere escasez de viajes. Otros proponen otorgar un subsidio a los operadores de transporte, con un costo fiscal adicional.</p>
+      <div class="st-label">Texto F — El mercado del transporte público</div>
+      <p><span class="parno">[1]</span> El precio de equilibrio del transporte público es de 1,25 USD por viaje (Tabla 3). Los choferes solicitan un aumento de la tarifa, pero el gobierno teme el efecto sobre los hogares de bajos ingresos. Si se aplicara el precio máximo de 1,00 USD por viaje, la cantidad demandada superaría a la cantidad ofrecida.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <caption>Tabla 2 — Índice de Precios al Consumidor (IPC) de Valmira (2021 = 100)</caption>
+          <thead><tr><th>Año</th><th class="num">IPC</th></tr></thead>
+          <tbody>
+            <tr><td>2021</td><td class="num">100,0</td></tr>
+            <tr><td>2022</td><td class="num">105,0</td></tr>
+            <tr><td>2023</td><td class="num">110,3</td></tr>
+            <tr><td>2024</td><td class="num">116,8</td></tr>
+            <tr><td>2025</td><td class="num">124,5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <caption>Tabla 3 — Mercado del transporte público en Valmira (viajes diarios, en miles)</caption>
+          <thead><tr><th>Precio (USD por viaje)</th><th class="num">Cantidad demandada (miles)</th><th class="num">Cantidad ofrecida (miles)</th></tr></thead>
+          <tbody>
+            <tr><td>0,50</td><td class="num">90</td><td class="num">30</td></tr>
+            <tr><td>0,75</td><td class="num">80</td><td class="num">40</td></tr>
+            <tr><td>1,00</td><td class="num">70</td><td class="num">50</td></tr>
+            <tr><td>1,25</td><td class="num">60</td><td class="num">60</td></tr>
+            <tr><td>1,50</td><td class="num">50</td><td class="num">70</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2(a) -->
+    <div class="part" id="part_q2a">
+      <div class="part-head">
+        <span class="part-label">2 (a)</span>
+        <div class="part-q"><span class="cmd">Defina</span> los siguientes términos.</div>
+        <span class="part-marks">4 puntos (2 + 2)</span>
+      </div>
+      <div class="sub-parts">
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(i)</span>
+            <div class="part-q"><span class="cmd">Defina</span> el término <em>inflación</em>, que está marcado en negrita en el texto (Texto D, párrafo 1).</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q2a_i" rows="2" placeholder="Escriba su definición aquí…"></textarea>
+        </div>
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(ii)</span>
+            <div class="part-q"><span class="cmd">Defina</span> el término <em>precio máximo</em>, que está marcado en negrita en el texto (Texto E, párrafo 2).</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q2a_ii" rows="2" placeholder="Escriba su definición aquí…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2(b) -->
+    <div class="part" id="part_q2b">
+      <div class="part-head">
+        <span class="part-label">2 (b)</span>
+        <div class="part-q"><span class="cmd">Calcule</span> las siguientes cantidades. <strong>Muestre la totalidad del mecanismo.</strong></div>
+        <span class="part-marks">5 puntos (3 + 2)</span>
+      </div>
+      <div class="sub-parts">
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(i)</span>
+            <div class="part-q">Utilizando los datos de la Tabla 2, <span class="cmd">calcule</span> la tasa de inflación en Valmira en 2025.</div>
+            <span class="part-marks">3 puntos</span>
+          </div>
+          <textarea id="ans_q2b_i" rows="3" placeholder="Fórmula, sustitución y resultado…"></textarea>
+        </div>
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(ii)</span>
+            <div class="part-q">Si el gobierno fija un precio máximo de 1,00 USD por viaje, utilice los datos de la <strong>Tabla 3</strong> para <span class="cmd">calcular</span> el exceso de demanda de viajes diarios.</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q2b_ii" rows="3" placeholder="Mecanismo y resultado…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2(c) -->
+    <div class="part" id="part_q2c">
+      <div class="part-head">
+        <span class="part-label">2 (c)</span>
+        <div class="part-q">Utilizando un diagrama de oferta y demanda agregadas, <span class="cmd">explique</span> el efecto que podría tener el aumento de los precios de los combustibles importados sobre el PIB real y el nivel de precios de Valmira (Texto D, párrafo 1).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q2c" rows="4" placeholder="Explique el efecto sobre el PIB real y el nivel de precios…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q2c" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 2(d) -->
+    <div class="part" id="part_q2d">
+      <div class="part-head">
+        <span class="part-label">2 (d)</span>
+        <div class="part-q">Utilizando un diagrama de oferta y demanda, <span class="cmd">explique</span> el efecto que tendría el precio máximo de 1,00 USD por viaje sobre el mercado del transporte público de Valmira (Texto E, párrafo 2).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q2d" rows="4" placeholder="Explique el efecto del precio máximo…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q2d" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 2(e) -->
+    <div class="part" id="part_q2e">
+      <div class="part-head">
+        <span class="part-label">2 (e)</span>
+        <div class="part-q">Utilizando un diagrama de demanda y oferta agregadas, <span class="cmd">explique</span> el efecto que tendría una reducción del gasto público sobre el nivel de precios y la producción real de Valmira (Texto E, párrafo 1).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q2e" rows="4" placeholder="Explique el efecto de la reducción del gasto público…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q2e" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 2(f) -->
+    <div class="part" id="part_q2f">
+      <div class="part-head">
+        <span class="part-label">2 (f)</span>
+        <div class="part-q">Utilizando un diagrama de oferta y demanda, <span class="cmd">explique</span> el efecto que tendría un subsidio a los operadores de transporte público sobre el precio y la cantidad de viajes en Valmira (Texto E, párrafo 2).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q2f" rows="4" placeholder="Explique el efecto del subsidio al transporte…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q2f" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 2(g) -->
+    <div class="part" id="part_q2g">
+      <div class="part-head">
+        <span class="part-label">2 (g)</span>
+        <div class="part-q">Utilizando la información del texto y su conocimiento de la economía, <span class="cmd">evalúe</span> la decisión del gobierno de Valmira de aplicar una política fiscal contractiva para reducir la inflación (Texto D y Texto E).</div>
+        <span class="part-marks">15 puntos</span>
+      </div>
+      <textarea id="ans_q2g" rows="7" placeholder="Argumentos a favor y en contra, con datos del texto, y una conclusión…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q2g" class="board"></canvas></div>
+      </div>
+    </div>
+    </div><!-- /q2Section -->
+
+    <!-- Barra de culminación -->
+    <div class="card no-print" style="text-align:center;border:2px solid var(--ib-gold)">
+      <p style="font-size:.95rem;margin-bottom:12px">¿Terminaste? Al culminar se desbloqueará la <strong>Revisión final</strong> con el markscheme de cada parte para que te autoevalúes.</p>
+      <button id="finishBtn" class="btn gold">🏁 Culminar examen y ver revisión</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PANTALLA 3: REVISIÓN FINAL ══════════ -->
+<section id="screen-review" class="screen">
+  <div class="wrap">
+
+    <div class="exam-head">
+      <h2>Revisión final</h2>
+      <span class="pts">Autoevaluación con markscheme IB</span>
+    </div>
+
+    <div id="reviewLocked" class="locked-note">
+      🔒 La revisión está bloqueada hasta que <strong>culmines el examen</strong>. Vuelve a las preguntas y presiona «Culminar examen y ver revisión».
+    </div>
+
+    <div id="reviewUnlocked" style="display:none">
+      <div class="total-box">
+        <div>
+          <div class="sub">Total autoevaluado</div>
+          <div class="big"><span id="totalScore">0</span>/40</div>
+        </div>
+        <div>
+          <div class="sub">Nota sobre 100</div>
+          <div class="grade" id="grade100">0 %</div>
+        </div>
+        <div class="btn-row no-print" style="margin:0">
+          <button id="btnShowAllMS" class="btn small gold">Mostrar todos los markschemes</button>
+          <button id="btnHideAllMS" class="btn small ghost">Ocultar todos</button>
+        </div>
+      </div>
+
+      <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:6px">Para cada parte: lee tu respuesta, abre el <strong>Revisión IB</strong> y asígnate los puntos que creas justos según el markscheme. El estado ✓/— indica si dejaste algo en blanco.</p>
+
+      <!-- REVISIÓN PREGUNTA 1 -->
+      <div class="rev-card" id="revQ1">
+        <div class="rev-question-title">
+          <h3>Pregunta 1</h3>
+          <span class="topic-tag">Meridia · Micro y macro</span>
+          <span style="margin-left:auto;font-size:.8rem;color:var(--ink-soft)" id="q1Subtotal">0/40</span>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(a)(i)</span>
+          <div class="ptext"><span class="cmd">Defina</span> <em>subsidio</em> <span id="st_q1a_i"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1a_i" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1a_i">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1a_i" style="width:100%">
+            <div class="ms-head">Markscheme — 1(a)(i) · Defina · 2 puntos</div>
+            <div class="ms-body">
+              <p><strong>Definición completa (2 pts):</strong> Un subsidio es un pago del gobierno a los productores (o a los consumidores) por cada unidad producida (o consumida), que reduce el costo de producción y permite ofrecer el bien a un precio menor.</p>
+              <ul>
+                <li>[1] Pago o ayuda económica del gobierno.</li>
+                <li>[1] A los productores por unidad producida (o a los consumidores), que reduce el costo de producción (o el precio que pagan los consumidores).</li>
+              </ul>
+              <p class="ms-note">Nota: otorga [1] por una definición parcial (p. ej. solo «pago del gobierno») y [2] por la definición completa.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(a)(ii)</span>
+          <div class="ptext"><span class="cmd">Defina</span> <em>inflación</em> <span id="st_q1a_ii"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1a_ii" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1a_ii">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1a_ii" style="width:100%">
+            <div class="ms-head">Markscheme — 1(a)(ii) · Defina · 2 puntos</div>
+            <div class="ms-body">
+              <p><strong>Definición completa (2 pts):</strong> La inflación es un aumento sostenido (continuo) en el nivel general de precios de una economía.</p>
+              <ul>
+                <li>[1] Aumento sostenido o continuo (no un aumento puntual).</li>
+                <li>[1] Del nivel general de precios (no solo de un bien).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(b)(i)</span>
+          <div class="ptext"><span class="cmd">Calcule</span> la elasticidad precio de la demanda (0,75 → 1,00 USD) <span id="st_q1b_i"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1b_i" min="0" max="3" step="1" value="0"> / 3</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1b_i">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1b_i" style="width:100%">
+            <div class="ms-head">Markscheme — 1(b)(i) · Calcule · 3 puntos</div>
+            <div class="ms-body">
+              <p>[1] Fórmula: PED = %ΔCantidad demandada ÷ %ΔPrecio</p>
+              <p>[1] Sustitución correcta: %ΔQd = (40 − 50) ÷ 50 × 100 = −20&nbsp;% y %ΔP = (1,00 − 0,75) ÷ 0,75 × 100 = +33,3&nbsp;%</p>
+              <p>[1] PED = −20 ÷ 33,3 = <strong>−0,6</strong> → la demanda de arroz es <strong>inelástica</strong> (|PED| &lt; 1)</p>
+              <p class="ms-note">Nota: acepta −0,6 (o −0,60). Si el estudiante usa el método del punto medio (−0,78 aprox.) con procedimiento consistente, otorga el puntaje. Sin mecanismo, el resultado obtiene como máximo [1].</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(b)(ii)</span>
+          <div class="ptext"><span class="cmd">Calcule</span> el aumento de la inflación entre 2024 y 2025 <span id="st_q1b_ii"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1b_ii" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1b_ii">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1b_ii" style="width:100%">
+            <div class="ms-head">Markscheme — 1(b)(ii) · Calcule · 2 puntos</div>
+            <div class="ms-body">
+              <p>[1] Sustitución con datos de la Tabla 2: inflación 2025 − inflación 2024 = 7,2 − 4,1</p>
+              <p>[1] Resultado: <strong>3,1 puntos porcentuales</strong> (acepta 3,1 pp)</p>
+              <p class="ms-note">Nota: no confundir con la tasa de inflación: aquí se pide la <b>variación en puntos porcentuales</b> entre dos años, no el porcentaje de variación de un año a otro.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(c)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama el efecto del subsidio <span id="st_q1c"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1c" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1c">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1c" style="width:100%">
+            <div class="ms-head">Markscheme — 1(c) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (precio y cantidad) y curvas de demanda y oferta correctas.</li>
+                <li>[1] Curva de oferta desplazada a la derecha/abajo (O + subsidio) y nuevo equilibrio con precio menor (P1→P2) y cantidad mayor (Q1→Q2).</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] El subsidio reduce el costo de producción de los productores.</li>
+                <li>[1] La oferta aumenta; el precio que pagan los consumidores baja de P1 a P2 y la cantidad transada sube de Q1 a Q2. (El productor recibe P2 + subsidio por unidad.)</li>
+              </ul>
+              <p class="ms-note">Nota: si el diagrama es correcto pero la explicación es incompleta (o viceversa), otorga los puntos correspondientes a cada parte por separado.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(d)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama de demanda y oferta agregadas cómo el arroz generó inflación <span id="st_q1d"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1d" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1d">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1d" style="width:100%">
+            <div class="ms-head">Markscheme — 1(d) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (nivel de precios y producción real) y curvas de demanda agregada y oferta agregada de corto plazo correctas.</li>
+                <li>[1] Desplazamiento de la oferta agregada de corto plazo hacia la izquierda y nuevo equilibrio con nivel de precios mayor y producción real menor.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] La sequía redujo la cosecha de arroz y su precio subió (de 0,75 a 1,25 USD por kg); como los alimentos pesan mucho en el gasto, los costos de producción y el costo de vida aumentan.</li>
+                <li>[1] La oferta agregada de corto plazo disminuye (se desplaza a la izquierda): sube el nivel de precios (inflación de costos, de 4,1 % a 7,2 %) y cae la producción real.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(e)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama la eliminación del subsidio <span id="st_q1e"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1e" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1e">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1e" style="width:100%">
+            <div class="ms-head">Markscheme — 1(e) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Curva de oferta inicial (O + subsidio) y curva de oferta sin subsidio (O).</li>
+                <li>[1] Desplazamiento de la oferta hacia la izquierda y nuevo equilibrio con precio mayor y cantidad menor.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Al eliminar el subsidio, el costo de producción vuelve a su nivel original y la oferta disminuye.</li>
+                <li>[1] El precio sube (de P2 a P1) y la cantidad transada cae (de Q2 a Q1); los consumidores pierden parte del excedente ganado con el subsidio.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(f)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama el efecto de la reducción del gasto público <span id="st_q1f"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1f" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1f">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1f" style="width:100%">
+            <div class="ms-head">Markscheme — 1(f) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (nivel de precios y producción real) y curvas de demanda agregada y oferta agregada de corto plazo correctas.</li>
+                <li>[1] Desplazamiento de la demanda agregada hacia la izquierda y nuevo equilibrio con nivel de precios menor y producción real menor.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] La reducción del gasto público (política fiscal contractiva) disminuye la demanda agregada.</li>
+                <li>[1] El nivel de precios y la producción real caen: ayudaría a frenar la inflación (7,2 %), pero puede elevar el desempleo (hoy 6,8 %) y desacelerar el crecimiento (hoy 2,1 %).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(g)</span>
+          <div class="ptext"><span class="cmd">Discuta</span> los efectos del subsidio sobre consumidores, productores y gobierno <span id="st_q1g"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q1g" min="0" max="15" step="1" value="0"> / 15</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q1g">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q1g" style="width:100%">
+            <div class="ms-head">Markscheme — 1(g) · Discuta · 15 puntos (rúbrica por niveles)</div>
+            <div class="ms-body">
+              <div class="ms-level"><span class="range">13–15</span><span class="lv">Nivel 4 — Discusión excelente</span><br>Consideración equilibrada de los efectos sobre consumidores, productores y gobierno, con apoyo de diagramas bien rotulados (subsidio, excedentes, pérdida de eficiencia) y datos del texto (costo fiscal de 12,5 millones de USD al mes, arroz = 65&nbsp;% de la dieta, demanda inelástica de la parte (b)(i), contexto macro: inflación 7,2&nbsp;%, crecimiento 2,1&nbsp;%). Incluye una conclusión razonada y coherente.</div>
+              <div class="ms-level"><span class="range">9–12</span><span class="lv">Nivel 3 — Buena discusión</span><br>Efectos sobre los tres grupos identificados con alguna evaluación, pero con menor equilibrio, uso parcial de los datos o diagramas incompletos. La conclusión puede ser débil.</div>
+              <div class="ms-level"><span class="range">5–8</span><span class="lv">Nivel 2 — Discusión limitada</span><br>Describe algunos efectos del subsidio (precio más bajo, mayores ingresos para productores) sin considerar todos los grupos o sin evaluar. Diagramas ausentes o incorrectos.</div>
+              <div class="ms-level"><span class="range">1–4</span><span class="lv">Nivel 1 — Respuesta muy limitada</span><br>Solo define o menciona el subsidio, o trata un único efecto sin desarrollo.</div>
+              <div class="ms-level"><span class="range">0</span><span class="lv">Sin contenido relevante.</span></div>
+              <p><strong>Puntos esperados (orientativos):</strong></p>
+              <ul>
+                <li><strong>Consumidores:</strong> precio menor → mayor excedente y seguridad alimentaria, especialmente para los hogares de bajos ingresos (el arroz representa 65&nbsp;% de la dieta); contribuye a contener la inflación de alimentos (7,2&nbsp;%).</li>
+                <li><strong>Productores:</strong> mayores ingresos y estabilidad; con demanda inelástica, captan una proporción mayor del subsidio que los consumidores.</li>
+                <li><strong>Gobierno:</strong> costo fiscal de 12,5 millones de USD al mes (costo de oportunidad, presión sobre el presupuesto); riesgo de sobreproducción, ineficiencia y dependencia del subsidio en el largo plazo; en un contexto de inflación alta (7,2&nbsp;%) y crecimiento débil (2,1&nbsp;%), el gasto del subsidio compite con otras prioridades.</li>
+              </ul>
+              <p class="ms-note">Nota: se otorga puntaje a cualquier enfoque equivalente bien argumentado. La conclusión debe ser coherente con los argumentos presentados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVISIÓN PREGUNTA 2 -->
+      <div class="rev-card" id="revQ2">
+        <div class="rev-question-title">
+          <h3>Pregunta 2</h3>
+          <span class="topic-tag">Valmira · Micro y macro</span>
+          <span style="margin-left:auto;font-size:.8rem;color:var(--ink-soft)" id="q2Subtotal">0/40</span>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(a)(i)</span>
+          <div class="ptext"><span class="cmd">Defina</span> <em>inflación</em> <span id="st_q2a_i"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2a_i" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2a_i">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2a_i" style="width:100%">
+            <div class="ms-head">Markscheme — 2(a)(i) · Defina · 2 puntos</div>
+            <div class="ms-body">
+              <p><strong>Definición completa (2 pts):</strong> La inflación es un aumento sostenido (continuo) en el nivel general de precios de una economía.</p>
+              <ul>
+                <li>[1] Aumento sostenido o continuo (no un aumento puntual).</li>
+                <li>[1] Del nivel general de precios (no solo de un bien).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(a)(ii)</span>
+          <div class="ptext"><span class="cmd">Defina</span> <em>precio máximo</em> <span id="st_q2a_ii"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2a_ii" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2a_ii">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2a_ii" style="width:100%">
+            <div class="ms-head">Markscheme — 2(a)(ii) · Defina · 2 puntos</div>
+            <div class="ms-body">
+              <p><strong>Definición completa (2 pts):</strong> Un precio máximo es un precio máximo legal fijado por el gobierno por encima del cual no se puede vender un bien o servicio; si se fija por debajo del precio de equilibrio, genera escasez (exceso de demanda).</p>
+              <ul>
+                <li>[1] Precio máximo legal fijado por el gobierno (por encima del cual no se puede vender).</li>
+                <li>[1] Por debajo del precio de equilibrio genera escasez / exceso de demanda (o la consecuencia de proteger al consumidor).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(b)(i)</span>
+          <div class="ptext"><span class="cmd">Calcule</span> la tasa de inflación de 2025 <span id="st_q2b_i"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2b_i" min="0" max="3" step="1" value="0"> / 3</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2b_i">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2b_i" style="width:100%">
+            <div class="ms-head">Markscheme — 2(b)(i) · Calcule · 3 puntos</div>
+            <div class="ms-body">
+              <p>[1] Fórmula: Tasa de inflación = (IPC año actual − IPC año anterior) ÷ IPC año anterior × 100</p>
+              <p>[1] Sustitución: (124,5 − 116,8) ÷ 116,8 × 100</p>
+              <p>[1] Resultado: <strong>6,59&nbsp;% ≈ 6,6&nbsp;%</strong> (acepta 6,5&nbsp;%–6,6&nbsp;%)</p>
+              <p class="ms-note">Nota: el resultado sin fórmula ni sustitución obtiene como máximo [1].</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(b)(ii)</span>
+          <div class="ptext"><span class="cmd">Calcule</span> el exceso de demanda con el precio máximo <span id="st_q2b_ii"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2b_ii" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2b_ii">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2b_ii" style="width:100%">
+            <div class="ms-head">Markscheme — 2(b)(ii) · Calcule · 2 puntos</div>
+            <div class="ms-body">
+              <p>[1] Al precio máximo de 1,00 USD: cantidad demandada = 70 miles y cantidad ofrecida = 50 miles (datos de la Tabla 3)</p>
+              <p>[1] Exceso de demanda = 70 − 50 = <strong>20 miles de viajes diarios</strong> (acepta 20 000 viajes)</p>
+              <p class="ms-note">Nota: ambos datos deben citarse o sustituirse para obtener los 2 puntos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(c)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama de demanda y oferta agregadas el efecto de los combustibles <span id="st_q2c"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2c" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2c">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2c" style="width:100%">
+            <div class="ms-head">Markscheme — 2(c) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (nivel de precios y producción real) y curvas de demanda agregada y oferta agregada de corto plazo correctas.</li>
+                <li>[1] Desplazamiento de la oferta agregada de corto plazo hacia la izquierda y nuevo equilibrio con nivel de precios mayor y producción real menor.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] El aumento del precio de los combustibles importados eleva los costos de producción de las empresas.</li>
+                <li>[1] La oferta agregada de corto plazo disminuye (se desplaza a la izquierda): sube el nivel de precios (inflación de costos) y cae el PIB real.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(d)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama el efecto del precio máximo <span id="st_q2d"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2d" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2d">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2d" style="width:100%">
+            <div class="ms-head">Markscheme — 2(d) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (precio y cantidad) y curvas de oferta y demanda correctas, con el equilibrio en 1,25 USD.</li>
+                <li>[1] Precio máximo (1,00 USD) trazado por debajo del equilibrio y exceso de demanda (escasez) señalado entre Qs y Qd.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Al precio máximo de 1,00 USD (por debajo del equilibrio), la cantidad demandada (70 miles) supera a la cantidad ofrecida (50 miles).</li>
+                <li>[1] Se genera escasez de 20 miles de viajes diarios: algunos consumidores no consiguen el servicio y puede aparecer un mercado negro; los productores pierden incentivos para ofrecer viajes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(e)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama el efecto de la reducción del gasto público <span id="st_q2e"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2e" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2e">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2e" style="width:100%">
+            <div class="ms-head">Markscheme — 2(e) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (nivel de precios y producción real), curvas de demanda agregada y oferta agregada de corto plazo correctas.</li>
+                <li>[1] Desplazamiento de la demanda agregada hacia la izquierda y nuevo equilibrio con nivel de precios menor y producción real menor.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] La reducción del gasto público (política fiscal contractiva) disminuye la demanda agregada.</li>
+                <li>[1] El nivel de precios y la producción real caen: reduce la presión inflacionaria (6,6 %), pero con riesgo de elevar el desempleo (hoy 4,5 %).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(f)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama el efecto del subsidio al transporte <span id="st_q2f"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2f" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2f">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2f" style="width:100%">
+            <div class="ms-head">Markscheme — 2(f) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Ejes etiquetados (precio y cantidad) y curvas de oferta y demanda correctas.</li>
+                <li>[1] Curva de oferta desplazada a la derecha/abajo (O + subsidio) y nuevo equilibrio con precio menor y cantidad mayor.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] El subsidio reduce el costo de producción de los operadores → la oferta aumenta.</li>
+                <li>[1] El precio del viaje baja y la cantidad de viajes sube: los consumidores se benefician sin generar escasez (a diferencia del precio máximo), aunque con costo fiscal para el gobierno.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(g)</span>
+          <div class="ptext"><span class="cmd">Evalúe</span> la política fiscal contractiva para reducir la inflación <span id="st_q2g"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q2g" min="0" max="15" step="1" value="0"> / 15</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q2g">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q2g" style="width:100%">
+            <div class="ms-head">Markscheme — 2(g) · Evalúe · 15 puntos (rúbrica por niveles)</div>
+            <div class="ms-body">
+              <div class="ms-level"><span class="range">13–15</span><span class="lv">Nivel 4 — Evaluación excelente</span><br>Juicio equilibrado con argumentos a favor y en contra. Usa datos del texto (inflación ≈ 6,6&nbsp;%, desempleo 4,5&nbsp;%, crecimiento 3,8&nbsp;%, déficit 2,5&nbsp;% del PIB, componente de costos de la inflación) y diagramas bien rotulados (desplazamientos de la demanda agregada). Incluye una conclusión razonada y coherente.</div>
+              <div class="ms-level"><span class="range">9–12</span><span class="lv">Nivel 3 — Buena evaluación</span><br>Evalúa con argumentos a favor y en contra, pero con menor equilibrio, uso parcial de los datos o diagramas incompletos. La conclusión puede ser débil.</div>
+              <div class="ms-level"><span class="range">5–8</span><span class="lv">Nivel 2 — Evaluación limitada</span><br>Describe la política fiscal contractiva (menos gasto, más impuestos) sin evaluar su efectividad, o evalúa solo un lado del argumento, sin datos ni diagramas.</div>
+              <div class="ms-level"><span class="range">1–4</span><span class="lv">Nivel 1 — Respuesta muy limitada</span><br>Solo define o menciona la política fiscal, o trata un único efecto sin desarrollo.</div>
+              <div class="ms-level"><span class="range">0</span><span class="lv">Sin contenido relevante.</span></div>
+              <p><strong>Puntos esperados (orientativos):</strong></p>
+              <ul>
+                <li><strong>A favor:</strong> reduce la demanda agregada (menor gasto público y/o mayores impuestos desplazan la demanda agregada a la izquierda) y alivia la presión inflacionaria de demanda; además reduce el déficit presupuestario (2,5&nbsp;% del PIB), mejorando la sostenibilidad fiscal.</li>
+                <li><strong>En contra:</strong> puede desacelerar el crecimiento (hoy 3,8&nbsp;%) y elevar el desempleo (hoy 4,5&nbsp;%); existen desfases temporales entre la decisión y sus efectos; si la inflación es en gran parte de costos (combustibles importados), la política contractiva es menos efectiva y puede agravar la caída de la producción; los aumentos de impuestos pueden ser regresivos.</li>
+                <li><strong>Alternativas:</strong> política monetaria contractiva (tasas de interés), políticas de oferta (eficiencia energética, diversificación de fuentes de energía); el precio máximo al transporte (Texto E, párrafo 2) no ataca la inflación general y genera escasez (20 miles de viajes), mientras que un subsidio al transporte sí reduce ese precio pero con costo fiscal.</li>
+              </ul>
+              <p class="ms-note">Nota: se otorga puntaje a cualquier enfoque equivalente bien argumentado. La conclusión debe ser coherente con los argumentos presentados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones finales -->
+      <div class="card no-print" style="text-align:center">
+        <h3>Entregar tu práctica</h3>
+        <p style="font-size:.9rem;color:var(--ink-soft);margin-bottom:12px">Envía tu práctica a tu docente o descarga tus respuestas en texto / imprime en PDF.</p>
+        <div class="btn-row" style="justify-content:center">
+          <button id="btnSubmit" class="btn" style="background:var(--ok)">📤 Enviar a mi docente</button>
+          <button id="btnExport" class="btn">⬇ Descargar respuestas (.txt)</button>
+          <button id="btnPrint" class="btn ghost">🖨 Imprimir / PDF</button>
+          <button id="btnBack" class="btn ghost">← Volver al examen</button>
+          <button id="btnReset" class="btn" style="background:var(--danger)">↺ Reiniciar práctica</button>
+        </div>
+        <div class="submit-status" id="submitStatus"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Examen de práctica elaborado con fines pedagógicos siguiendo la estructura oficial del Paper 2 del IB (partes (a)–(g), puntajes por punto y rúbricas por niveles).<br>
+  Los estímulos, los datos y los markschemes son materiales propios de práctica y no son documentos oficiales de la Organización del Bachillerato Internacional. · Economía NM — Paper 2 · Micro y macro
+</footer>
+
+<!-- Panel docente -->
+<button id="tpFab" class="tp-fab no-print" title="Panel docente">👨‍🏫</button>
+<div class="tp-overlay no-print" id="tpOverlay">
+  <div class="tp-box">
+    <button class="tp-close" id="tpClose">✕</button>
+    <h3>Panel docente — Paper 2 IB Economía NM</h3>
+    <div id="tpLogin" class="tp-login">
+      <input type="password" id="tpCode" placeholder="Código docente" autocomplete="off">
+      <button class="btn small" id="tpEnter">Entrar</button>
+      <span id="tpError" style="color:var(--danger);font-size:.8rem"></span>
+    </div>
+    <div id="tpContent" style="display:none">
+      <div class="btn-row" style="margin:8px 0">
+        <button class="btn small gold" id="tpCsv">⬇ Exportar CSV</button>
+        <button class="btn small" id="tpClear" style="background:var(--danger)">🗑 Borrar todas las entregas</button>
+        <span id="tpCount" style="font-size:.8rem;color:var(--ink-soft);align-self:center"></span>
+      </div>
+      <p style="font-size:.78rem;color:var(--ink-soft);margin-bottom:4px">Haz clic en una fila para ver las respuestas, los diagramas y los puntajes del estudiante.</p>
+      <div class="tp-table-wrap" id="tpResults"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay de confirmación -->
+<div class="overlay" id="confirmOverlay">
+  <div class="box">
+    <h3 id="confirmTitle">¿Confirmar?</h3>
+    <p id="confirmText">¿Estás seguro?</p>
+    <div class="btn-row" style="justify-content:flex-end">
+      <button id="confirmNo" class="btn ghost">Cancelar</button>
+      <button id="confirmYes" class="btn gold">Sí, continuar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ================= CONFIG ================= */
+  var EXAM_TIME = 6300;            // 1h45 en segundos
+  var STORAGE_KEY = 'paper2_nm_state_v2';
+  var SUBMISSIONS_KEY = 'paper2_nm_submissions';
+  var TOTAL_MARKS = 40;
+  var API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/paper2-ib-nm';
+  var EXAM_TITLE = 'Paper 2 IB Economía NM — Micro y macro';
+  var TEACHER_CODE = 'DOCENTE2026';
+
+  // Partes por pregunta (9 sub-partes, 40 pts): (a)(i)(ii) [2+2], (b)(i)(ii) [3+2], (c)(d)(e)(f) [4+4+4+4], (g) [15]
+  var PARTS_Q1 = [
+    {id:'q1a_i',  max:2,  label:'1(a)(i)'},
+    {id:'q1a_ii', max:2,  label:'1(a)(ii)'},
+    {id:'q1b_i',  max:3,  label:'1(b)(i)'},
+    {id:'q1b_ii', max:2,  label:'1(b)(ii)'},
+    {id:'q1c',    max:4,  label:'1(c)'},
+    {id:'q1d',    max:4,  label:'1(d)'},
+    {id:'q1e',    max:4,  label:'1(e)'},
+    {id:'q1f',    max:4,  label:'1(f)'},
+    {id:'q1g',    max:15, label:'1(g)'}
+  ];
+  var PARTS_Q2 = [
+    {id:'q2a_i',  max:2,  label:'2(a)(i)'},
+    {id:'q2a_ii', max:2,  label:'2(a)(ii)'},
+    {id:'q2b_i',  max:3,  label:'2(b)(i)'},
+    {id:'q2b_ii', max:2,  label:'2(b)(ii)'},
+    {id:'q2c',    max:4,  label:'2(c)'},
+    {id:'q2d',    max:4,  label:'2(d)'},
+    {id:'q2e',    max:4,  label:'2(e)'},
+    {id:'q2f',    max:4,  label:'2(f)'},
+    {id:'q2g',    max:15, label:'2(g)'}
+  ];
+  var CANVAS_IDS = ['cv_q1c','cv_q1d','cv_q1e','cv_q1f','cv_q1g','cv_q2c','cv_q2d','cv_q2e','cv_q2f','cv_q2g'];
+
+  function activeParts(){
+    return state.question === 'q2' ? PARTS_Q2 : PARTS_Q1;
+  }
+
+  /* ================= ESTADO ================= */
+  function defaultState(){
+    return {
+      name:'', course:'', question:'q1', started:false, finished:false,
+      answers:{}, scores:{}, canvases:{},
+      timer:{running:false, startedAt:null, remaining:EXAM_TIME}
+    };
+  }
+  var state = loadState();
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var s = JSON.parse(raw);
+      var d = defaultState();
+      for(var k in d){ if(typeof s[k] === 'undefined') s[k] = d[k]; }
+      if(!s.timer || typeof s.timer.remaining !== 'number') s.timer = d.timer;
+      if(!s.answers) s.answers = {};
+      if(!s.scores) s.scores = {};
+      if(!s.canvases) s.canvases = {};
+      if(s.question !== 'q1' && s.question !== 'q2') s.question = 'q1';
+      return s;
+    }catch(e){ return defaultState(); }
+  }
+
+  var saveTimer = null;
+  var resetInProgress = false;
+  function saveState(){
+    if(resetInProgress) return;
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch(e){ console.warn('[Paper2] No se pudo guardar:', e); }
+  }
+  function saveStateDebounced(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveState, 400);
+  }
+
+  /* ================= UTILIDADES ================= */
+  function $(id){ return document.getElementById(id); }
+
+  function safeListener(id, event, handler){
+    try{
+      var el = $(id);
+      if(el) el.addEventListener(event, handler);
+      else console.warn('[Paper2] Elemento no encontrado:', id);
+    }catch(e){ console.error('[Paper2] Error en listener:', id, e); }
+  }
+
+  function toast(msg){
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._h);
+    toast._h = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  function esc(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function fmtTime(sec){
+    sec = Math.max(0, Math.round(sec));
+    var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+    function p(n){ return (n<10?'0':'')+n; }
+    return p(h)+':'+p(m)+':'+p(s);
+  }
+
+  /* ================= TEMPORIZADOR ================= */
+  function timerTick(){
+    var t = state.timer;
+    if(!t.running) return;
+    if(t.startedAt){
+      var elapsed = Math.floor((Date.now() - t.startedAt)/1000);
+      t.remaining = Math.max(0, t.remaining - elapsed);
+      t.startedAt = Date.now();
+    }
+    renderTimer();
+    if(t.remaining <= 0){
+      t.running = false;
+      finishExam(true);
+      toast('⏰ Tiempo finalizado. Revisión desbloqueada.');
+    }
+  }
+  function renderTimer(){
+    var el = $('timer');
+    var r = state.timer.remaining;
+    el.textContent = fmtTime(r);
+    el.classList.toggle('warn', r <= 900 && r > 300);
+    el.classList.toggle('danger', r <= 300);
+    var btn = $('btnTimerPause');
+    if(btn){
+      btn.textContent = (!state.started || state.timer.running) ? 'pausar' : 'reanudar';
+    }
+  }
+  function startTimer(){
+    var t = state.timer;
+    t.running = true;
+    t.startedAt = Date.now();
+    saveState();
+  }
+  function togglePause(){
+    var t = state.timer;
+    if(!state.started) return;
+    if(state.finished){
+      toast('El examen ya culminó.');
+      return;
+    }
+    if(t.running){
+      timerTick();
+      t.running = false;
+      t.startedAt = null;
+      renderTimer();
+      toast('⏸ Temporizador pausado');
+    }else{
+      t.startedAt = Date.now();
+      t.running = true;
+      renderTimer();
+      toast('▶ Temporizador reanudado');
+    }
+    saveState();
+  }
+
+  /* ================= NAVEGACIÓN ================= */
+  function goToTab(tab){
+    var isReview = (tab === 'review');
+    if(isReview && !state.started){
+      toast('Primero inicia el examen desde «Inicio».');
+      return;
+    }
+    $('screen-start').classList.toggle('active', tab === 'start');
+    $('screen-guide').classList.toggle('active', tab === 'guide');
+    $('screen-review').classList.toggle('active', tab === 'review');
+    $('screen-exam').classList.toggle('active', tab === 'exam');
+    document.querySelectorAll('.tab').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-tab') === tab);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(isReview) renderReview();
+  }
+
+  function showQuestion(q){
+    var isQ1 = (q !== 'q2');
+    $('q1Section').style.display = isQ1 ? '' : 'none';
+    $('q2Section').style.display = isQ1 ? 'none' : '';
+    var chip = $('questionChip');
+    chip.style.display = '';
+    chip.textContent = isQ1 ? 'Pregunta elegida: 1' : 'Pregunta elegida: 2';
+  }
+
+  /* ================= PREGUNTAS: GUARDADO ================= */
+  function partAnswered(id){
+    var txt = (state.answers[id] || '').trim();
+    if(txt) return true;
+    var dataUrl = state.canvases['cv_' + id];
+    if(dataUrl && dataUrl.length > 200) return true;
+    return false;
+  }
+
+  function countAnswered(){
+    var n = 0;
+    activeParts().forEach(function(p){ if(partAnswered(p.id)) n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var n = countAnswered();
+    $('progressChip').textContent = 'Respondidas: ' + n + '/' + activeParts().length;
+    activeParts().forEach(function(p){
+      var ta = $('ans_' + p.id);
+      if(ta) ta.classList.toggle('answered', partAnswered(p.id));
+    });
+  }
+
+  function bindAnswers(){
+    [].concat(PARTS_Q1, PARTS_Q2).forEach(function(p){
+      var ta = $('ans_' + p.id);
+      if(!ta) return;
+      ta.value = state.answers[p.id] || '';
+      ta.addEventListener('input', function(){
+        state.answers[p.id] = ta.value;
+        updateProgress();
+        saveStateDebounced();
+      });
+    });
+  }
+
+  /* ================= PIZARRAS ================= */
+  var boards = {};
+  function initBoard(canvasId){
+    var canvas = $(canvasId);
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var shell = canvas.parentElement;
+
+    var board = {
+      canvas: canvas, ctx: ctx, drawing:false,
+      color:'#1c2b3a', width:6, eraser:false,
+      undoStack:[], hasStrokes:false, sized:false
+    };
+
+    function sizeCanvas(){
+      var w = shell.clientWidth || 600;
+      var h = 300;
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      board.sized = (shell.clientWidth > 0);
+      restoreImage();
+    }
+    function ensureSize(){
+      if(!board.sized) sizeCanvas();
+    }
+    function snapshot(){
+      try{ board.undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height)); }catch(e){}
+      if(board.undoStack.length > 20) board.undoStack.shift();
+    }
+    function restoreImage(){
+      var d = state.canvases[canvasId];
+      if(d){
+        var img = new Image();
+        img.onload = function(){
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          board.hasStrokes = true;
+        };
+        img.src = d;
+      }
+    }
+    function persist(){
+      try{
+        state.canvases[canvasId] = canvas.toDataURL('image/png');
+        board.hasStrokes = true;
+        saveStateDebounced();
+        updateProgress();
+      }catch(e){}
+    }
+
+    function pos(e){
+      var rect = canvas.getBoundingClientRect();
+      return { x: (e.clientX - rect.left), y: (e.clientY - rect.top) };
+    }
+    canvas.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      ensureSize();
+      canvas.setPointerCapture(e.pointerId);
+      board.drawing = true;
+      snapshot();
+      var p = pos(e);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+    });
+    canvas.addEventListener('pointermove', function(e){
+      if(!board.drawing) return;
+      var p = pos(e);
+      ctx.strokeStyle = board.eraser ? '#ffffff' : board.color;
+      ctx.lineWidth = board.eraser ? board.width * 3 : board.width;
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    });
+    function stop(e){
+      if(!board.drawing) return;
+      board.drawing = false;
+      persist();
+    }
+    canvas.addEventListener('pointerup', stop);
+    canvas.addEventListener('pointercancel', stop);
+
+    var tools = shell.previousElementSibling;
+    if(tools){
+      tools.querySelectorAll('.swatch').forEach(function(sw){
+        sw.addEventListener('click', function(){
+          tools.querySelectorAll('.swatch').forEach(function(s){ s.classList.remove('active'); });
+          sw.classList.add('active');
+          board.color = sw.getAttribute('data-color');
+          board.eraser = false;
+        });
+      });
+      tools.querySelectorAll('[data-width]').forEach(function(b){
+        b.addEventListener('click', function(){
+          tools.querySelectorAll('[data-width]').forEach(function(x){ x.classList.remove('active'); });
+          b.classList.add('active');
+          board.width = parseInt(b.getAttribute('data-width'), 10);
+          board.eraser = false;
+        });
+      });
+      var er = tools.querySelector('[data-eraser]');
+      if(er) er.addEventListener('click', function(){ board.eraser = true; });
+      var un = tools.querySelector('[data-undo]');
+      if(un) un.addEventListener('click', function(){
+        var snap = board.undoStack.pop();
+        if(snap){
+          ctx.putImageData(snap, 0, 0);
+          persist();
+        }else{
+          toast('No hay trazos para deshacer.');
+        }
+      });
+      var cl = tools.querySelector('[data-clear]');
+      if(cl) cl.addEventListener('click', function(){
+        snapshot();
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        board.hasStrokes = false;
+        delete state.canvases[canvasId];
+        saveStateDebounced();
+        updateProgress();
+        toast('Pizarra borrada.');
+      });
+      var dl = tools.querySelector('[data-download]');
+      if(dl) dl.addEventListener('click', function(){
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'diagrama_' + canvasId + '.png';
+        a.click();
+      });
+    }
+
+    boards[canvasId] = board;
+    sizeCanvas();
+  }
+
+  /* ================= REVISIÓN ================= */
+  // Muestra la respuesta del alumno (texto + diagrama) junto al markscheme para cotejar
+  function renderAnsBox(revPart, id){
+    var box = revPart.querySelector('.ans-box');
+    if(!box){
+      box = document.createElement('div');
+      box.className = 'ans-box';
+      var ptext = revPart.querySelector('.ptext');
+      if(ptext) ptext.parentNode.insertBefore(box, ptext.nextSibling);
+      else revPart.insertBefore(box, revPart.firstChild);
+    }
+    var txt = (state.answers[id] || '').trim();
+    var html = '<div class="ans-head">📝 Tu respuesta</div>';
+    if(txt) html += '<div class="ans-body">' + esc(txt).replace(/\n/g,'<br>') + '</div>';
+    else html += '<div class="ans-body empty">(Sin respuesta)</div>';
+    if($('cv_' + id)){
+      var cv = state.canvases['cv_' + id];
+      if(cv && cv.length > 200) html += '<div class="ans-diag"><img src="' + cv + '" alt="Tu diagrama"></div>';
+      else html += '<div class="ans-body empty">(Sin diagrama)</div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function renderReview(){
+    var locked = !state.finished;
+    $('reviewLocked').style.display = locked ? '' : 'none';
+    $('reviewUnlocked').style.display = locked ? 'none' : '';
+
+    // Solo la pregunta elegida aparece en la revisión
+    var isQ1 = (state.question !== 'q2');
+    $('revQ1').style.display = isQ1 ? '' : 'none';
+    $('revQ2').style.display = isQ1 ? 'none' : '';
+
+    activeParts().forEach(function(p){
+      var st = $('st_' + p.id);
+      if(st) st.innerHTML = partAnswered(p.id)
+        ? '<span class="status-badge done">✓ respondida</span>'
+        : '<span class="status-badge empty">— sin respuesta</span>';
+
+      var sc = $('sc_' + p.id);
+      if(sc){
+        var v = state.scores[p.id];
+        sc.value = (typeof v === 'number') ? v : 0;
+        renderAnsBox(sc.closest('.rev-part'), p.id);
+      }
+    });
+    updateTotals();
+  }
+
+  function updateTotals(){
+    var total = 0;
+    activeParts().forEach(function(p){
+      var sc = $('sc_' + p.id);
+      var v = 0;
+      if(sc){
+        v = parseInt(sc.value, 10);
+        if(isNaN(v)) v = 0;
+        v = Math.max(0, Math.min(p.max, v));
+        sc.value = v;
+      }
+      state.scores[p.id] = v;
+      total += v;
+    });
+    $('totalScore').textContent = total;
+    $('grade100').textContent = Math.round(total / TOTAL_MARKS * 100) + ' %';
+    var isQ1 = (state.question !== 'q2');
+    if(isQ1) $('q1Subtotal').textContent = total + '/40';
+    else $('q2Subtotal').textContent = total + '/40';
+    saveStateDebounced();
+  }
+
+  /* ================= CULMINAR / REINICIAR ================= */
+  var pendingAction = null;
+  function askConfirm(title, text, fn){
+    pendingAction = fn;
+    $('confirmTitle').textContent = title;
+    $('confirmText').textContent = text;
+    $('confirmOverlay').classList.add('open');
+  }
+  function closeConfirm(){ $('confirmOverlay').classList.remove('open'); pendingAction = null; }
+
+  function finishExam(auto){
+    state.finished = true;
+    state.timer.running = false;
+    state.timer.startedAt = null;
+    saveState();
+    goToTab('review');
+    if(!auto) toast('✅ Examen culminado. Revisión desbloqueada.');
+  }
+
+  function resetExam(){
+    resetInProgress = true;
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+
+  /* ================= EXPORTAR ================= */
+  function exportTxt(){
+    var L = [];
+    L.push('==============================================');
+    L.push(' PAPER 2 — ECONOMÍA NM — PRÁCTICA DIGITAL');
+    L.push('==============================================');
+    L.push('Nombre: ' + (state.name || '(sin nombre)'));
+    L.push('Curso: ' + (state.course || '—'));
+    L.push('Fecha: ' + new Date().toLocaleDateString('es-EC'));
+    L.push('Pregunta elegida: ' + (state.question === 'q2' ? 'Pregunta 2' : 'Pregunta 1'));
+    L.push('Estado: ' + (state.finished ? 'Culminado' : 'En curso'));
+    var used = EXAM_TIME - state.timer.remaining;
+    L.push('Tiempo usado: ' + fmtTime(used) + ' de ' + fmtTime(EXAM_TIME));
+    L.push('');
+
+    function block(part){
+      L.push('──────────────────────────────────────────────');
+      L.push('[' + part.label + ']  (' + part.max + ' pts)');
+      L.push('──────────────────────────────────────────────');
+      var ans = (state.answers[part.id] || '').trim();
+      L.push(ans ? ans : '(sin respuesta)');
+      var sc = typeof state.scores[part.id] === 'number' ? state.scores[part.id] : 0;
+      L.push('Autoevaluación: ' + sc + '/' + part.max);
+      L.push('');
+    }
+
+    L.push(state.question === 'q2' ? 'PREGUNTA 2' : 'PREGUNTA 1');
+    activeParts().forEach(block);
+
+    var total = 0;
+    activeParts().forEach(function(p){ total += (typeof state.scores[p.id] === 'number' ? state.scores[p.id] : 0); });
+    L.push('==============================================');
+    L.push('TOTAL AUTOCALIFICADO: ' + total + '/40 (' + Math.round(total/40*100) + ' %)');
+    L.push('==============================================');
+
+    var blob = new Blob([L.join('\n')], {type:'text/plain;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'paper2_respuestas_' + (state.name || 'alumno').replace(/\s+/g,'_') + '.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('⬇ Respuestas descargadas.');
+  }
+
+  function printPaper(){
+    document.title = 'Paper 2 — ' + (state.name || 'Economía NM');
+    window.print();
+  }
+
+  /* ================= ENVÍO AL DOCENTE (backend + localStorage) ================= */
+  function buildSubmission(){
+    var parts = activeParts();
+    var answers = {}, scores = {}, diagrams = {}, total = 0;
+    parts.forEach(function(p){
+      answers[p.id] = state.answers[p.id] || '';
+      if(typeof state.scores[p.id] === 'number') scores[p.id] = state.scores[p.id];
+      total += (typeof state.scores[p.id] === 'number' ? state.scores[p.id] : 0);
+      var cv = state.canvases['cv_' + p.id];
+      if(cv) diagrams[p.id] = cv;
+    });
+    return {
+      studentName: state.name,
+      course: state.course || '3BGU Economía',
+      question: state.question === 'q2' ? 'Pregunta 2' : 'Pregunta 1',
+      examTitle: EXAM_TITLE,
+      answers: answers,
+      scores: scores,
+      diagrams: diagrams,
+      total: total,
+      percent: Math.round(total / TOTAL_MARKS * 100),
+      submittedAt: new Date().toISOString()
+    };
+  }
+
+  function submitToTeacher(){
+    if(!state.started){
+      toast('Primero inicia el examen.');
+      return;
+    }
+    var sub = buildSubmission();
+    // 1) localStorage siempre (respaldo)
+    var subs = [];
+    try{ subs = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]'); }catch(e){}
+    subs.push(sub);
+    try{ localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(subs)); }catch(e){}
+    // 2) backend (Railway, CORS habilitado)
+    fetch(API_BASE + '/grades', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(sub)
+    }).then(function(r){ return r.json(); }).then(function(d){
+      if(d && d.ok){
+        toast('✅ Enviado a tu docente (' + sub.total + '/40)');
+      }else{
+        toast('⚠ Guardado local; el servidor no confirmó.');
+      }
+    }).catch(function(){
+      toast('⚠ Guardado local; el servidor no respondió.');
+    });
+    var st = $('submitStatus');
+    st.textContent = '✓ Enviado el ' + new Date().toLocaleString('es-EC') +
+      ' — ' + sub.total + '/40 (' + sub.percent + ' %). Puedes reenviar si cambias tus puntajes.';
+  }
+
+  /* ================= PANEL DOCENTE ================= */
+  var tpAll = [];
+  function toggleTP(){ $('tpOverlay').classList.toggle('open'); }
+
+  function loadTP(){
+    var local = [];
+    try{ local = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]'); }catch(e){}
+    fetch(API_BASE + '/grades')
+      .then(function(r){ return r.json(); })
+      .then(function(b){
+        var keyFn = function(r){ return (r.studentName||'') + '|' + (r.submittedAt || r.savedAt || ''); };
+        var bKeys = {};
+        b.forEach(function(r){ bKeys[keyFn(r)] = true; });
+        var localOnly = local.filter(function(r){ return !bKeys[keyFn(r)]; });
+        tpAll = b.concat(localOnly);
+        tpAll.sort(function(a, b){
+          var ta = (a.savedAt || a.submittedAt || ''), tb = (b.savedAt || b.submittedAt || '');
+          return tb.localeCompare(ta);
+        });
+        renderTP();
+      })
+      .catch(function(){
+        // backend inaccesible (p. ej. sin red): muestra solo lo local
+        tpAll = local.slice().sort(function(a, b){
+          return (b.submittedAt || '').localeCompare(a.submittedAt || '');
+        });
+        renderTP();
+      });
+  }
+
+  function renderTP(){
+    var wrap = $('tpResults');
+    $('tpCount').textContent = tpAll.length + ' entrega(s)';
+    if(!tpAll.length){
+      wrap.innerHTML = '<div class="tp-empty">Sin entregas aún.</div>';
+      return;
+    }
+    var partIds = [];
+    tpAll.forEach(function(r){
+      Object.keys(r.scores || {}).forEach(function(k){ if(partIds.indexOf(k) < 0) partIds.push(k); });
+    });
+    var html = '<table class="tp-table"><thead><tr><th>Estudiante</th><th>Pregunta</th><th>Total</th><th>%</th><th>Envío</th><th></th></tr></thead><tbody>';
+    tpAll.forEach(function(r, idx){
+      html += '<tr class="student-row" data-i="' + idx + '"><td><b>' + esc(r.studentName || '?') + '</b></td>' +
+        '<td>' + esc(r.question || '') + '</td>' +
+        '<td><b>' + (typeof r.total === 'number' ? r.total : 0) + '/40</b></td>' +
+        '<td>' + (typeof r.percent === 'number' ? r.percent : 0) + '%</td>' +
+        '<td>' + esc((r.savedAt || r.submittedAt || '').slice(0, 16).replace('T', ' ')) + '</td>' +
+        '<td><button class="tp-pdf" data-i="' + idx + '" title="Descargar PDF del estudiante">⬇ PDF</button></td></tr>';
+      html += '<tr class="tp-detail" data-d="' + idx + '"><td colspan="6">';
+      html += '<b>Puntajes:</b> ';
+      partIds.forEach(function(pid){
+        var v = (r.scores && r.scores[pid] != null) ? r.scores[pid] : '-';
+        html += '<span style="white-space:nowrap">' + esc(pid) + ': ' + v + '</span> ';
+      });
+      html += '<br><br>';
+      partIds.forEach(function(pid){
+        var ans = r.answers && r.answers[pid];
+        if(ans && String(ans).trim()) html += '<div><b>' + esc(pid) + ':</b><div class="tp-ans">' + esc(ans) + '</div></div>';
+      });
+      var diags = r.diagrams || {};
+      Object.keys(diags).forEach(function(pid){
+        if(diags[pid]) html += '<div><b>Diagrama ' + esc(pid) + ':</b><br><img src="' + diags[pid] + '" alt="Diagrama ' + esc(pid) + '"></div>';
+      });
+      html += '</td></tr>';
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('.student-row').forEach(function(row){
+      row.addEventListener('click', function(){
+        var i = row.getAttribute('data-i');
+        var d = wrap.querySelector('tr.tp-detail[data-d="' + i + '"]');
+        if(d) d.classList.toggle('open');
+      });
+    });
+    wrap.querySelectorAll('.tp-pdf').forEach(function(btn){
+      btn.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        exportPDF(parseInt(btn.getAttribute('data-i'), 10));
+      });
+    });
+  }
+
+  function tpExportCSV(){
+    if(!tpAll.length){ toast('No hay entregas para exportar.'); return; }
+    var partIds = [];
+    tpAll.forEach(function(r){
+      Object.keys(r.scores || {}).forEach(function(k){ if(partIds.indexOf(k) < 0) partIds.push(k); });
+    });
+    var cols = ['studentName', 'course', 'question', 'total', 'percent', 'submittedAt'].concat(partIds);
+    function csvCell(v){
+      v = String(v == null ? '' : v);
+      return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+    }
+    var lines = [cols.join(',')];
+    tpAll.forEach(function(r){
+      var row = cols.map(function(c){
+        if(c === 'submittedAt') return csvCell(r.savedAt || r.submittedAt || '');
+        if(c === 'studentName' || c === 'course' || c === 'question') return csvCell(r[c]);
+        if(c === 'total' || c === 'percent') return csvCell(typeof r[c] === 'number' ? r[c] : '');
+        return csvCell(r.scores && r.scores[c] != null ? r.scores[c] : '');
+      });
+      lines.push(row.join(','));
+    });
+    var blob = new Blob(['\ufeff' + lines.join('\n')], {type:'text/csv;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'paper2_ib_nm_entregas.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('⬇ CSV exportado.');
+  }
+
+  /* ================= PDF DEL ESTUDIANTE (panel docente) ================= */
+  var PDF_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js';
+  var PART_MAX = {q1a_i:2,q1a_ii:2,q1b_i:3,q1b_ii:2,q1c:4,q1d:4,q1e:4,q1f:4,q1g:15,
+                  q2a_i:2,q2a_ii:2,q2b_i:3,q2b_ii:2,q2c:4,q2d:4,q2e:4,q2f:4,q2g:15};
+
+  function loadScript(src){
+    return new Promise(function(res, rej){
+      if(document.querySelector('script[src="' + src + '"]')){
+        res();
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = function(){ res(); };
+      s.onerror = function(){ rej(new Error('script_failed')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function pngSize(url){
+    // Lee ancho/alto del IHDR del PNG (bytes 16-23) directamente del dataURL — síncrono
+    try{
+      var b64 = String(url || '').split(',')[1] || '';
+      var raw = atob(b64.slice(0, 80));
+      function be32(o){ return (raw.charCodeAt(o) << 24) | (raw.charCodeAt(o + 1) << 16) | (raw.charCodeAt(o + 2) << 8) | raw.charCodeAt(o + 3); }
+      var w = be32(16), h = be32(20);
+      if(w > 0 && h > 0) return {w: w, h: h};
+    }catch(e){}
+    return {w: 300, h: 200};
+  }
+
+  function exportPDF(idx){
+    var r = tpAll[idx];
+    if(!r){ toast('Entrega no encontrada.'); return; }
+    loadScript(PDF_CDN).then(function(){
+      return buildPDF(r);
+    }).catch(function(){
+      toast('⚠ No se pudo cargar el generador de PDF (revisa tu conexión).');
+    });
+  }
+
+  function buildPDF(r){
+    var doc = new jsPDF();
+    var M = 15, W = 180, y = 0;
+    var MAXY = 282;
+    function bold(){ doc.setFont('helvetica', 'bold'); }
+    function normal(){ doc.setFont('helvetica', 'normal'); }
+    function ensure(h){
+      if(y + h > MAXY){ doc.addPage(); y = 15; }
+    }
+    function title(t){
+      ensure(14);
+      bold(); doc.setFontSize(13); doc.text(t, M, y); y += 8; normal();
+    }
+    function para(txt, size, dy){
+      doc.setFontSize(size || 10);
+      var lines = doc.splitTextToSize(String(txt || ''), W);
+      lines.forEach(function(ln){
+        ensure(7);
+        doc.text(ln, M, y); y += 5.5;
+      });
+      y += (dy != null ? dy : 2);
+    }
+
+    // Cabecera
+    bold(); doc.setFontSize(16);
+    doc.text('Paper 2 IB Economía NM — Práctica digital', M, 20);
+    doc.setFontSize(10);
+    doc.text('Documento del estudiante · respuestas y autoevaluación', M, 26);
+    doc.setFontSize(11);
+    y = 38;
+    para('Estudiante: ' + (r.studentName || ''), 11, 0);
+    para('Curso: ' + (r.course || ''), 11, 0);
+    para('Pregunta: ' + (r.question || ''), 11, 0);
+    para('Envío: ' + String(r.savedAt || r.submittedAt || '').slice(0, 16).replace('T', ' '), 11, 0);
+    para('Puntaje total: ' + (typeof r.total === 'number' ? r.total : 0) + ' / 40  (' + (typeof r.percent === 'number' ? r.percent : 0) + ' %)', 11, 4);
+
+    // Puntajes por parte
+    var partIds = Object.keys(r.scores || {}).sort(function(a, b){
+      var ka = Object.keys(PART_MAX), i1 = ka.indexOf(a), i2 = ka.indexOf(b);
+      return (i1 < 0 ? 99 : i1) - (i2 < 0 ? 99 : i2);
+    });
+    title('Puntaje por parte');
+    var line1 = [];
+    partIds.forEach(function(pid){
+      var sc = (r.scores && r.scores[pid] != null) ? r.scores[pid] : '-';
+      var mx = PART_MAX[pid] != null ? PART_MAX[pid] : '';
+      line1.push(pid + ': ' + sc + '/' + mx);
+    });
+    while(line1.length){
+      ensure(8);
+      doc.text(line1.splice(0, 4).join('   '), M, y); y += 7;
+    }
+    y += 4;
+
+    // Respuestas y diagramas
+    title('Respuestas del estudiante');
+    partIds.forEach(function(pid){
+      var ans = r.answers && r.answers[pid];
+      var diag = r.diagrams && r.diagrams[pid];
+      var sc = (r.scores && r.scores[pid] != null) ? r.scores[pid] : '-';
+      var mx = PART_MAX[pid] != null ? PART_MAX[pid] : '';
+      ensure(12);
+      bold(); doc.setFontSize(10.5);
+      doc.text(pid + '  —  ' + sc + '/' + mx + ' puntos', M, y); y += 6; normal();
+      if(ans && String(ans).trim()){
+        para(ans, 10, 2);
+      }else{
+        para('(Sin respuesta)', 10, 2);
+      }
+      if(diag){
+        var dim = pngSize(diag);
+        var iw = W, ih = Math.round(dim.h * (W / dim.w));
+        if(ih > 70){ ih = 70; iw = Math.round(dim.w * (70 / dim.h)); }
+        ensure(ih + 6);
+        doc.addImage(diag, 'PNG', M, y, iw, ih);
+        y += ih + 6;
+      }
+    });
+
+    // Retroalimentación del docente
+    ensure(30);
+    y += 8;
+    title('Retroalimentación del docente');
+    var fbLines = ['', '', '', '', ''];
+    doc.setFontSize(10);
+    fbLines.forEach(function(){
+      ensure(10);
+      doc.setLineWidth(0.3);
+      doc.line(M, y, M + W, y);
+      y += 10;
+    });
+
+    doc.save('Paper2_' + String(r.studentName || 'estudiante').replace(/[^A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]/g, '').replace(/\s+/g, '_') + '.pdf');
+    toast('⬇ PDF generado.');
+  }
+
+  /* ================= INICIALIZACIÓN ================= */
+  function init(){
+    $('studentName').value = state.name || '';
+
+    // Selección visual de pregunta en la portada
+    var sel = state.question === 'q2' ? 'pickQ2' : 'pickQ1';
+    $('pickQ1').classList.toggle('sel', sel === 'pickQ1');
+    $('pickQ2').classList.toggle('sel', sel === 'pickQ2');
+
+    if(state.started){
+      $('screen-start').classList.remove('active');
+      $('screen-exam').classList.add('active');
+      document.querySelectorAll('.tab').forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-tab') === 'exam');
+      });
+      showQuestion(state.question);
+    }
+
+    renderTimer();
+    updateProgress();
+    bindAnswers();
+    CANVAS_IDS.forEach(initBoard);
+    renderReview();
+
+    setInterval(timerTick, 1000);
+
+    window.addEventListener('beforeunload', saveState);
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden) saveState();
+    });
+  }
+
+  /* ================= LISTENERS ================= */
+  document.addEventListener('DOMContentLoaded', function(){
+    init();
+
+    function pickQuestion(q){
+      state.question = q;
+      $('pickQ1').classList.toggle('sel', q !== 'q2');
+      $('pickQ2').classList.toggle('sel', q === 'q2');
+      saveStateDebounced();
+    }
+    safeListener('pickQ1', 'click', function(){ pickQuestion('q1'); });
+    safeListener('pickQ2', 'click', function(){ pickQuestion('q2'); });
+
+    safeListener('startBtn', 'click', function(){
+      var nameSel = $('studentName');
+      var name = nameSel.value;
+      if(!name){
+        toast('Selecciona tu nombre para comenzar.');
+        nameSel.focus();
+        return;
+      }
+      state.name = name;
+      state.course = '3BGU Economía';
+      state.started = true;
+      saveState();
+      startTimer();
+      showQuestion(state.question);
+      goToTab('exam');
+      toast('¡Buena suerte! 🍀');
+    });
+
+    safeListener('btnTimerPause', 'click', togglePause);
+
+    document.querySelectorAll('.tab').forEach(function(b){
+      b.addEventListener('click', function(){
+        var tab = b.getAttribute('data-tab');
+        if(tab === 'start' && state.started){
+          askConfirm('Volver al inicio', 'Ya iniciaste el examen. ¿Volver a la portada? (tu avance se conserva)', function(){
+            goToTab('start');
+          });
+          return;
+        }
+        goToTab(tab);
+      });
+    });
+
+    safeListener('finishBtn', 'click', function(){
+      askConfirm(
+        'Culminar examen',
+        'Se desbloqueará la revisión con los markschemes y podrás autoevaluarte. ¿Estás seguro de que terminaste?',
+        function(){ finishExam(false); }
+      );
+    });
+
+    safeListener('confirmYes', 'click', function(){
+      var fn = pendingAction;
+      closeConfirm();
+      if(fn) fn();
+    });
+    safeListener('confirmNo', 'click', closeConfirm);
+
+    document.querySelectorAll('.ms-toggle').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var panelId = btn.getAttribute('data-ms');
+        var panel = $(panelId);
+        if(!panel) return;
+        var opening = !panel.classList.contains('open');
+        panel.classList.toggle('open');
+        btn.textContent = opening ? '📋 Ocultar markscheme' : '📋 Revisión IB';
+      });
+    });
+
+    safeListener('btnShowAllMS', 'click', function(){
+      document.querySelectorAll('.ms-panel').forEach(function(p){ p.classList.add('open'); });
+      document.querySelectorAll('.ms-toggle').forEach(function(b){ b.textContent = '📋 Ocultar markscheme'; });
+    });
+    safeListener('btnHideAllMS', 'click', function(){
+      document.querySelectorAll('.ms-panel').forEach(function(p){ p.classList.remove('open'); });
+      document.querySelectorAll('.ms-toggle').forEach(function(b){ b.textContent = '📋 Revisión IB'; });
+    });
+
+    [].concat(PARTS_Q1, PARTS_Q2).forEach(function(p){
+      var sc = $('sc_' + p.id);
+      if(sc) sc.addEventListener('input', updateTotals);
+    });
+
+    safeListener('btnExport', 'click', exportTxt);
+    safeListener('btnPrint', 'click', printPaper);
+    safeListener('btnBack', 'click', function(){ goToTab('exam'); });
+
+    // Envío al docente
+    safeListener('btnSubmit', 'click', submitToTeacher);
+
+    // Panel docente
+    safeListener('tpFab', 'click', toggleTP);
+    safeListener('tpClose', 'click', toggleTP);
+    document.addEventListener('keydown', function(e){
+      if(e.altKey && e.shiftKey && (e.key === 'D' || e.key === 'd')) toggleTP();
+    });
+    safeListener('tpEnter', 'click', function(){
+      if($('tpCode').value === TEACHER_CODE){
+        $('tpError').textContent = '';
+        $('tpLogin').style.display = 'none';
+        $('tpContent').style.display = '';
+        loadTP();
+      }else{
+        $('tpError').textContent = 'Código incorrecto.';
+      }
+    });
+    safeListener('tpCsv', 'click', tpExportCSV);
+    safeListener('tpClear', 'click', function(){
+      askConfirm(
+        'Borrar todas las entregas',
+        'Se borrarán las entregas del servidor y de este dispositivo. Esta acción no se puede deshacer.',
+        function(){
+          fetch(API_BASE + '/clear', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({action: 'clear_all'})
+          }).catch(function(){});
+          localStorage.removeItem(SUBMISSIONS_KEY);
+          loadTP();
+          toast('Entregas borradas.');
+        }
+      );
+    });
+
+    safeListener('btnReset', 'click', function(){
+      askConfirm(
+        'Reiniciar práctica',
+        'Se borrarán TODAS las respuestas, diagramas, autoevaluaciones y el temporizador de este dispositivo. Esta acción no se puede deshacer.',
+        resetExam
+      );
+    });
+  });
+})();
+</script>
+<noscript><p style="padding:20px;text-align:center">Esta práctica digital requiere JavaScript activado.</p></noscript>
+</body>
+</html>
