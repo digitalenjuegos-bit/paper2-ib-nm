@@ -107,7 +107,7 @@
   .btn[disabled]{opacity:.45;cursor:not-allowed}
   .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 
-  .q-picker{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .q-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:8px}
   .q-option{
     background:#fbfcfe;border:2px solid var(--line);border-radius:var(--radius);padding:16px;
     cursor:pointer;text-align:left;font-family:inherit;transition:border-color .15s, box-shadow .15s;
@@ -385,7 +385,7 @@
         <li>En esta prueba está permitido utilizar la calculadora.</li>
         <li>Salvo que se indique lo contrario en la pregunta, todas las respuestas numéricas deberán ser exactas o aproximadas con <strong>dos decimales</strong>.</li>
         <li><strong>Debe mostrar la totalidad del mecanismo</strong> en las preguntas de cálculo.</li>
-        <li><strong>Conteste UNA pregunta</strong>: la Pregunta 1 o la Pregunta 2.</li>
+        <li><strong>Conteste UNA pregunta</strong>: la Pregunta 1, la Pregunta 2 o la Pregunta 3.</li>
         <li>Utilice gráficos bien rotulados e incluya referencias al texto o los datos cuando corresponda.</li>
         <li>La puntuación máxima para esta prueba de examen es <strong>[40 puntos]</strong>.</li>
       </ul>
@@ -438,7 +438,7 @@
 
     <div class="card">
       <h3>Conteste UNA pregunta (40 puntos)</h3>
-      <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">Como en el Paper 2 real, <strong>no se elige por unidad</strong>: cada pregunta combina microeconomía y macroeconomía. Elija la Pregunta 1 o la Pregunta 2.</p>
+      <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">Como en el Paper 2 real, <strong>no se elige por unidad</strong>: cada pregunta combina microeconomía y macroeconomía. Elija la Pregunta 1, la Pregunta 2 o la Pregunta 3.</p>
       <div class="q-picker">
         <button class="q-option" id="pickQ1" data-q="q1">
           <span class="qt">Pregunta 1</span>
@@ -448,6 +448,11 @@
         <button class="q-option" id="pickQ2" data-q="q2">
           <span class="qt">Pregunta 2</span>
           <span class="qd">La inflación y el transporte en Valmira: política fiscal, precio máximo y demanda y oferta agregadas.</span>
+          <span class="qpts">40 puntos</span>
+        </button>
+        <button class="q-option" id="pickQ3" data-q="q3">
+          <span class="qt">Pregunta 3</span>
+          <span class="qd">Solandia: desaceleración, obras públicas y política fiscal: demanda y oferta agregadas, desempleo cíclico y evaluación de política.</span>
           <span class="qpts">40 puntos</span>
         </button>
       </div>
@@ -1108,6 +1113,241 @@
     </div>
     </div><!-- /q2Section -->
 
+    <!-- ███ PREGUNTA 3 — MACRO (40 pts) ███ -->
+    <div id="q3Section" style="display:none">
+    <div class="exam-head">
+      <h2>Pregunta 3</h2>
+      <span class="pts">40 puntos</span>
+    </div>
+    <p class="leer-fragmentos"><strong>Lea los siguientes fragmentos y conteste las preguntas a continuación.</strong></p>
+
+    <div class="stimulus">
+      <div class="st-label">Texto A — Solandia cierra 2025 con la desaceleración más marcada de la década</div>
+      <p><span class="parno">[1]</span> Solandia, una economía pequeña y abierta, cerrará 2025 con un crecimiento del PIB real de 0,4&nbsp;%, frente al 3,1&nbsp;% registrado en 2024. El Banco Central de Solandia atribuye la desaceleración a la caída del gasto de inversión de las empresas, que retrocedió durante el año ante la incertidumbre sobre la demanda externa y el encarecimiento del crédito.</p>
+      <p><span class="parno">[2]</span> La tasa de desempleo pasó de 5,2&nbsp;% a 7,8&nbsp;% entre 2024 y 2025. Los analistas del Instituto de Estudios Económicos sostienen que el aumento corresponde a <strong>desempleo cíclico</strong> y no a un cambio en la estructura productiva del país, dado que las vacantes disponibles y las calificaciones de los trabajadores no se han modificado de manera apreciable.</p>
+      <p><span class="parno">[3]</span> El Ministerio de Finanzas anunció para 2026 un programa de obras públicas de 900 millones de dólares concentrado en carreteras, escuelas y redes de agua potable. La medida, una <strong>política fiscal expansiva</strong>, busca sostener el empleo en el sector de la construcción, aunque el propio Ministerio reconoce que ampliará el déficit presupuestario.</p>
+      <p><span class="parno">[4]</span> El Banco Central mantuvo su tasa de política monetaria en 4,5&nbsp;% y advirtió que el margen para estimular la economía por la vía monetaria es limitado. La inflación cerró el año en 1,6&nbsp;%, muy por debajo de la meta oficial de 3&nbsp;%, y varios bancos comerciales informan que la demanda de crédito de las empresas continúa débil pese a las condiciones vigentes.</p>
+      <div class="st-label">Texto B — La otra cara del plan de obras públicas</div>
+      <p><span class="parno">[1]</span> La Cámara de Comercio advierte que el programa de obras públicas se financiará con emisión de deuda en un momento en que el endeudamiento público ya supera la mitad del producto. Su director de estudios sostiene que un mayor endeudamiento presionará al alza las tasas de interés de largo plazo y desplazará inversión privada que hoy resulta más productiva que la obra pública.</p>
+      <p><span class="parno">[2]</span> El gremio de la construcción responde que el sector opera con capacidad ociosa y que cerca de 18&nbsp;000 trabajadores perdieron su empleo en 2025, de modo que el programa emplearía recursos que de otro modo permanecerían inactivos. Añade que las obras de infraestructura elevan la capacidad productiva del país en el largo plazo.</p>
+      <p><span class="parno">[3]</span> Ambas partes coinciden en un punto: los desembolsos del programa comenzarían recién en el segundo semestre de 2026, debido a los plazos de licitación y adjudicación de los contratos.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <caption>Cuadro 1 — Indicadores macroeconómicos de Solandia, 2023 a 2025</caption>
+          <thead><tr><th>Indicador</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th></tr></thead>
+          <tbody>
+            <tr><td>Crecimiento del PIB real (%)</td><td class="num">2,8</td><td class="num">3,1</td><td class="num">0,4</td></tr>
+            <tr><td>PIB nominal (millones de USD)</td><td class="num">40&nbsp;960</td><td class="num">43&nbsp;500</td><td class="num">44&nbsp;370</td></tr>
+            <tr><td>Gasto de inversión de las empresas (millones de USD)</td><td class="num">4&nbsp;120</td><td class="num">4&nbsp;260</td><td class="num">3&nbsp;791</td></tr>
+            <tr><td>Tasa de desempleo (%)</td><td class="num">5,0</td><td class="num">5,2</td><td class="num">7,8</td></tr>
+            <tr><td>Tasa de inflación (%)</td><td class="num">3,4</td><td class="num">3,0</td><td class="num">1,6</td></tr>
+            <tr><td>Saldo fiscal (% del PIB)</td><td class="num">−1,9</td><td class="num">−2,4</td><td class="num">−3,6</td></tr>
+            <tr><td>Deuda pública (% del PIB)</td><td class="num">46,2</td><td class="num">48,7</td><td class="num">52,9</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3(a) -->
+    <div class="part" id="part_q3a">
+      <div class="part-head">
+        <span class="part-label">3 (a)</span>
+        <div class="part-q"><span class="cmd">Defina</span> los siguientes términos.</div>
+        <span class="part-marks">4 puntos (2 + 2)</span>
+      </div>
+      <div class="sub-parts">
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(i)</span>
+            <div class="part-q"><span class="cmd">Defina</span> el término <em>desempleo cíclico</em>, que está marcado en negrita en el texto (Texto A, párrafo 2).</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q3a_i" rows="2" placeholder="Escriba su definición aquí…"></textarea>
+        </div>
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(ii)</span>
+            <div class="part-q"><span class="cmd">Defina</span> el término <em>política fiscal expansiva</em>, que está marcado en negrita en el texto (Texto A, párrafo 3).</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q3a_ii" rows="2" placeholder="Escriba su definición aquí…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3(b) -->
+    <div class="part" id="part_q3b">
+      <div class="part-head">
+        <span class="part-label">3 (b)</span>
+        <div class="part-q"><span class="cmd">Calcule</span> las siguientes cantidades. <strong>Muestre la totalidad del mecanismo.</strong></div>
+        <span class="part-marks">5 puntos (2 + 3)</span>
+      </div>
+      <div class="sub-parts">
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(i)</span>
+            <div class="part-q">Utilizando la información del <strong>Cuadro 1</strong>, <span class="cmd">calcule</span> la variación porcentual del gasto de inversión de las empresas entre 2024 y 2025.</div>
+            <span class="part-marks">2 puntos</span>
+          </div>
+          <textarea id="ans_q3b_i" rows="3" placeholder="Fórmula, sustitución y resultado…"></textarea>
+        </div>
+        <div class="sub-row">
+          <div class="part-head">
+            <span class="part-label">(ii)</span>
+            <div class="part-q">Utilizando la información del <strong>Cuadro 1</strong>, <span class="cmd">calcule</span> el saldo fiscal de Solandia en 2025, expresado en millones de dólares.</div>
+            <span class="part-marks">3 puntos</span>
+          </div>
+          <textarea id="ans_q3b_ii" rows="3" placeholder="Mecanismo y resultado…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3(c) -->
+    <div class="part" id="part_q3c">
+      <div class="part-head">
+        <span class="part-label">3 (c)</span>
+        <div class="part-q">Utilizando un diagrama de demanda agregada y oferta agregada, <span class="cmd">explique</span> el efecto de la caída del gasto de inversión sobre el producto real y el nivel general de precios de Solandia (Texto A, párrafo 1).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q3c" rows="4" placeholder="Explique el efecto sobre el producto real y el nivel de precios…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q3c" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 3(d) -->
+    <div class="part" id="part_q3d">
+      <div class="part-head">
+        <span class="part-label">3 (d)</span>
+        <div class="part-q">Utilizando un diagrama de demanda agregada y oferta agregada, <span class="cmd">explique</span> cómo el programa de obras públicas anunciado por el Ministerio de Finanzas podría afectar el nivel de empleo en Solandia (Texto A, párrafo 3).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q3d" rows="4" placeholder="Explique el efecto sobre el nivel de empleo…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q3d" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 3(e) -->
+    <div class="part" id="part_q3e">
+      <div class="part-head">
+        <span class="part-label">3 (e)</span>
+        <div class="part-q"><span class="cmd">Explique</span> dos razones por las cuales la inflación de Solandia descendió a 1,6&nbsp;% en 2025 (Texto A, párrafos 1, 2 y 4).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q3e" rows="4" placeholder="Explique dos razones distintas…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q3e" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 3(f) -->
+    <div class="part" id="part_q3f">
+      <div class="part-head">
+        <span class="part-label">3 (f)</span>
+        <div class="part-q"><span class="cmd">Explique</span> por qué el Banco Central considera que el margen de la política monetaria para estimular la economía es limitado (Texto A, párrafo 4).</div>
+        <span class="part-marks">4 puntos</span>
+      </div>
+      <textarea id="ans_q3f" rows="4" placeholder="Explique el límite de la política monetaria…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q3f" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 3(g) -->
+    <div class="part" id="part_q3g">
+      <div class="part-head">
+        <span class="part-label">3 (g)</span>
+        <div class="part-q">Utilizando la información de los Textos A y B, y tus conocimientos de economía, <span class="cmd">evalúe</span> la eficacia del programa de obras públicas para reducir el desempleo en Solandia.</div>
+        <span class="part-marks">15 puntos</span>
+      </div>
+      <textarea id="ans_q3g" rows="7" placeholder="Argumentos a favor y en contra, con datos de los textos, y una conclusión…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_q3g" class="board"></canvas></div>
+      </div>
+    </div>
+    </div><!-- /q3Section -->
+
     <!-- Barra de culminación -->
     <div class="card no-print" style="text-align:center;border:2px solid var(--ib-gold)">
       <p style="font-size:.95rem;margin-bottom:12px">¿Terminaste? Al culminar se desbloqueará la <strong>Revisión final</strong> con el markscheme de cada parte para que te autoevalúes.</p>
@@ -1521,6 +1761,188 @@
         </div>
       </div>
 
+      <!-- REVISIÓN PREGUNTA 3 -->
+      <div class="rev-card" id="revQ3">
+        <div class="rev-question-title">
+          <h3>Pregunta 3</h3>
+          <span class="topic-tag">Solandia · Macro</span>
+          <span style="margin-left:auto;font-size:.8rem;color:var(--ink-soft)" id="q3Subtotal">0/40</span>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(a)(i)</span>
+          <div class="ptext"><span class="cmd">Defina</span> <em>desempleo cíclico</em> <span id="st_q3a_i"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3a_i" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3a_i">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3a_i" style="width:100%">
+            <div class="ms-head">Markscheme — 3(a)(i) · Defina · 2 puntos</div>
+            <div class="ms-body">
+              <p><strong>Definición completa (2 pts):</strong> Desempleo que se origina en una caída de la demanda agregada durante la fase de contracción del ciclo económico.</p>
+              <ul>
+                <li>[1] Se origina en una caída de la demanda agregada.</li>
+                <li>[1] Ocurre durante la fase de contracción del ciclo económico.</li>
+              </ul>
+              <p class="ms-note">Nota: confundirlo con desempleo estructural, friccional o estacional se califica con cero.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(a)(ii)</span>
+          <div class="ptext"><span class="cmd">Defina</span> <em>política fiscal expansiva</em> <span id="st_q3a_ii"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3a_ii" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3a_ii">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3a_ii" style="width:100%">
+            <div class="ms-head">Markscheme — 3(a)(ii) · Defina · 2 puntos</div>
+            <div class="ms-body">
+              <p><strong>Definición completa (2 pts):</strong> Uso del gasto público y de los impuestos por parte del gobierno con el fin de aumentar la demanda agregada.</p>
+              <ul>
+                <li>[1] Uso del gasto público y/o de los impuestos por parte del gobierno.</li>
+                <li>[1] Con el fin de aumentar la demanda agregada (estimular la actividad económica).</li>
+              </ul>
+              <p class="ms-note">Nota: no se exige mencionar ambos instrumentos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(b)(i)</span>
+          <div class="ptext"><span class="cmd">Calcule</span> la variación porcentual del gasto de inversión <span id="st_q3b_i"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3b_i" min="0" max="2" step="1" value="0"> / 2</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3b_i">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3b_i" style="width:100%">
+            <div class="ms-head">Markscheme — 3(b)(i) · Calcule · 2 puntos</div>
+            <div class="ms-body">
+              <p>[1] Procedimiento correcto: diferencia entre 3 791 y 4 260 dividida para 4 260, multiplicada por 100.</p>
+              <p>[1] Resultado correcto con signo: <strong>−11,0&nbsp;%</strong> (se acepta el intervalo de −11,0&nbsp;% a −11,01&nbsp;%).</p>
+              <p class="ms-note">Nota: el resultado sin procedimiento recibe 1 punto; el procedimiento correcto con error aritmético recibe 1 punto; la respuesta sin signo ni indicación de caída pierde el segundo punto.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(b)(ii)</span>
+          <div class="ptext"><span class="cmd">Calcule</span> el saldo fiscal de 2025 en millones de dólares <span id="st_q3b_ii"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3b_ii" min="0" max="3" step="1" value="0"> / 3</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3b_ii">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3b_ii" style="width:100%">
+            <div class="ms-head">Markscheme — 3(b)(ii) · Calcule · 3 puntos</div>
+            <div class="ms-body">
+              <p>[1] Identifica que debe aplicar el 3,6&nbsp;% sobre el PIB nominal de 2025 (44 370 millones) y no sobre el PIB real ni sobre otro año.</p>
+              <p>[1] Sustitución correcta: 3,6&nbsp;% de 44 370 millones de dólares.</p>
+              <p>[1] Resultado correcto con unidad y signo: <strong>un déficit de 1 597,3 millones de dólares, aproximadamente</strong> (se acepta el intervalo de 1 596 a 1 598).</p>
+              <p class="ms-note">Nota: este ítem exige dos pasos, de modo que un error en el primero arrastra el segundo. Aplique el principio de error consecuente: si el alumno eligió mal el año pero calculó bien, otorgue los dos puntos de procedimiento.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(c)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama de demanda agregada y oferta agregada el efecto de la caída de la inversión <span id="st_q3c"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3c" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3c">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3c" style="width:100%">
+            <div class="ms-head">Markscheme — 3(c) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Eje vertical rotulado como nivel general de precios y eje horizontal como producto real, con las curvas de demanda agregada y oferta agregada nombradas.</li>
+                <li>[1] La curva de demanda agregada se desplaza a la izquierda, de DA1 a DA2, con la causa indicada junto a la flecha.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] La inversión es un componente de la demanda agregada, de modo que su caída reduce el producto real de equilibrio y presiona a la baja el nivel de precios.</li>
+                <li>[1] Evidencia: cita una cifra del estímulo (la caída de 11&nbsp;% de la inversión, el crecimiento de 0,4&nbsp;% o la inflación de 1,6&nbsp;%).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(d)</span>
+          <div class="ptext"><span class="cmd">Explique</span> con diagrama el efecto del programa de obras públicas sobre el empleo <span id="st_q3d"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3d" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3d">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3d" style="width:100%">
+            <div class="ms-head">Markscheme — 3(d) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] Modelo de demanda agregada y oferta agregada correctamente rotulado.</li>
+                <li>[1] La curva de demanda agregada se desplaza a la derecha, de DA1 a DA2, por el aumento del gasto público.</li>
+              </ul>
+              <p><strong>Explicación (hasta 2 pts):</strong></p>
+              <ul>
+                <li>[1] El aumento del producto real exige más trabajo, dado que la demanda de trabajo es derivada, lo que reduce el desempleo cíclico.</li>
+                <li>[1] Evidencia: cita los 900 millones de dólares del programa o los 18 000 empleos perdidos en la construcción que menciona el Texto B.</li>
+              </ul>
+              <p class="ms-note">Nota: se acepta el uso del tramo de oferta agregada con capacidad ociosa, en el cual el producto aumenta sin presión significativa sobre el nivel de precios. Es la representación más coherente con el Texto B y merece reconocimiento explícito en la retroalimentación.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(e)</span>
+          <div class="ptext"><span class="cmd">Explique</span> dos razones de la caída de la inflación a 1,6&nbsp;% <span id="st_q3e"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3e" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3e">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3e" style="width:100%">
+            <div class="ms-head">Markscheme — 3(e) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p>[2] Primera razón explicada, no solo mencionada, con vínculo al estímulo.</p>
+              <p>[2] Segunda razón explicada, distinta de la primera, con vínculo al estímulo.</p>
+              <p><strong>Razones aceptables:</strong></p>
+              <ul>
+                <li>La caída de la demanda agregada por la contracción de la inversión, que genera una brecha deflacionaria.</li>
+                <li>El aumento del desempleo, que modera las presiones salariales y por esa vía los costos.</li>
+                <li>La debilidad de la demanda de crédito señalada en el párrafo 4 del Texto A.</li>
+              </ul>
+              <p class="ms-note">Nota: tope de 2 puntos si el alumno explica una sola razón, aunque la desarrolle en profundidad.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(f)</span>
+          <div class="ptext"><span class="cmd">Explique</span> el límite de la política monetaria para estimular la economía <span id="st_q3f"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3f" min="0" max="4" step="1" value="0"> / 4</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3f">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3f" style="width:100%">
+            <div class="ms-head">Markscheme — 3(f) · Explique · 4 puntos</div>
+            <div class="ms-body">
+              <p><strong>1 a 2 pts:</strong> identifica el problema sin explicarlo, por ejemplo señala que la tasa ya está baja o que la inflación está por debajo de la meta.</p>
+              <p><strong>3 a 4 pts:</strong> explica el mecanismo: una reducción adicional de la tasa tendría efecto limitado porque la demanda de crédito de las empresas es débil pese a las condiciones vigentes, de modo que la inversión responde poco a la tasa de interés. Cita el estímulo.</p>
+              <p class="ms-note">Nota: no exija el término trampa de liquidez, que no forma parte del programa de Nivel Medio. La respuesta que argumente desde la meta de inflación (que un estímulo mayor no es necesario porque la inflación ya es baja) no responde a la pregunta y tiene tope de 2 puntos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(g)</span>
+          <div class="ptext"><span class="cmd">Evalúe</span> la eficacia del programa de obras públicas para reducir el desempleo <span id="st_q3g"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_q3g" min="0" max="15" step="1" value="0"> / 15</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_q3g">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_q3g" style="width:100%">
+            <div class="ms-head">Markscheme — 3(g) · Evalúe · 15 puntos (rúbrica por niveles)</div>
+            <div class="ms-body">
+              <div class="ms-level"><span class="range">13–15</span><span class="lv">Nivel 5 — Evaluación excelente</span><br>Teoría completamente explicada con diagrama pertinente. Uso eficaz y selectivo de ambos textos y del cuadro. Evaluación equilibrada y juicio final fundamentado en criterios explícitos.</div>
+              <div class="ms-level"><span class="range">10–12</span><span class="lv">Nivel 4 — Buena evaluación</span><br>Teoría explicada. Uso eficaz de ambos textos y del Cuadro 1. Síntesis mayoritariamente equilibrada. Juicio presente pero poco fundamentado.</div>
+              <div class="ms-level"><span class="range">7–9</span><span class="lv">Nivel 3 — Evaluación limitada</span><br>Teoría explicada de manera parcial. Uso pertinente del estímulo. Síntesis apropiada pero sin equilibrio entre las dos posiciones.</div>
+              <div class="ms-level"><span class="range">4–6</span><span class="lv">Nivel 2 — Evaluación muy limitada</span><br>Teoría descrita. Uso superficial del estímulo, limitado a copiar cifras sin interpretarlas. Síntesis superficial.</div>
+              <div class="ms-level"><span class="range">1–3</span><span class="lv">Nivel 1 — Respuesta muy limitada</span><br>Teoría no pertinente. Sin uso del estímulo. Sin evidencia de síntesis ni de evaluación.</div>
+              <div class="ms-level"><span class="range">0</span><span class="lv">Sin contenido relevante.</span></div>
+              <p><strong>Restricción de aplicación obligatoria:</strong> máximo 12 puntos si el alumno considera una sola perspectiva (defiende el programa sin recoger las objeciones del Texto B o lo critica sin reconocer el argumento de la capacidad ociosa).</p>
+              <p><strong>Puntos esperados (orientativos):</strong></p>
+              <ul>
+                <li><strong>A favor:</strong> el desempleo es cíclico y no estructural (párrafo 2 del Texto A), la herramienta es la adecuada para el diagnóstico; el sector opera con capacidad ociosa, el producto puede aumentar sin presión inflacionaria relevante y la inflación de 1,6&nbsp;% deja espacio; la infraestructura eleva la capacidad productiva de largo plazo (desplaza la oferta agregada a la derecha); la política monetaria ya se muestra agotada (párrafo 4).</li>
+                <li><strong>En contra:</strong> la deuda pública pasó de 46,2&nbsp;% a 52,9&nbsp;% del producto en dos años y el déficit ya alcanza 3,6&nbsp;% del PIB; el Texto B advierte sobre el desplazamiento de inversión privada por la vía de las tasas de interés de largo plazo; los desembolsos comienzan recién en el segundo semestre de 2026, el rezago de aplicación puede hacer que el estímulo llegue cuando la economía ya se recupere; el empleo generado se concentra en la construcción y puede no corresponder a las calificaciones de todos los desempleados.</li>
+                <li><strong>Juicio final de nivel superior:</strong> no se limita a declarar que la política es parcialmente eficaz; establece una condición: la eficacia depende de la magnitud del desplazamiento de la inversión privada y del momento en que se ejecuten los desembolsos, y ambos elementos están en el estímulo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Acciones finales -->
       <div class="card no-print" style="text-align:center">
         <h3>Entregar tu práctica</h3>
@@ -1616,9 +2038,21 @@
     {id:'q2f',    max:4,  label:'2(f)'},
     {id:'q2g',    max:15, label:'2(g)'}
   ];
-  var CANVAS_IDS = ['cv_q1c','cv_q1d','cv_q1e','cv_q1f','cv_q1g','cv_q2c','cv_q2d','cv_q2e','cv_q2f','cv_q2g'];
+  var PARTS_Q3 = [
+    {id:'q3a_i',  max:2,  label:'3(a)(i)'},
+    {id:'q3a_ii', max:2,  label:'3(a)(ii)'},
+    {id:'q3b_i',  max:2,  label:'3(b)(i)'},
+    {id:'q3b_ii', max:3,  label:'3(b)(ii)'},
+    {id:'q3c',    max:4,  label:'3(c)'},
+    {id:'q3d',    max:4,  label:'3(d)'},
+    {id:'q3e',    max:4,  label:'3(e)'},
+    {id:'q3f',    max:4,  label:'3(f)'},
+    {id:'q3g',    max:15, label:'3(g)'}
+  ];
+  var CANVAS_IDS = ['cv_q1c','cv_q1d','cv_q1e','cv_q1f','cv_q1g','cv_q2c','cv_q2d','cv_q2e','cv_q2f','cv_q2g','cv_q3c','cv_q3d','cv_q3e','cv_q3f','cv_q3g'];
 
   function activeParts(){
+    if(state.question === 'q3') return PARTS_Q3;
     return state.question === 'q2' ? PARTS_Q2 : PARTS_Q1;
   }
 
@@ -1643,7 +2077,7 @@
       if(!s.answers) s.answers = {};
       if(!s.scores) s.scores = {};
       if(!s.canvases) s.canvases = {};
-      if(s.question !== 'q1' && s.question !== 'q2') s.question = 'q1';
+      if(s.question !== 'q1' && s.question !== 'q2' && s.question !== 'q3') s.question = 'q1';
       return s;
     }catch(e){ return defaultState(); }
   }
@@ -1766,12 +2200,12 @@
   }
 
   function showQuestion(q){
-    var isQ1 = (q !== 'q2');
-    $('q1Section').style.display = isQ1 ? '' : 'none';
-    $('q2Section').style.display = isQ1 ? 'none' : '';
+    $('q1Section').style.display = (q === 'q1') ? '' : 'none';
+    $('q2Section').style.display = (q === 'q2') ? '' : 'none';
+    $('q3Section').style.display = (q === 'q3') ? '' : 'none';
     var chip = $('questionChip');
     chip.style.display = '';
-    chip.textContent = isQ1 ? 'Pregunta elegida: 1' : 'Pregunta elegida: 2';
+    chip.textContent = 'Pregunta elegida: ' + (q === 'q2' ? '2' : (q === 'q3' ? '3' : '1'));
   }
 
   /* ================= PREGUNTAS: GUARDADO ================= */
@@ -1799,7 +2233,7 @@
   }
 
   function bindAnswers(){
-    [].concat(PARTS_Q1, PARTS_Q2).forEach(function(p){
+    [].concat(PARTS_Q1, PARTS_Q2, PARTS_Q3).forEach(function(p){
       var ta = $('ans_' + p.id);
       if(!ta) return;
       ta.value = state.answers[p.id] || '';
@@ -1981,9 +2415,9 @@
     $('reviewUnlocked').style.display = locked ? 'none' : '';
 
     // Solo la pregunta elegida aparece en la revisión
-    var isQ1 = (state.question !== 'q2');
-    $('revQ1').style.display = isQ1 ? '' : 'none';
-    $('revQ2').style.display = isQ1 ? 'none' : '';
+    $('revQ1').style.display = (state.question === 'q1') ? '' : 'none';
+    $('revQ2').style.display = (state.question === 'q2') ? '' : 'none';
+    $('revQ3').style.display = (state.question === 'q3') ? '' : 'none';
 
     activeParts().forEach(function(p){
       var st = $('st_' + p.id);
@@ -2017,9 +2451,9 @@
     });
     $('totalScore').textContent = total;
     $('grade100').textContent = Math.round(total / TOTAL_MARKS * 100) + ' %';
-    var isQ1 = (state.question !== 'q2');
-    if(isQ1) $('q1Subtotal').textContent = total + '/40';
-    else $('q2Subtotal').textContent = total + '/40';
+    if(state.question === 'q1') $('q1Subtotal').textContent = total + '/40';
+    else if(state.question === 'q2') $('q2Subtotal').textContent = total + '/40';
+    else $('q3Subtotal').textContent = total + '/40';
     saveStateDebounced();
   }
 
@@ -2057,7 +2491,7 @@
     L.push('Nombre: ' + (state.name || '(sin nombre)'));
     L.push('Curso: ' + (state.course || '—'));
     L.push('Fecha: ' + new Date().toLocaleDateString('es-EC'));
-    L.push('Pregunta elegida: ' + (state.question === 'q2' ? 'Pregunta 2' : 'Pregunta 1'));
+    L.push('Pregunta elegida: ' + (state.question === 'q2' ? 'Pregunta 2' : (state.question === 'q3' ? 'Pregunta 3' : 'Pregunta 1')));
     L.push('Estado: ' + (state.finished ? 'Culminado' : 'En curso'));
     var used = EXAM_TIME - state.timer.remaining;
     L.push('Tiempo usado: ' + fmtTime(used) + ' de ' + fmtTime(EXAM_TIME));
@@ -2074,7 +2508,7 @@
       L.push('');
     }
 
-    L.push(state.question === 'q2' ? 'PREGUNTA 2' : 'PREGUNTA 1');
+    L.push(state.question === 'q2' ? 'PREGUNTA 2' : (state.question === 'q3' ? 'PREGUNTA 3' : 'PREGUNTA 1'));
     activeParts().forEach(block);
 
     var total = 0;
@@ -2111,7 +2545,7 @@
     return {
       studentName: state.name,
       course: state.course || '3BGU Economía',
-      question: state.question === 'q2' ? 'Pregunta 2' : 'Pregunta 1',
+      question: state.question === 'q2' ? 'Pregunta 2' : (state.question === 'q3' ? 'Pregunta 3' : 'Pregunta 1'),
       examTitle: EXAM_TITLE,
       answers: answers,
       scores: scores,
@@ -2268,7 +2702,8 @@
   /* ================= PDF DEL ESTUDIANTE (panel docente) ================= */
   var PDF_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js';
   var PART_MAX = {q1a_i:2,q1a_ii:2,q1b_i:3,q1b_ii:2,q1c:4,q1d:4,q1e:4,q1f:4,q1g:15,
-                  q2a_i:2,q2a_ii:2,q2b_i:3,q2b_ii:2,q2c:4,q2d:4,q2e:4,q2f:4,q2g:15};
+                  q2a_i:2,q2a_ii:2,q2b_i:3,q2b_ii:2,q2c:4,q2d:4,q2e:4,q2f:4,q2g:15,
+                  q3a_i:2,q3a_ii:2,q3b_i:2,q3b_ii:3,q3c:4,q3d:4,q3e:4,q3f:4,q3g:15};
 
   function loadScript(src){
     return new Promise(function(res, rej){
@@ -2407,9 +2842,10 @@
     $('studentName').value = state.name || '';
 
     // Selección visual de pregunta en la portada
-    var sel = state.question === 'q2' ? 'pickQ2' : 'pickQ1';
+    var sel = state.question === 'q2' ? 'pickQ2' : (state.question === 'q3' ? 'pickQ3' : 'pickQ1');
     $('pickQ1').classList.toggle('sel', sel === 'pickQ1');
     $('pickQ2').classList.toggle('sel', sel === 'pickQ2');
+    $('pickQ3').classList.toggle('sel', sel === 'pickQ3');
 
     if(state.started){
       $('screen-start').classList.remove('active');
@@ -2440,12 +2876,14 @@
 
     function pickQuestion(q){
       state.question = q;
-      $('pickQ1').classList.toggle('sel', q !== 'q2');
+      $('pickQ1').classList.toggle('sel', q === 'q1');
       $('pickQ2').classList.toggle('sel', q === 'q2');
+      $('pickQ3').classList.toggle('sel', q === 'q3');
       saveStateDebounced();
     }
     safeListener('pickQ1', 'click', function(){ pickQuestion('q1'); });
     safeListener('pickQ2', 'click', function(){ pickQuestion('q2'); });
+    safeListener('pickQ3', 'click', function(){ pickQuestion('q3'); });
 
     safeListener('startBtn', 'click', function(){
       var nameSel = $('studentName');
@@ -2515,7 +2953,7 @@
       document.querySelectorAll('.ms-toggle').forEach(function(b){ b.textContent = '📋 Revisión IB'; });
     });
 
-    [].concat(PARTS_Q1, PARTS_Q2).forEach(function(p){
+    [].concat(PARTS_Q1, PARTS_Q2, PARTS_Q3).forEach(function(p){
       var sc = $('sc_' + p.id);
       if(sc) sc.addEventListener('input', updateTotals);
     });
