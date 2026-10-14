@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paper 2 — Economía NM — Práctica Digital</title>
+<title>Economía NM · Práctica Digital</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <style>
   :root{
@@ -117,6 +117,17 @@
   .q-option .qt{font-weight:800;color:var(--ib-blue);font-size:1rem;display:block}
   .q-option .qd{font-size:.8rem;color:var(--ink-soft);display:block;margin-top:4px}
   .q-option .qpts{display:inline-block;margin-top:8px;background:var(--ib-blue);color:#fff;font-size:.7rem;font-weight:700;border-radius:20px;padding:2px 10px}
+  /* ── Selector de prueba (Paper 1 / Paper 2) ── */
+  .paper-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:8px}
+  .paper-option{
+    text-align:left;background:#fff;border:2px solid var(--line);border-radius:var(--radius);
+    padding:16px;cursor:pointer;transition:.15s;font-family:inherit;font-size:inherit;color:inherit;
+  }
+  .paper-option:hover{border-color:var(--ib-gold);box-shadow:var(--shadow)}
+  .paper-option.sel{border-color:var(--ib-gold);background:var(--ib-gold-soft)}
+  .paper-option .pt{font-weight:800;color:var(--ib-blue);font-size:1rem;display:block}
+  .paper-option .pd{font-size:.8rem;color:var(--ink-soft);display:block;margin-top:4px}
+  .paper-block[hidden]{display:none !important}
 
   .glosario{background:var(--ib-gold-soft);border-left:4px solid var(--ib-gold);border-radius:8px;padding:14px 16px;margin:14px 0}
   .glosario h4{color:#7a5c08;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
@@ -344,7 +355,7 @@
   <div class="wrap">
     <div class="brand">
       <div class="logo">IB</div>
-      <h1>Paper 2 · Economía NM<small>Práctica digital — Microeconomía y Macroeconomía</small></h1>
+      <h1><span id="brandTitle">Paper 2 · Economía NM</span><small id="brandSub">Práctica digital — Microeconomía y Macroeconomía</small></h1>
     </div>
     <div id="timerBox" class="no-print">
       <div class="lbl">Tiempo restante</div>
@@ -369,6 +380,58 @@
 <!-- ══════════ PANTALLA 1: INICIO ══════════ -->
 <section id="screen-start" class="screen active">
   <div class="wrap">
+    <!-- ═══ SELECTOR DE PRUEBA ═══ -->
+    <div class="card">
+      <h3>Selecciona la prueba</h3>
+      <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">Elige la prueba que vas a practicar. El avance de cada una se guarda por separado en este dispositivo, así que puedes alternar sin perder nada.</p>
+      <div class="paper-picker">
+        <button class="paper-option" id="pickPaperP1" data-paper="p1">
+          <span class="pt">Prueba 1 (Paper 1)</span>
+          <span class="pd">Ensayo · 1 h 15 min · 25 puntos · <strong>sin</strong> calculadora</span>
+        </button>
+        <button class="paper-option" id="pickPaperP2" data-paper="p2">
+          <span class="pt">Prueba 2 (Paper 2)</span>
+          <span class="pd">Microeconomía y macroeconomía · 1 h 45 min · 40 puntos · con calculadora</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ PORTADA PRUEBA 1 ═══ -->
+    <div class="paper-block" data-paper="p1">
+      <div class="hero">
+        <div class="kicker">International Baccalaureate · Diploma Programme</div>
+        <h2>Examen de práctica — Prueba 1</h2>
+        <p>Economía · Nivel Medio (NM)</p>
+        <div class="meta">
+          <span class="meta-chip">⏱ 1 hora 15 minutos</span>
+          <span class="meta-chip">📝 25 puntos</span>
+          <span class="meta-chip">🚫 Calculadora prohibida</span>
+          <span class="meta-chip">🎯 Ensayo: Explique y Evalúe</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Instrucciones para los alumnos</h3>
+        <ul class="inst-list">
+          <li>No dé la vuelta a la prueba hasta que se lo autoricen.</li>
+          <li>En esta prueba está <strong>prohibido</strong> usar la calculadora.</li>
+          <li><strong>Conteste UNA pregunta</strong>: la Pregunta 1, la Pregunta 2 o la Pregunta 3.</li>
+          <li>Utilice gráficos bien rotulados cuando corresponda.</li>
+          <li>Cada pregunta tiene dos partes: (a) Explique [10 puntos] y (b) Evalúe [15 puntos].</li>
+          <li>La puntuación máxima para esta prueba de examen es <strong>[25 puntos]</strong>.</li>
+        </ul>
+        <div class="glosario">
+          <h4>Términos de instrucción usados en esta prueba</h4>
+          <table>
+            <tr><td>Explique</td><td>Dé razones detalladas o causas, apoyándose en un diagrama bien rotulado cuando se indique.</td></tr>
+            <tr><td>Evalúe</td><td>Haga un juicio ponderado considerando fortalezas y debilidades, con una conclusión razonada.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PORTADA PRUEBA 2 ═══ -->
+    <div class="paper-block" data-paper="p2">
     <div class="hero">
       <div class="kicker">International Baccalaureate · Diploma Programme</div>
       <h2>Examen de práctica — Paper 2</h2>
@@ -403,6 +466,7 @@
         </table>
       </div>
     </div>
+    </div><!-- /paper-block p2 -->
 
     <div class="card">
       <h3>Datos del estudiante</h3>
@@ -439,6 +503,37 @@
       <p style="font-size:.85rem;color:var(--ink-soft)">Curso: <strong>3BGU — Economía NM</strong></p>
     </div>
 
+    <!-- ═══ ELECCIÓN DE PREGUNTA — PRUEBA 1 ═══ -->
+    <div class="paper-block" data-paper="p1">
+    <div class="card">
+      <h3>Conteste UNA pregunta (25 puntos)</h3>
+      <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">Como en la Prueba 1 real, <strong>conteste una sola pregunta</strong>. Cada pregunta tiene dos partes: (a) <strong>Explique</strong> [10 puntos] y (b) <strong>Evalúe</strong> [15 puntos]. Elija la Pregunta 1, la Pregunta 2 o la Pregunta 3.</p>
+      <div class="q-picker">
+        <button class="q-option" id="pickP1Q1" data-q="q1">
+          <span class="qt">Pregunta 1</span>
+          <span class="qd">El precio del viaje en tren: bienes sustitutivos y complementarios, y evaluación de las subvenciones a las empresas.</span>
+          <span class="qpts">25 puntos</span>
+        </button>
+        <button class="q-option" id="pickP1Q2" data-q="q2">
+          <span class="qt">Pregunta 2</span>
+          <span class="qd">El desempleo cíclico y el desempleo estructural, y evaluación de la política fiscal para reducir el desempleo.</span>
+          <span class="qpts">25 puntos</span>
+        </button>
+        <button class="q-option" id="pickP1Q3" data-q="q3">
+          <span class="qt">Pregunta 3</span>
+          <span class="qd">La fuga de capitales y el capital humano como impedimentos al crecimiento, y evaluación del PIB real como medida del desarrollo.</span>
+          <span class="qpts">25 puntos</span>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button id="startBtnP1" class="btn gold">▶ Comenzar prueba</button>
+      </div>
+      <p style="font-size:.78rem;color:var(--ink-soft);margin-top:10px">Tus respuestas se guardan automáticamente en este dispositivo. Puedes cerrar el navegador y continuar después; el temporizador seguirá corriendo.</p>
+    </div>
+    </div><!-- /paper-block p1 -->
+
+    <!-- ═══ ELECCIÓN DE PREGUNTA — PRUEBA 2 ═══ -->
+    <div class="paper-block" data-paper="p2">
     <div class="card">
       <h3>Conteste UNA pregunta (40 puntos)</h3>
       <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">Como en el Paper 2 real, <strong>no se elige por unidad</strong>: cada pregunta combina microeconomía y macroeconomía. Elija la Pregunta 1, la Pregunta 2 o la Pregunta 3.</p>
@@ -464,6 +559,7 @@
       </div>
       <p style="font-size:.78rem;color:var(--ink-soft);margin-top:10px">Tus respuestas se guardan automáticamente en este dispositivo. Puedes cerrar el navegador y continuar después; el temporizador seguirá corriendo.</p>
     </div>
+    </div><!-- /paper-block p2 -->
   </div>
 </section>
 
@@ -471,6 +567,119 @@
 <section id="screen-guide" class="screen">
   <div class="wrap">
 
+    <!-- ═══ GUÍA PRUEBA 1 ═══ -->
+    <div class="paper-block" data-paper="p1">
+    <div class="exam-head">
+      <h2>Guía de respuesta — Prueba 1</h2>
+      <span class="pts">Plantillas por término de instrucción IB · Economía NM</span>
+    </div>
+
+    <div class="tip warn">
+      📖 <b>Consulta esta guía cuando practiques.</b> En un examen real del IB no está disponible: el objetivo es que internalices cada plantilla hasta que la estructura salga sola. Las plantillas son <b>modelos orientadores, no respuestas rígidas</b>: lo que se mantiene constante es la estructura.
+    </div>
+
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Mapa de la prueba</h3>
+        <span class="gc-tag">1h15 · 25 puntos · conteste UNA pregunta</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Parte</th><th>Puntos</th><th>Término de instrucción</th><th>Qué se pide</th></tr></thead>
+          <tbody>
+            <tr><td><b>(a)</b></td><td class="num">10</td><td><b>Explique</b></td><td>Explicación completa de la teoría, con terminología precisa y diagramas bien rotulados y explicados.</td></tr>
+            <tr><td><b>(b)</b></td><td class="num">15</td><td><b>Evalúe</b></td><td>Síntesis o evaluación equilibrada con ejemplos del mundo real desarrollados y una conclusión razonada.</td></tr>
+            <tr><td><b>Total</b></td><td class="num">25</td><td></td><td>Regla de oro: usa <b>gráficos bien rotulados</b> y <b>ejemplos del mundo real</b> cuando la pregunta lo pida.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>(a) · Explique</h3>
+        <span class="gc-tag">10 puntos</span>
+      </div>
+      <p class="gc-sub"><b>Qué pide:</b> explicar la teoría pertinente con un encadenamiento lógico (causa, mecanismo y efecto) y con la terminología precisa. Cuando corresponde, se incluye un diagrama bien rotulado y se explica.</p>
+      <div class="formula"><b>Plantilla:</b> «[Afirmación principal]. Esto se debe a que [razón o mecanismo]. Como resultado, [consecuencia]. Esto se muestra en el diagrama, donde [describe el desplazamiento y el nuevo equilibrio]».</div>
+      <div class="tip good"><b>Para los [9]–[10] puntos:</b> exigencias específicas comprendidas y abordadas, teoría explicada por completo, terminología apropiada en todo momento y diagramas incluidos y explicados por completo.</div>
+      <div class="tip bad"><b>Lo que te deja en los niveles bajos:</b> enunciar teoría que no es pertinente, usar términos de forma incorrecta o presentar un diagrama sin explicarlo. Si solo abordas una parte de la pregunta, la puntuación queda limitada.</div>
+    </div>
+
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>(b) · Evalúe</h3>
+        <span class="gc-tag">15 puntos · rúbrica por niveles</span>
+      </div>
+      <p class="gc-sub"><b>Qué pide:</b> un juicio ponderado. Hay que presentar argumentos a favor y en contra, y llegar a una <b>conclusión evaluada</b> basada en la evidencia. La expresión «el punto de vista según el cual…» exige valorar ese punto de vista, no solo describirlo.</p>
+      <div class="step"><span class="n">1</span><div class="t"><b>Párrafo 1 — Introducción:</b> introduce el debate con su contexto, <b>define los términos clave</b> y presenta una tesis o posición matizada.</div></div>
+      <div class="step"><span class="n">2</span><div class="t"><b>Párrafo 2 — Argumento a favor:</b> afirmación, razón económica que la sustenta y un <b>ejemplo del mundo real</b>.</div></div>
+      <div class="step"><span class="n">3</span><div class="t"><b>Párrafo 3 — Argumento en contra o limitación:</b> contraargumento, razón económica y ejemplo.</div></div>
+      <div class="step"><span class="n">4</span><div class="t"><b>Párrafo 4 — Matiz o perspectiva adicional:</b> las condiciones que cambian el análisis (corto frente a largo plazo, supuestos del modelo).</div></div>
+      <div class="step"><span class="n">5</span><div class="t"><b>Párrafo 5 — Conclusión evaluada:</b> «En conclusión, [posición final]. Si bien [argumento fuerte], esto depende de [condición]. En consecuencia, [juicio final]».</div></div>
+      <div class="tip good"><b>Para los [13]–[15] puntos:</b> teoría completa, terminología apropiada, diagramas explicados, <b>síntesis o evaluación eficaz y equilibrada</b> y <b>ejemplos del mundo real desarrollados por completo</b> para respaldar el argumento.</div>
+      <div class="tip warn"><b>Ejemplos del mundo real:</b> son obligatorios en las tres partes (b). Un ejemplo solo mencionado, sin desarrollarlo en su contexto, no alcanza los niveles altos.</div>
+    </div>
+
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Bandas de puntuación — parte (a) [10 puntos]</h3>
+        <span class="gc-tag">aplican a 1(a), 2(a) y 3(a)</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Puntos</th><th>Descriptor</th></tr></thead>
+          <tbody>
+            <tr><td class="num">0</td><td>No alcanza el estándar descrito por los descriptores.</td></tr>
+            <tr><td class="num">1–2</td><td>Escasa comprensión de las exigencias específicas. La teoría y los términos enunciados no son pertinentes.</td></tr>
+            <tr><td class="num">3–4</td><td>Cierta comprensión. Se describe teoría pertinente y se incluyen algunos términos pertinentes.</td></tr>
+            <tr><td class="num">5–6</td><td>Comprensión de la pregunta, pero las exigencias se abordan solo parcialmente. Cuando corresponde, se incluyen diagramas pertinentes.</td></tr>
+            <tr><td class="num">7–8</td><td>Exigencias comprendidas y abordadas. Teoría explicada; términos en su mayoría apropiados; diagramas incluidos y explicados.</td></tr>
+            <tr><td class="num">9–10</td><td>Exigencias comprendidas y abordadas. Teoría explicada por completo; términos apropiados en todo momento; diagramas incluidos y explicados por completo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Bandas de puntuación — parte (b) [15 puntos]</h3>
+        <span class="gc-tag">aplican a 1(b), 2(b) y 3(b)</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Puntos</th><th>Descriptor</th></tr></thead>
+          <tbody>
+            <tr><td class="num">0</td><td>No alcanza el estándar descrito por los descriptores.</td></tr>
+            <tr><td class="num">1–3</td><td>Escasa comprensión. Teoría y términos no pertinentes. Sin evidencia de síntesis ni evaluación. Se identifica algún ejemplo del mundo real, pero no es pertinente.</td></tr>
+            <tr><td class="num">4–6</td><td>Cierta comprensión. Teoría pertinente y algunos términos. Síntesis o evaluación superficial. Se identifica un ejemplo pertinente.</td></tr>
+            <tr><td class="num">7–9</td><td>Comprensión, pero exigencias abordadas solo parcialmente. Síntesis o evaluación apropiada pero carece de equilibrio. Ejemplo pertinente desarrollado parcialmente.</td></tr>
+            <tr><td class="num">10–12</td><td>Exigencias comprendidas y abordadas. Síntesis o evaluación apropiada y mayormente equilibrada. El ejemplo pertinente se desarrolla en su contexto.</td></tr>
+            <tr><td class="num">13–15</td><td>Exigencias comprendidas y abordadas. Teoría completa y terminología apropiada en todo momento. Síntesis o evaluación eficaz y equilibrada. El ejemplo pertinente se desarrolla por completo para respaldar el argumento.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="guide-card">
+      <div class="gc-head">
+        <h3>Checklist antes de culminar</h3>
+        <span class="gc-tag gold">autoverificación</span>
+      </div>
+      <ul class="check-list">
+        <li>¿Contesté <b>una sola pregunta</b> (la Pregunta 1, 2 o 3)?</li>
+        <li>¿Expliqué la teoría pertinente con un encadenamiento lógico (causa, mecanismo y efecto)?</li>
+        <li>¿Usé la <b>terminología IB exacta</b> (por ejemplo, demanda agregada, PIB real, oferta agregada de largo plazo)?</li>
+        <li>¿Incluí diagramas <b>bien rotulados</b> y los expliqué?</li>
+        <li>¿Presenté argumentos a favor <b>y</b> en contra en la parte (b)?</li>
+        <li>¿Usé <b>ejemplos del mundo real</b> desarrollados en su contexto?</li>
+        <li>¿Cerré con una <b>conclusión evaluada</b> coherente con mi desarrollo?</li>
+      </ul>
+    </div>
+    </div><!-- /paper-block p1 -->
+
+    <!-- ═══ GUÍA PRUEBA 2 ═══ -->
+    <div class="paper-block" data-paper="p2">
     <div class="exam-head">
       <h2>Guía de respuesta — Paper 2</h2>
       <span class="pts">Plantillas por término de instrucción IB · Economía NM</span>
@@ -492,7 +701,7 @@
           <tbody>
             <tr><td><b>(a)</b></td><td class="num">4</td><td><b>Defina</b> (2 términos)</td><td>Dos definiciones precisas con terminología IB exacta, de términos marcados en negrita en el texto.</td></tr>
             <tr><td><b>(b)</b></td><td class="num">5</td><td><b>Usando… calcule</b> (2 cálculos)</td><td>Citar los datos de la tabla, mostrar la totalidad del mecanismo y entregar el resultado con su unidad.</td></tr>
-            <tr><td><b>(c)–(f)</b></td><td class="num">16</td><td><b>Explique</b> (4 explicaciones)</td><td>Cuatro explicaciones, cada una con un <b>diagrama bien rotulado</b> y un encadenamiento lógico (causa → mecanismo → efecto).</td></tr>
+            <tr><td><b>(c)–(f)</b></td><td class="num">16</td><td><b>Explique</b> (4 explicaciones)</td><td>Cuatro explicaciones, cada una con un <b>diagrama bien rotulado</b> y un encadenamiento lógico (causa, mecanismo y efecto).</td></tr>
             <tr><td><b>(g)</b></td><td class="num">15</td><td><b>Discuta</b> / <b>Evalúe</b></td><td>Ensayo de cinco párrafos: argumentos a favor y en contra con datos del texto y una <b>conclusión evaluada</b>.</td></tr>
             <tr><td><b>Total</b></td><td class="num">40</td><td></td><td>Regla de oro: <b>referencia el texto y los datos</b> («como se observa en la Tabla 1…», «según el párrafo 2…»). Los examinadores lo premian en todas las partes.</td></tr>
           </tbody>
@@ -520,12 +729,12 @@
         <span class="gc-tag">3 + 2 puntos</span>
       </div>
       <p class="gc-sub"><b>Qué pide:</b> usar datos provistos explícitamente. Hay que <b>citar los datos de la tabla al inicio de la respuesta</b> y mostrar todos los pasos del cálculo, no solo el resultado.</p>
-      <div class="formula"><b>Plantilla en tres pasos:</b><br>1. «Usando los datos de la Tabla X: <i>[citar el dato]</i>» → 2. escribe la fórmula aplicable y sustituye los valores → 3. resuelve e indica el <b>resultado con su unidad</b>.</div>
+      <div class="formula"><b>Plantilla en tres pasos:</b><br>1. «Usando los datos de la Tabla X: <i>[citar el dato]</i>». 2. escribe la fórmula aplicable y sustituye los valores. 3. resuelve e indica el <b>resultado con su unidad</b>.</div>
       <div class="step"><span class="n">1</span><div class="t"><b>Paso 1 — Cita y fórmula.</b> «Usando los datos de la Tabla 1: PED = %ΔCantidad demandada ÷ %ΔPrecio».</div></div>
       <div class="step"><span class="n">2</span><div class="t"><b>Paso 2 — Sustitución.</b> «%ΔQd = (40 − 50) ÷ 50 × 100 = −20 % y %ΔP = (1,00 − 0,75) ÷ 0,75 × 100 = +33,3 %».</div></div>
-      <div class="step"><span class="n">3</span><div class="t"><b>Paso 3 — Resultado con unidad.</b> «PED = −20 ÷ 33,3 = −0,6 → la demanda es inelástica». (Dos decimales salvo que la pregunta indique otra cosa.)</div></div>
+      <div class="step"><span class="n">3</span><div class="t"><b>Paso 3 — Resultado con unidad.</b> «PED = −20 ÷ 33,3 = −0,6, por lo que la demanda es inelástica». (Dos decimales salvo que la pregunta indique otra cosa.)</div></div>
       <div class="tip warn"><b>Nota IB importante:</b> si la pregunta dice «usando los datos de la Tabla», <b>perderás puntos cuando no referencies explícitamente esos datos</b> en tu desarrollo. Además, si no escribes la unidad junto al resultado, puedes perder el punto correspondiente al resultado final.</div>
-      <div class="tip bad"><b>Error fatal:</b> escribir solo el resultado sin mecanismo → máximo [1]. Los puntos están en la cita de datos, la fórmula y la sustitución.</div>
+      <div class="tip bad"><b>Error fatal:</b> escribir solo el resultado sin mecanismo: máximo [1]. Los puntos están en la cita de datos, la fórmula y la sustitución.</div>
     </div>
 
     <!-- (c)-(f) Explique con diagrama -->
@@ -542,8 +751,8 @@
           <ul style="margin-left:18px;font-size:.9rem">
             <li><b>Ejes rotulados</b>: precio y cantidad (micro) o nivel de precios y producción real (macro).</li>
             <li><b>Curvas correctas</b> y etiquetadas (D, O · DA, OA).</li>
-            <li><b>Flecha de desplazamiento</b> clara (→ derecha o ← izquierda).</li>
-            <li><b>Nuevo equilibrio rotulado</b>: P1→P2 y Q1→Q2.</li>
+            <li><b>Flecha de desplazamiento</b> clara (hacia la derecha o hacia la izquierda).</li>
+            <li><b>Nuevo equilibrio rotulado</b>: P1 a P2 y Q1 a Q2.</li>
           </ul>
         </div>
         <div>
@@ -556,7 +765,7 @@
         </div>
       </div>
       <div class="tip good"><b>Conectores clave</b> para mostrar el encadenamiento lógico: «Esto se debe a que», «en consecuencia», «sin embargo». Regla de oro del diagrama: si no muestra el desplazamiento, no hay punto de diagrama; si la explicación no dice <b>por qué</b> se desplaza, no hay punto de explicación.</div>
-      <div class="tip warn"><b>Referencia el texto:</b> «como se menciona en el párrafo 2, el gobierno otorga un subsidio de 0,25 USD por kg…» — conecta el diagrama con los datos de la prueba.</div>
+      <div class="tip warn"><b>Referencia el texto:</b> «como se menciona en el párrafo 2, el gobierno otorga un subsidio de 0,25 USD por kg…». Conecta el diagrama con los datos de la prueba.</div>
     </div>
 
     <!-- (g) Discuta/Evalúe -->
@@ -612,14 +821,15 @@
       </div>
       <ul class="check-list">
         <li>¿Definí los 2 términos con la <b>terminología IB exacta</b> (concepto + precisión)?</li>
-        <li>¿Cité los datos de la tabla al inicio de cada cálculo y mostré la <b>totalidad del mecanismo</b> (fórmula → sustitución → resultado con unidad)?</li>
-        <li>¿Mis 4 diagramas tienen ejes rotulados, curvas etiquetadas, flecha de desplazamiento y nuevo equilibrio marcado (P1→P2, Q1→Q2)?</li>
+        <li>¿Cité los datos de la tabla al inicio de cada cálculo y mostré la <b>totalidad del mecanismo</b> (fórmula, sustitución y resultado con unidad)?</li>
+        <li>¿Mis 4 diagramas tienen ejes rotulados, curvas etiquetadas, flecha de desplazamiento y nuevo equilibrio marcado (P1 a P2, Q1 a Q2)?</li>
         <li>¿Cada explicación encadena «esto se debe a que… como resultado…»?</li>
         <li>¿Cité datos del texto o de las tablas en la explicación y en la parte (g)?</li>
         <li>¿La parte (g) tiene argumentos a favor Y en contra (o limitaciones), y una <b>conclusión evaluada</b> coherente?</li>
         <li>¿Usé dos decimales en los resultados numéricos?</li>
       </ul>
     </div>
+    </div><!-- /paper-block p2 -->
 
   </div>
 </section>
@@ -1351,6 +1561,201 @@
     </div>
     </div><!-- /q3Section -->
 
+    <!-- ███ PRUEBA 1 · PREGUNTA 1 ███ -->
+    <div id="p1q1Section" style="display:none">
+    <div class="exam-head">
+      <h2>Pregunta 1</h2>
+      <span class="pts">25 puntos</span>
+    </div>
+    <p class="leer-fragmentos"><strong>Conteste la parte (a) y la parte (b).</strong></p>
+
+    <div class="part" id="part_p1q1a">
+      <div class="part-head">
+        <span class="part-label">1 (a)</span>
+        <div class="part-q"><span class="cmd">Explique</span> de qué modo una disminución del precio del viaje en tren podría afectar el precio y la producción de sus bienes sustitutivos y complementarios.</div>
+        <span class="part-marks">10 puntos</span>
+      </div>
+      <textarea id="ans_p1q1a" rows="8" placeholder="Explique, con un diagrama bien rotulado cuando corresponda…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_p1q1a" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <div class="part" id="part_p1q1b">
+      <div class="part-head">
+        <span class="part-label">1 (b)</span>
+        <div class="part-q">Utilizando ejemplos del mundo real, <span class="cmd">evalúe</span> el punto de vista según el cual el Gobierno nunca debe dar subvenciones a las empresas.</div>
+        <span class="part-marks">15 puntos</span>
+      </div>
+      <textarea id="ans_p1q1b" rows="12" placeholder="Argumentos a favor y en contra, ejemplos del mundo real y una conclusión evaluada…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_p1q1b" class="board"></canvas></div>
+      </div>
+    </div>
+    </div><!-- /p1q1Section -->
+
+    <!-- ███ PRUEBA 1 · PREGUNTA 2 ███ -->
+    <div id="p1q2Section" style="display:none">
+    <div class="exam-head">
+      <h2>Pregunta 2</h2>
+      <span class="pts">25 puntos</span>
+    </div>
+    <p class="leer-fragmentos"><strong>Conteste la parte (a) y la parte (b).</strong></p>
+
+    <div class="part" id="part_p1q2a">
+      <div class="part-head">
+        <span class="part-label">2 (a)</span>
+        <div class="part-q"><span class="cmd">Explique</span> la diferencia entre desempleo cíclico (por escasez de demanda) y desempleo estructural.</div>
+        <span class="part-marks">10 puntos</span>
+      </div>
+      <textarea id="ans_p1q2a" rows="8" placeholder="Explique, con un diagrama bien rotulado cuando corresponda…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_p1q2a" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <div class="part" id="part_p1q2b">
+      <div class="part-head">
+        <span class="part-label">2 (b)</span>
+        <div class="part-q">Utilizando ejemplos del mundo real, <span class="cmd">evalúe</span> el punto de vista según el cual la política fiscal es la forma más eficaz de reducir el nivel de desempleo de un país.</div>
+        <span class="part-marks">15 puntos</span>
+      </div>
+      <textarea id="ans_p1q2b" rows="12" placeholder="Argumentos a favor y en contra, ejemplos del mundo real y una conclusión evaluada…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_p1q2b" class="board"></canvas></div>
+      </div>
+    </div>
+    </div><!-- /p1q2Section -->
+
+    <!-- ███ PRUEBA 1 · PREGUNTA 3 ███ -->
+    <div id="p1q3Section" style="display:none">
+    <div class="exam-head">
+      <h2>Pregunta 3</h2>
+      <span class="pts">25 puntos</span>
+    </div>
+    <p class="leer-fragmentos"><strong>Conteste la parte (a) y la parte (b).</strong></p>
+
+    <div class="part" id="part_p1q3a">
+      <div class="part-head">
+        <span class="part-label">3 (a)</span>
+        <div class="part-q"><span class="cmd">Explique</span> de qué modo la fuga de capitales y los bajos niveles de inversión en capital humano pueden actuar como impedimentos para el crecimiento económico.</div>
+        <span class="part-marks">10 puntos</span>
+      </div>
+      <textarea id="ans_p1q3a" rows="8" placeholder="Explique, con un diagrama bien rotulado cuando corresponda…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_p1q3a" class="board"></canvas></div>
+      </div>
+    </div>
+
+    <div class="part" id="part_p1q3b">
+      <div class="part-head">
+        <span class="part-label">3 (b)</span>
+        <div class="part-q">Utilizando ejemplos del mundo real, <span class="cmd">evalúe</span> el punto de vista según el cual el nivel del producto interno bruto (PIB) real es la mejor medida del desarrollo económico.</div>
+        <span class="part-marks">15 puntos</span>
+      </div>
+      <textarea id="ans_p1q3b" rows="12" placeholder="Argumentos a favor y en contra, ejemplos del mundo real y una conclusión evaluada…"></textarea>
+      <div class="board-shell no-print">
+        <div class="board-tools">
+          <span class="tlabel">Diagrama opcional:</span>
+          <button class="swatch active" data-color="#1c2b3a" title="Negro" style="background:#1c2b3a"></button>
+          <button class="swatch" data-color="#1e5aa8" title="Azul" style="background:#1e5aa8"></button>
+          <button class="swatch" data-color="#b3261e" title="Rojo" style="background:#b3261e"></button>
+          <button class="swatch" data-color="#1e7d4f" title="Verde" style="background:#1e7d4f"></button>
+          <span class="sep"></span>
+          <button class="bt" data-width="3">Fino</button>
+          <button class="bt active" data-width="6">Medio</button>
+          <button class="bt" data-width="12">Grueso</button>
+          <span class="sep"></span>
+          <button class="bt" data-eraser="1">🧽 Goma</button>
+          <button class="bt" data-undo="1">↩ Deshacer</button>
+          <button class="bt" data-clear="1">🗑 Borrar todo</button>
+          <button class="bt" data-download="1">⬇ PNG</button>
+        </div>
+        <div class="board-wrap"><canvas id="cv_p1q3b" class="board"></canvas></div>
+      </div>
+    </div>
+    </div><!-- /p1q3Section -->
+
     <!-- Barra de culminación -->
     <div class="card no-print" style="text-align:center;border:2px solid var(--ib-gold)">
       <p style="font-size:.95rem;margin-bottom:12px">¿Terminaste? Al culminar se desbloqueará la <strong>Revisión final</strong> con el markscheme de cada parte para que te autoevalúes.</p>
@@ -1376,7 +1781,7 @@
       <div class="total-box">
         <div>
           <div class="sub">Total autoevaluado</div>
-          <div class="big"><span id="totalScore">0</span>/40</div>
+          <div class="big"><span id="totalScore">0</span>/<span id="totalMax">40</span></div>
         </div>
         <div>
           <div class="sub">Nota sobre 100</div>
@@ -1435,7 +1840,7 @@
 
         <div class="rev-part">
           <span class="plabel">1(b)(i)</span>
-          <div class="ptext"><span class="cmd">Calcule</span> la elasticidad precio de la demanda (0,75 → 1,00 USD) <span id="st_q1b_i"></span></div>
+          <div class="ptext"><span class="cmd">Calcule</span> la elasticidad precio de la demanda (de 0,75 a 1,00 USD) <span id="st_q1b_i"></span></div>
           <div class="score-box">Puntos: <input type="number" id="sc_q1b_i" min="0" max="3" step="1" value="0"> / 3</div>
           <button class="btn small ghost ms-toggle" data-ms="ms_q1b_i">📋 Revisión IB</button>
           <div class="ms-panel" id="ms_q1b_i" style="width:100%">
@@ -1443,7 +1848,7 @@
             <div class="ms-body">
               <p>[1] Fórmula: PED = %ΔCantidad demandada ÷ %ΔPrecio</p>
               <p>[1] Sustitución correcta: %ΔQd = (40 − 50) ÷ 50 × 100 = −20&nbsp;% y %ΔP = (1,00 − 0,75) ÷ 0,75 × 100 = +33,3&nbsp;%</p>
-              <p>[1] PED = −20 ÷ 33,3 = <strong>−0,6</strong> → la demanda de arroz es <strong>inelástica</strong> (|PED| &lt; 1)</p>
+              <p>[1] PED = −20 ÷ 33,3 = <strong>−0,6</strong>, por lo que la demanda de arroz es <strong>inelástica</strong> (|PED| &lt; 1)</p>
               <p class="ms-note">Nota: acepta −0,6 (o −0,60). Si el estudiante usa el método del punto medio (−0,78 aprox.) con procedimiento consistente, otorga el puntaje. Sin mecanismo, el resultado obtiene como máximo [1].</p>
             </div>
           </div>
@@ -1475,7 +1880,7 @@
               <p><strong>Diagrama correcto (hasta 2 pts):</strong></p>
               <ul>
                 <li>[1] Ejes etiquetados (precio y cantidad) y curvas de demanda y oferta correctas.</li>
-                <li>[1] Curva de oferta desplazada a la derecha/abajo (O + subsidio) y nuevo equilibrio con precio menor (P1→P2) y cantidad mayor (Q1→Q2).</li>
+                <li>[1] Curva de oferta desplazada a la derecha/abajo (O + subsidio) y nuevo equilibrio con precio menor (P1 a P2) y cantidad mayor (Q1 a Q2).</li>
               </ul>
               <p><strong>Explicación (hasta 2 pts):</strong></p>
               <ul>
@@ -1568,7 +1973,7 @@
               <div class="ms-level"><span class="range">0</span><span class="lv">Sin contenido relevante.</span></div>
               <p><strong>Puntos esperados (orientativos):</strong></p>
               <ul>
-                <li><strong>Consumidores:</strong> precio menor → mayor excedente y seguridad alimentaria, especialmente para los hogares de bajos ingresos (el arroz representa 65&nbsp;% de la dieta); contribuye a contener la inflación de alimentos (7,2&nbsp;%).</li>
+                <li><strong>Consumidores:</strong> precio menor, mayor excedente y seguridad alimentaria, especialmente para los hogares de bajos ingresos (el arroz representa 65&nbsp;% de la dieta); contribuye a contener la inflación de alimentos (7,2&nbsp;%).</li>
                 <li><strong>Productores:</strong> mayores ingresos y estabilidad; con demanda inelástica, captan una proporción mayor del subsidio que los consumidores.</li>
                 <li><strong>Gobierno:</strong> costo fiscal de 12,5 millones de USD al mes (costo de oportunidad, presión sobre el presupuesto); riesgo de sobreproducción, ineficiencia y dependencia del subsidio en el largo plazo; en un contexto de inflación alta (7,2&nbsp;%) y crecimiento débil (2,1&nbsp;%), el gasto del subsidio compite con otras prioridades.</li>
               </ul>
@@ -1732,7 +2137,7 @@
               </ul>
               <p><strong>Explicación (hasta 2 pts):</strong></p>
               <ul>
-                <li>[1] El subsidio reduce el costo de producción de los operadores → la oferta aumenta.</li>
+                <li>[1] El subsidio reduce el costo de producción de los operadores, por lo que la oferta aumenta.</li>
                 <li>[1] El precio del viaje baja y la cantidad de viajes sube: los consumidores se benefician sin generar escasez (a diferencia del precio máximo), aunque con costo fiscal para el gobierno.</li>
               </ul>
             </div>
@@ -1949,6 +2354,140 @@
         </div>
       </div>
 
+      <!-- REVISIÓN PREGUNTA 1 — PRUEBA 1 -->
+      <div class="rev-card" id="revP1Q1">
+        <div class="rev-question-title">
+          <h3>Pregunta 1</h3>
+          <span class="topic-tag">Tren · sustitución y complementos</span>
+          <span style="margin-left:auto;font-size:.8rem;color:var(--ink-soft)" id="p1q1Subtotal">0/25</span>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(a)</span>
+          <div class="ptext"><span class="cmd">Explique</span> el efecto sobre el precio y la producción de bienes sustitutivos y complementarios <span id="st_p1q1a"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_p1q1a" min="0" max="10" step="1" value="0"> / 10</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_p1q1a">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_p1q1a" style="width:100%">
+            <div class="ms-head">Markscheme — 1(a) · Explique · 10 puntos</div>
+            <div class="ms-body">
+              <p><strong>Terminología:</strong> bienes sustitutivos, bienes complementarios.</p>
+              <p><strong>Explicación:</strong> una disminución del precio del viaje en tren aumenta la cantidad demandada de viajes en tren. Esto reduce la demanda de sus bienes sustitutivos, por ejemplo el viaje por carretera, lo que disminuye tanto su precio como su producción de equilibrio. Al mismo tiempo, aumenta la demanda de sus bienes complementarios, por ejemplo la comida en las estaciones de tren, lo que eleva tanto su precio como su producción de equilibrio.</p>
+              <p><strong>Diagrama:</strong> dos diagramas de oferta y demanda. En el primero, la curva de demanda del bien sustitutivo se desplaza hacia la izquierda (menor precio y menor cantidad). En el segundo, la curva de demanda del bien complementario se desplaza hacia la derecha (mayor precio y mayor cantidad).</p>
+              <p class="ms-note">Límite: máximo 6 puntos si solo se aborda uno de los dos aspectos (sustitutivos o complementarios).</p>
+              <p class="ms-note">Se evalúa con las bandas de puntuación de la parte (a) [10 puntos].</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">1(b)</span>
+          <div class="ptext"><span class="cmd">Evalúe</span> el punto de vista según el cual el Gobierno nunca debe dar subvenciones a las empresas <span id="st_p1q1b"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_p1q1b" min="0" max="15" step="1" value="0"> / 15</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_p1q1b">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_p1q1b" style="width:100%">
+            <div class="ms-head">Markscheme — 1(b) · Evalúe · 15 puntos</div>
+            <div class="ms-body">
+              <p><strong>Terminología:</strong> subvenciones.</p>
+              <p><strong>Explicación del punto de vista:</strong> las subvenciones pueden provocar una mala asignación de recursos y pérdidas de bienestar, porque el costo para el Gobierno (y para el contribuyente) puede superar el beneficio social. Representan un costo de oportunidad para el gasto público, afectan de forma adversa a los productores extranjeros y pueden reducir el incentivo de las empresas para ser eficientes.</p>
+              <p><strong>Diagrama:</strong> oferta y demanda que muestra el efecto de una subvención (desplazamiento de la curva de oferta hacia la derecha, mayor cantidad y menor precio para el consumidor).</p>
+              <p><strong>Síntesis (evaluación):</strong> hay argumentos a favor de las subvenciones. Pueden acercar el consumo al nivel socialmente óptimo cuando existe una externalidad positiva. Pueden aumentar los ingresos de determinados productores y ayudar a los consumidores de bajos ingresos. Pueden apoyar industrias consideradas clave para el desarrollo o proteger a los productores nacionales frente a las importaciones.</p>
+              <p><strong>Ejemplos del mundo real:</strong> subvenciones agrícolas, subvenciones a combustibles fósiles, subvenciones a energías renovables.</p>
+              <p class="ms-note">Se evalúa con las bandas de puntuación de la parte (b) [15 puntos].</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVISIÓN PREGUNTA 2 — PRUEBA 1 -->
+      <div class="rev-card" id="revP1Q2">
+        <div class="rev-question-title">
+          <h3>Pregunta 2</h3>
+          <span class="topic-tag">Desempleo · macro</span>
+          <span style="margin-left:auto;font-size:.8rem;color:var(--ink-soft)" id="p1q2Subtotal">0/25</span>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(a)</span>
+          <div class="ptext"><span class="cmd">Explique</span> la diferencia entre desempleo cíclico y desempleo estructural <span id="st_p1q2a"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_p1q2a" min="0" max="10" step="1" value="0"> / 10</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_p1q2a">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_p1q2a" style="width:100%">
+            <div class="ms-head">Markscheme — 2(a) · Explique · 10 puntos</div>
+            <div class="ms-body">
+              <p><strong>Terminología:</strong> desempleo.</p>
+              <p><strong>Explicación:</strong> el desempleo cíclico (por escasez de demanda) ocurre cuando la demanda agregada es insuficiente para generar el nivel de producción correspondiente al pleno empleo, lo que provoca una brecha deflacionaria. El desempleo estructural surge de cambios de largo plazo en el patrón de demanda o de oferta de industrias concretas; por ejemplo, cuando decae una industria y los trabajadores no tienen las habilidades que demanda el mercado.</p>
+              <p><strong>Diagrama:</strong> oferta y demanda de trabajo que muestra la caída de la demanda de un tipo de trabajo (desempleo estructural); diagrama de demanda agregada y oferta agregada que muestra el desplazamiento de la demanda agregada hacia la izquierda y la aparición de una brecha deflacionaria (desempleo cíclico).</p>
+              <p class="ms-note">Límite: máximo 6 puntos si solo se aborda un tipo de desempleo.</p>
+              <p class="ms-note">Se evalúa con las bandas de puntuación de la parte (a) [10 puntos].</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">2(b)</span>
+          <div class="ptext"><span class="cmd">Evalúe</span> si la política fiscal es la forma más eficaz de reducir el desempleo <span id="st_p1q2b"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_p1q2b" min="0" max="15" step="1" value="0"> / 15</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_p1q2b">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_p1q2b" style="width:100%">
+            <div class="ms-head">Markscheme — 2(b) · Evalúe · 15 puntos</div>
+            <div class="ms-body">
+              <p><strong>Terminología:</strong> política fiscal, desempleo.</p>
+              <p><strong>Explicación del punto de vista:</strong> una política fiscal expansiva (mayor gasto público y/o menores impuestos) aumenta la demanda agregada, lo que ayuda a cerrar la brecha deflacionaria y reduce el desempleo causado por la escasez de demanda. Fortalezas: el Gobierno controla directamente el gasto y los impuestos y puede dirigir el estímulo a sectores o regiones específicos.</p>
+              <p><strong>Diagrama:</strong> demanda agregada y oferta agregada que muestra el desplazamiento de la demanda agregada hacia la derecha.</p>
+              <p><strong>Síntesis (evaluación):</strong> el tipo de desempleo determina qué política es la adecuada; la política fiscal no resuelve el desempleo estructural. Limitaciones: retrasos en su aplicación, efectos de desplazamiento (crowding out), restricciones por el nivel de deuda pública y consideraciones políticas. Otras políticas pueden ser más eficaces: la política monetaria y las políticas de oferta (mejorar la educación y la formación, reducir la rigidez del mercado laboral). La expresión «forma más eficaz» exige comparar con esas alternativas.</p>
+              <p><strong>Ejemplos del mundo real:</strong> programas de obra pública, recortes de impuestos para estimular el empleo, planes de empleo juvenil.</p>
+              <p class="ms-note">Límite: máximo 12 puntos si no se consideran otras políticas. Para alcanzar 13 o más debe haber mención de políticas alternativas.</p>
+              <p class="ms-note">Se evalúa con las bandas de puntuación de la parte (b) [15 puntos].</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVISIÓN PREGUNTA 3 — PRUEBA 1 -->
+      <div class="rev-card" id="revP1Q3">
+        <div class="rev-question-title">
+          <h3>Pregunta 3</h3>
+          <span class="topic-tag">Crecimiento y desarrollo · economía global</span>
+          <span style="margin-left:auto;font-size:.8rem;color:var(--ink-soft)" id="p1q3Subtotal">0/25</span>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(a)</span>
+          <div class="ptext"><span class="cmd">Explique</span> cómo la fuga de capitales y el bajo capital humano frenan el crecimiento <span id="st_p1q3a"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_p1q3a" min="0" max="10" step="1" value="0"> / 10</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_p1q3a">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_p1q3a" style="width:100%">
+            <div class="ms-head">Markscheme — 3(a) · Explique · 10 puntos</div>
+            <div class="ms-body">
+              <p><strong>Terminología:</strong> fuga de capitales, inversión, capital humano, crecimiento económico.</p>
+              <p><strong>Explicación:</strong> la fuga de capitales es la salida de capital financiero de un país. Afecta el crecimiento porque presiona el tipo de cambio (depreciación), reduce el capital financiero disponible internamente, puede aumentar la deuda externa y generar inestabilidad general. Los bajos niveles de inversión en capital humano limitan las habilidades, capacidades y conocimientos de la población (educación y formación) y sus niveles de salud, lo que reduce la calidad de la fuerza de trabajo. Ambos factores inciden negativamente sobre el empleo, la producción y el crecimiento.</p>
+              <p><strong>Diagrama:</strong> cualquiera pertinente, por ejemplo de demanda agregada y oferta agregada, de frontera de posibilidades de producción, o el ciclo de la pobreza.</p>
+              <p class="ms-note">Límite: máximo 6 puntos si solo se aborda uno de los dos aspectos (fuga de capitales o capital humano).</p>
+              <p class="ms-note">Se evalúa con las bandas de puntuación de la parte (a) [10 puntos].</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-part">
+          <span class="plabel">3(b)</span>
+          <div class="ptext"><span class="cmd">Evalúe</span> si el PIB real es la mejor medida del desarrollo económico <span id="st_p1q3b"></span></div>
+          <div class="score-box">Puntos: <input type="number" id="sc_p1q3b" min="0" max="15" step="1" value="0"> / 15</div>
+          <button class="btn small ghost ms-toggle" data-ms="ms_p1q3b">📋 Revisión IB</button>
+          <div class="ms-panel" id="ms_p1q3b" style="width:100%">
+            <div class="ms-head">Markscheme — 3(b) · Evalúe · 15 puntos</div>
+            <div class="ms-body">
+              <p><strong>Terminología:</strong> desarrollo económico, producto interno bruto (PIB), PIB real.</p>
+              <p><strong>Explicación del punto de vista:</strong> el PIB real refleja la producción, el empleo, los ingresos y el gasto de una economía y, por lo tanto, sus niveles de vida; un aumento del PIB real se asocia con mayor desarrollo económico.</p>
+              <p><strong>Diagrama:</strong> demanda agregada y oferta agregada, o frontera de posibilidades de producción.</p>
+              <p><strong>Síntesis (evaluación):</strong> conviene considerar el PIB real per cápita. El desarrollo es multidimensional: incluye salud, educación, distribución del ingreso y medio ambiente, aspectos que el PIB no captura. Existen indicadores compuestos alternativos, como el índice de desarrollo humano (IDH), el IDH ajustado por la desigualdad, el índice de desigualdad de género y el índice del planeta feliz. La expresión «mejor medida» exige comparar el PIB real con esos indicadores y reconocer sus límites.</p>
+              <p><strong>Ejemplos del mundo real:</strong> países con PIB alto y bajo desarrollo humano por desigualdad o problemas ambientales, y países con PIB más bajo y buen desempeño en desarrollo humano.</p>
+              <p class="ms-note">Límite: máximo 12 puntos si no se consideran otras medidas. Para alcanzar 13 o más debe haber mención de medidas alternativas de medición del desarrollo.</p>
+              <p class="ms-note">Se evalúa con las bandas de puntuación de la parte (b) [15 puntos].</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Acciones finales -->
       <div class="card no-print" style="text-align:center">
         <h3>Entregar tu práctica</h3>
@@ -1957,7 +2496,7 @@
           <button id="btnSubmit" class="btn" style="background:var(--ok)">📤 Enviar a mi docente</button>
           <button id="btnExport" class="btn">⬇ Descargar respuestas (.txt)</button>
           <button id="btnPrint" class="btn ghost">🖨 Imprimir / PDF</button>
-          <button id="btnBack" class="btn ghost">← Volver al examen</button>
+          <button id="btnBack" class="btn ghost">Volver al examen</button>
           <button id="btnReset" class="btn" style="background:var(--danger)">↺ Reiniciar práctica</button>
         </div>
         <div class="submit-status" id="submitStatus"></div>
@@ -1967,8 +2506,8 @@
 </section>
 
 <footer>
-  Examen de práctica elaborado con fines pedagógicos siguiendo la estructura oficial del Paper 2 del IB (partes (a)–(g), puntajes por punto y rúbricas por niveles).<br>
-  Los estímulos, los datos y los markschemes son materiales propios de práctica y no son documentos oficiales de la Organización del Bachillerato Internacional. · Economía NM — Paper 2 · Micro y macro
+  Examen de práctica elaborado con fines pedagógicos siguiendo la estructura oficial del IB (puntajes por punto y rúbricas por niveles).<br>
+  Los estímulos, los datos y los markschemes son materiales propios de práctica y no son documentos oficiales de la Organización del Bachillerato Internacional. · <span id="footPaper">Economía NM — Paper 2 · Micro y macro</span>
 </footer>
 
 <!-- Panel docente -->
@@ -1976,7 +2515,7 @@
 <div class="tp-overlay no-print" id="tpOverlay">
   <div class="tp-box">
     <button class="tp-close" id="tpClose">✕</button>
-    <h3>Panel docente — Paper 2 IB Economía NM</h3>
+    <h3>Panel docente — Economía NM</h3>
     <div id="tpLogin" class="tp-login">
       <input type="password" id="tpCode" placeholder="Código docente" autocomplete="off">
       <button class="btn small" id="tpEnter">Entrar</button>
@@ -2013,13 +2552,64 @@
   'use strict';
 
   /* ================= CONFIG ================= */
-  var EXAM_TIME = 6300;            // 1h45 en segundos
-  var STORAGE_KEY = 'paper2_nm_state_v2';
-  var SUBMISSIONS_KEY = 'paper2_nm_submissions';
-  var TOTAL_MARKS = 40;
-  var API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/paper2-ib-nm';
-  var EXAM_TITLE = 'Paper 2 IB Economía NM — Micro y macro';
   var TEACHER_CODE = 'DOCENTE2026';
+  var PAPER_KEY = 'paperapp_last_paper';           // recuerda la última prueba elegida
+  var SUBMISSIONS_KEY = 'paper2_nm_submissions';   // espejo local del panel docente (compartido)
+  var API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/paper2-ib-nm';
+
+  // Cada prueba tiene su propio estado, tiempo, puntaje y textos.
+  var PAPERS = {
+    p1: {
+      id: 'p1',
+      label: 'Prueba 1',
+      brandTitle: 'Paper 1 · Economía NM',
+      brandSub: 'Práctica digital · Ensayo',
+      examTitle: 'Paper 1 IB Economía NM · Ensayo',
+      fileNamePrefix: 'Paper1',
+      exportFile: 'paper1_respuestas_',
+      exportHeader: ' PAPER 1 · ECONOMÍA NM · PRÁCTICA DIGITAL',
+      examTime: 4500,                 // 1h15 en segundos
+      totalMarks: 25,
+      storageKey: 'paper1_nm_state_v1',
+      sections:  {q1:'p1q1Section', q2:'p1q2Section', q3:'p1q3Section'},
+      reviews:   {q1:'revP1Q1',     q2:'revP1Q2',     q3:'revP1Q3'},
+      subtotals: {q1:'p1q1Subtotal',q2:'p1q2Subtotal',q3:'p1q3Subtotal'},
+      startBtn: 'startBtnP1',
+      footTopic: 'Ensayo'
+    },
+    p2: {
+      id: 'p2',
+      label: 'Prueba 2',
+      brandTitle: 'Paper 2 · Economía NM',
+      brandSub: 'Práctica digital · Microeconomía y Macroeconomía',
+      examTitle: 'Paper 2 IB Economía NM · Micro y macro',
+      fileNamePrefix: 'Paper2',
+      exportFile: 'paper2_respuestas_',
+      exportHeader: ' PAPER 2 · ECONOMÍA NM · PRÁCTICA DIGITAL',
+      examTime: 6300,                 // 1h45 en segundos
+      totalMarks: 40,
+      storageKey: 'paper2_nm_state_v2',
+      sections:  {q1:'q1Section', q2:'q2Section', q3:'q3Section'},
+      reviews:   {q1:'revQ1',     q2:'revQ2',     q3:'revQ3'},
+      subtotals: {q1:'q1Subtotal',q2:'q2Subtotal',q3:'q3Subtotal'},
+      startBtn: 'startBtn',
+      footTopic: 'Micro y macro'
+    }
+  };
+
+  var PAPER = (function(){
+    try{
+      var p = localStorage.getItem(PAPER_KEY);
+      if(p === 'p1' || p === 'p2') return p;
+    }catch(e){}
+    return 'p2';
+  })();
+  var CFG = PAPERS[PAPER];
+
+  var EXAM_TIME = CFG.examTime;
+  var TOTAL_MARKS = CFG.totalMarks;
+  var STORAGE_KEY = CFG.storageKey;
+  var EXAM_TITLE = CFG.examTitle;
 
   // Partes por pregunta (9 sub-partes, 40 pts): (a)(i)(ii) [2+2], (b)(i)(ii) [3+2], (c)(d)(e)(f) [4+4+4+4], (g) [15]
   var PARTS_Q1 = [
@@ -2055,11 +2645,29 @@
     {id:'q3f',    max:4,  label:'3(f)'},
     {id:'q3g',    max:15, label:'3(g)'}
   ];
-  var CANVAS_IDS = ['cv_q1c','cv_q1d','cv_q1e','cv_q1f','cv_q1g','cv_q2c','cv_q2d','cv_q2e','cv_q2f','cv_q2g','cv_q3c','cv_q3d','cv_q3e','cv_q3f','cv_q3g'];
+  // Prueba 1: dos partes por pregunta, (a) Explique [10] y (b) Evalúe [15]
+  var PARTS_P1_Q1 = [ {id:'p1q1a', max:10, label:'1(a)'}, {id:'p1q1b', max:15, label:'1(b)'} ];
+  var PARTS_P1_Q2 = [ {id:'p1q2a', max:10, label:'2(a)'}, {id:'p1q2b', max:15, label:'2(b)'} ];
+  var PARTS_P1_Q3 = [ {id:'p1q3a', max:10, label:'3(a)'}, {id:'p1q3b', max:15, label:'3(b)'} ];
+
+  // Partes activas según la prueba elegida
+  CFG.parts = (PAPER === 'p1')
+    ? {q1:PARTS_P1_Q1, q2:PARTS_P1_Q2, q3:PARTS_P1_Q3}
+    : {q1:PARTS_Q1,    q2:PARTS_Q2,    q3:PARTS_Q3};
+
+  var CANVAS_IDS = ['cv_q1c','cv_q1d','cv_q1e','cv_q1f','cv_q1g','cv_q2c','cv_q2d','cv_q2e','cv_q2f','cv_q2g','cv_q3c','cv_q3d','cv_q3e','cv_q3f','cv_q3g',
+                    'cv_p1q1a','cv_p1q1b','cv_p1q2a','cv_p1q2b','cv_p1q3a','cv_p1q3b'];
 
   function activeParts(){
-    if(state.question === 'q3') return PARTS_Q3;
-    return state.question === 'q2' ? PARTS_Q2 : PARTS_Q1;
+    return CFG.parts[state.question] || CFG.parts.q1;
+  }
+
+  // Todas las partes de ambas pruebas (para enlazar textareas, pizarras y puntajes)
+  var ALL_PARTS = [].concat(PARTS_Q1, PARTS_Q2, PARTS_Q3, PARTS_P1_Q1, PARTS_P1_Q2, PARTS_P1_Q3);
+
+  // Id del botón de elección de pregunta según la prueba activa
+  function pickerId(q){
+    return (PAPER === 'p1' ? 'pickP1' : 'pick') + (q === 'q2' ? 'Q2' : (q === 'q3' ? 'Q3' : 'Q1'));
   }
 
   /* ================= ESTADO ================= */
@@ -2206,9 +2814,10 @@
   }
 
   function showQuestion(q){
-    $('q1Section').style.display = (q === 'q1') ? '' : 'none';
-    $('q2Section').style.display = (q === 'q2') ? '' : 'none';
-    $('q3Section').style.display = (q === 'q3') ? '' : 'none';
+    ['q1','q2','q3'].forEach(function(k){
+      var el = $(CFG.sections[k]);
+      if(el) el.style.display = (q === k) ? '' : 'none';
+    });
     var chip = $('questionChip');
     chip.style.display = '';
     chip.textContent = 'Pregunta elegida: ' + (q === 'q2' ? '2' : (q === 'q3' ? '3' : '1'));
@@ -2239,7 +2848,7 @@
   }
 
   function bindAnswers(){
-    [].concat(PARTS_Q1, PARTS_Q2, PARTS_Q3).forEach(function(p){
+    ALL_PARTS.forEach(function(p){
       var ta = $('ans_' + p.id);
       if(!ta) return;
       ta.value = state.answers[p.id] || '';
@@ -2420,10 +3029,13 @@
     $('reviewLocked').style.display = locked ? '' : 'none';
     $('reviewUnlocked').style.display = locked ? 'none' : '';
 
-    // Solo la pregunta elegida aparece en la revisión
-    $('revQ1').style.display = (state.question === 'q1') ? '' : 'none';
-    $('revQ2').style.display = (state.question === 'q2') ? '' : 'none';
-    $('revQ3').style.display = (state.question === 'q3') ? '' : 'none';
+    // Solo la pregunta elegida de la prueba activa aparece en la revisión
+    ['revQ1','revQ2','revQ3','revP1Q1','revP1Q2','revP1Q3'].forEach(function(id){
+      var el = $(id);
+      if(el) el.style.display = 'none';
+    });
+    var activeCard = $(CFG.reviews[state.question]);
+    if(activeCard) activeCard.style.display = '';
 
     activeParts().forEach(function(p){
       var st = $('st_' + p.id);
@@ -2456,10 +3068,11 @@
       total += v;
     });
     $('totalScore').textContent = total;
+    var tm = $('totalMax');
+    if(tm) tm.textContent = TOTAL_MARKS;
     $('grade100').textContent = Math.round(total / TOTAL_MARKS * 100) + ' %';
-    if(state.question === 'q1') $('q1Subtotal').textContent = total + '/40';
-    else if(state.question === 'q2') $('q2Subtotal').textContent = total + '/40';
-    else $('q3Subtotal').textContent = total + '/40';
+    var sub = $(CFG.subtotals[state.question]);
+    if(sub) sub.textContent = total + '/' + TOTAL_MARKS;
     saveStateDebounced();
   }
 
@@ -2492,7 +3105,7 @@
   function exportTxt(){
     var L = [];
     L.push('==============================================');
-    L.push(' PAPER 2 — ECONOMÍA NM — PRÁCTICA DIGITAL');
+    L.push(CFG.exportHeader);
     L.push('==============================================');
     L.push('Nombre: ' + (state.name || '(sin nombre)'));
     L.push('Curso: ' + (state.course || '—'));
@@ -2520,20 +3133,20 @@
     var total = 0;
     activeParts().forEach(function(p){ total += (typeof state.scores[p.id] === 'number' ? state.scores[p.id] : 0); });
     L.push('==============================================');
-    L.push('TOTAL AUTOCALIFICADO: ' + total + '/40 (' + Math.round(total/40*100) + ' %)');
+    L.push('TOTAL AUTOCALIFICADO: ' + total + '/' + TOTAL_MARKS + ' (' + Math.round(total/TOTAL_MARKS*100) + ' %)');
     L.push('==============================================');
 
     var blob = new Blob([L.join('\n')], {type:'text/plain;charset=utf-8'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'paper2_respuestas_' + (state.name || 'alumno').replace(/\s+/g,'_') + '.txt';
+    a.download = CFG.exportFile + (state.name || 'alumno').replace(/\s+/g,'_') + '.txt';
     a.click();
     URL.revokeObjectURL(a.href);
     toast('⬇ Respuestas descargadas.');
   }
 
   function printPaper(){
-    document.title = 'Paper 2 — ' + (state.name || 'Economía NM');
+    document.title = CFG.label + ' · ' + (state.name || 'Economía NM');
     window.print();
   }
 
@@ -2551,12 +3164,15 @@
     return {
       studentName: state.name,
       course: state.course || '3BGU Economía',
+      paper: PAPER,
+      paperLabel: CFG.label,
       question: state.question === 'q2' ? 'Pregunta 2' : (state.question === 'q3' ? 'Pregunta 3' : 'Pregunta 1'),
       examTitle: EXAM_TITLE,
       answers: answers,
       scores: scores,
       diagrams: diagrams,
       total: total,
+      totalMarks: TOTAL_MARKS,
       percent: Math.round(total / TOTAL_MARKS * 100),
       submittedAt: new Date().toISOString()
     };
@@ -2580,7 +3196,7 @@
       body: JSON.stringify(sub)
     }).then(function(r){ return r.json(); }).then(function(d){
       if(d && d.ok){
-        toast('✅ Enviado a tu docente (' + sub.total + '/40)');
+        toast('✅ Enviado a tu docente (' + sub.total + '/' + TOTAL_MARKS + ')');
       }else{
         toast('⚠ Guardado local; el servidor no confirmó.');
       }
@@ -2589,7 +3205,7 @@
     });
     var st = $('submitStatus');
     st.textContent = '✓ Enviado el ' + new Date().toLocaleString('es-EC') +
-      ' — ' + sub.total + '/40 (' + sub.percent + ' %). Puedes reenviar si cambias tus puntajes.';
+      ' · ' + sub.total + '/' + TOTAL_MARKS + ' (' + sub.percent + ' %). Puedes reenviar si cambias tus puntajes.';
   }
 
   /* ================= PANEL DOCENTE ================= */
@@ -2633,15 +3249,17 @@
     tpAll.forEach(function(r){
       Object.keys(r.scores || {}).forEach(function(k){ if(partIds.indexOf(k) < 0) partIds.push(k); });
     });
-    var html = '<table class="tp-table"><thead><tr><th>Estudiante</th><th>Pregunta</th><th>Total</th><th>%</th><th>Envío</th><th></th></tr></thead><tbody>';
+    var html = '<table class="tp-table"><thead><tr><th>Estudiante</th><th>Prueba</th><th>Pregunta</th><th>Total</th><th>%</th><th>Envío</th><th></th></tr></thead><tbody>';
     tpAll.forEach(function(r, idx){
+      var rMax = (typeof r.totalMarks === 'number') ? r.totalMarks : 40;
       html += '<tr class="student-row" data-i="' + idx + '"><td><b>' + esc(r.studentName || '?') + '</b></td>' +
+        '<td>' + esc(r.paperLabel || (r.paper === 'p1' ? 'Prueba 1' : 'Prueba 2')) + '</td>' +
         '<td>' + esc(r.question || '') + '</td>' +
-        '<td><b>' + (typeof r.total === 'number' ? r.total : 0) + '/40</b></td>' +
+        '<td><b>' + (typeof r.total === 'number' ? r.total : 0) + '/' + rMax + '</b></td>' +
         '<td>' + (typeof r.percent === 'number' ? r.percent : 0) + '%</td>' +
         '<td>' + esc((r.savedAt || r.submittedAt || '').slice(0, 16).replace('T', ' ')) + '</td>' +
         '<td><button class="tp-pdf" data-i="' + idx + '" title="Descargar PDF del estudiante">⬇ PDF</button></td></tr>';
-      html += '<tr class="tp-detail" data-d="' + idx + '"><td colspan="6">';
+      html += '<tr class="tp-detail" data-d="' + idx + '"><td colspan="7">';
       html += '<b>Puntajes:</b> ';
       partIds.forEach(function(pid){
         var v = (r.scores && r.scores[pid] != null) ? r.scores[pid] : '-';
@@ -2681,7 +3299,7 @@
     tpAll.forEach(function(r){
       Object.keys(r.scores || {}).forEach(function(k){ if(partIds.indexOf(k) < 0) partIds.push(k); });
     });
-    var cols = ['studentName', 'course', 'question', 'total', 'percent', 'submittedAt'].concat(partIds);
+    var cols = ['studentName', 'course', 'paperLabel', 'question', 'total', 'totalMarks', 'percent', 'submittedAt'].concat(partIds);
     function csvCell(v){
       v = String(v == null ? '' : v);
       return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
@@ -2690,8 +3308,8 @@
     tpAll.forEach(function(r){
       var row = cols.map(function(c){
         if(c === 'submittedAt') return csvCell(r.savedAt || r.submittedAt || '');
-        if(c === 'studentName' || c === 'course' || c === 'question') return csvCell(r[c]);
-        if(c === 'total' || c === 'percent') return csvCell(typeof r[c] === 'number' ? r[c] : '');
+        if(c === 'studentName' || c === 'course' || c === 'paperLabel' || c === 'question') return csvCell(r[c]);
+        if(c === 'total' || c === 'totalMarks' || c === 'percent') return csvCell(typeof r[c] === 'number' ? r[c] : '');
         return csvCell(r.scores && r.scores[c] != null ? r.scores[c] : '');
       });
       lines.push(row.join(','));
@@ -2699,7 +3317,7 @@
     var blob = new Blob(['\ufeff' + lines.join('\n')], {type:'text/csv;charset=utf-8'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'paper2_ib_nm_entregas.csv';
+    a.download = 'ib_nm_entregas.csv';
     a.click();
     URL.revokeObjectURL(a.href);
     toast('⬇ CSV exportado.');
@@ -2709,7 +3327,8 @@
   var PDF_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js';
   var PART_MAX = {q1a_i:2,q1a_ii:2,q1b_i:3,q1b_ii:2,q1c:4,q1d:4,q1e:4,q1f:4,q1g:15,
                   q2a_i:2,q2a_ii:2,q2b_i:3,q2b_ii:2,q2c:4,q2d:4,q2e:4,q2f:4,q2g:15,
-                  q3a_i:2,q3a_ii:2,q3b_i:2,q3b_ii:3,q3c:4,q3d:4,q3e:4,q3f:4,q3g:15};
+                  q3a_i:2,q3a_ii:2,q3b_i:2,q3b_ii:3,q3c:4,q3d:4,q3e:4,q3f:4,q3g:15,
+                  p1q1a:10,p1q1b:15,p1q2a:10,p1q2b:15,p1q3a:10,p1q3b:15};
 
   function loadScript(src){
     return new Promise(function(res, rej){
@@ -2771,17 +3390,19 @@
     }
 
     // Cabecera
+    var rMax = (typeof r.totalMarks === 'number') ? r.totalMarks : 40;
     bold(); doc.setFontSize(16);
-    doc.text('Paper 2 IB Economía NM — Práctica digital', M, 20);
+    doc.text((r.examTitle || 'IB Economía NM') + ' · Práctica digital', M, 20);
     doc.setFontSize(10);
     doc.text('Documento del estudiante · respuestas y autoevaluación', M, 26);
     doc.setFontSize(11);
     y = 38;
     para('Estudiante: ' + (r.studentName || ''), 11, 0);
     para('Curso: ' + (r.course || ''), 11, 0);
+    para('Prueba: ' + (r.paperLabel || ''), 11, 0);
     para('Pregunta: ' + (r.question || ''), 11, 0);
     para('Envío: ' + String(r.savedAt || r.submittedAt || '').slice(0, 16).replace('T', ' '), 11, 0);
-    para('Puntaje total: ' + (typeof r.total === 'number' ? r.total : 0) + ' / 40  (' + (typeof r.percent === 'number' ? r.percent : 0) + ' %)', 11, 4);
+    para('Puntaje total: ' + (typeof r.total === 'number' ? r.total : 0) + ' / ' + rMax + '  (' + (typeof r.percent === 'number' ? r.percent : 0) + ' %)', 11, 4);
 
     // Puntajes por parte
     var partIds = Object.keys(r.scores || {}).sort(function(a, b){
@@ -2839,19 +3460,38 @@
       y += 10;
     });
 
-    doc.save('Paper2_' + String(r.studentName || 'estudiante').replace(/[^A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]/g, '').replace(/\s+/g, '_') + '.pdf');
+    doc.save((r.paper === 'p1' ? 'Paper1_' : 'Paper2_') + String(r.studentName || 'estudiante').replace(/[^A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]/g, '').replace(/\s+/g, '_') + '.pdf');
     toast('⬇ PDF generado.');
   }
 
   /* ================= INICIALIZACIÓN ================= */
+  function applyPaperUI(){
+    // Muestra solo los bloques de la prueba activa
+    document.querySelectorAll('.paper-block').forEach(function(el){
+      el.hidden = (el.getAttribute('data-paper') !== PAPER);
+    });
+    // Marca la prueba elegida en el selector
+    var p1 = $('pickPaperP1'), p2 = $('pickPaperP2');
+    if(p1) p1.classList.toggle('sel', PAPER === 'p1');
+    if(p2) p2.classList.toggle('sel', PAPER === 'p2');
+    // Encabezado y título del documento
+    var bt = $('brandTitle'), bs = $('brandSub');
+    if(bt) bt.textContent = CFG.brandTitle;
+    if(bs) bs.textContent = CFG.brandSub;
+    document.title = CFG.label + ' · Economía NM · Práctica Digital';
+    var fp = $('footPaper');
+    if(fp) fp.textContent = 'Economía NM — ' + CFG.label + ' · ' + CFG.footTopic;
+  }
+
   function init(){
+    applyPaperUI();
     $('studentName').value = state.name || '';
 
     // Selección visual de pregunta en la portada
-    var sel = state.question === 'q2' ? 'pickQ2' : (state.question === 'q3' ? 'pickQ3' : 'pickQ1');
-    $('pickQ1').classList.toggle('sel', sel === 'pickQ1');
-    $('pickQ2').classList.toggle('sel', sel === 'pickQ2');
-    $('pickQ3').classList.toggle('sel', sel === 'pickQ3');
+    ['q1','q2','q3'].forEach(function(q){
+      var el = $(pickerId(q));
+      if(el) el.classList.toggle('sel', state.question === q);
+    });
 
     if(state.started){
       $('screen-start').classList.remove('active');
@@ -2882,16 +3522,44 @@
 
     function pickQuestion(q){
       state.question = q;
-      $('pickQ1').classList.toggle('sel', q === 'q1');
-      $('pickQ2').classList.toggle('sel', q === 'q2');
-      $('pickQ3').classList.toggle('sel', q === 'q3');
+      ['q1','q2','q3'].forEach(function(k){
+        var el = $(pickerId(k));
+        if(el) el.classList.toggle('sel', k === q);
+      });
       saveStateDebounced();
     }
-    safeListener('pickQ1', 'click', function(){ pickQuestion('q1'); });
-    safeListener('pickQ2', 'click', function(){ pickQuestion('q2'); });
-    safeListener('pickQ3', 'click', function(){ pickQuestion('q3'); });
+    ['q1','q2','q3'].forEach(function(q){
+      safeListener(pickerId(q), 'click', function(){ pickQuestion(q); });
+    });
 
-    safeListener('startBtn', 'click', function(){
+    // Selector de prueba: guarda la elección y recarga (el estado de cada prueba es independiente)
+    function choosePaper(p){
+      if(p === PAPER){ return; }
+      var doSwitch = function(){
+        // Pausa el temporizador para que no siga corriendo mientras se está en la otra prueba
+        if(state.timer && state.timer.running){
+          timerTick();                 // consolida el tiempo transcurrido hasta ahora
+          state.timer.running = false;
+          state.timer.startedAt = null;
+          saveState();
+        }
+        try{ localStorage.setItem(PAPER_KEY, p); }catch(e){}
+        location.reload();
+      };
+      if(state.started && !state.finished){
+        askConfirm(
+          'Cambiar de prueba',
+          'Tienes un intento en curso. Tu avance se conserva y el temporizador queda en pausa; podrás reanudarlo cuando vuelvas a esta prueba. ¿Cambiar a la otra prueba?',
+          doSwitch
+        );
+      } else {
+        doSwitch();
+      }
+    }
+    safeListener('pickPaperP1', 'click', function(){ choosePaper('p1'); });
+    safeListener('pickPaperP2', 'click', function(){ choosePaper('p2'); });
+
+    safeListener(CFG.startBtn, 'click', function(){
       var nameSel = $('studentName');
       var name = nameSel.value;
       if(!name){
@@ -2959,7 +3627,7 @@
       document.querySelectorAll('.ms-toggle').forEach(function(b){ b.textContent = '📋 Revisión IB'; });
     });
 
-    [].concat(PARTS_Q1, PARTS_Q2, PARTS_Q3).forEach(function(p){
+    ALL_PARTS.forEach(function(p){
       var sc = $('sc_' + p.id);
       if(sc) sc.addEventListener('input', updateTotals);
     });
